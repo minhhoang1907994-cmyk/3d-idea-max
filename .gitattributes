@@ -1,0 +1,18 @@
+# Chuẩn hoá line ending: repo luôn lưu LF, checkout theo OS.
+# Cần thiết vì team làm trên Windows — tránh diff giả do CRLF.
+* text=auto eol=lf
+
+# File nhị phân — không đụng vào
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.woff binary
+*.woff2 binary
+*.pdf binary
+*.stl binary
+*.3mf binary
+
+# Lockfile: gộp diff gọn khi review
+package-lock.json linguist-generated=true

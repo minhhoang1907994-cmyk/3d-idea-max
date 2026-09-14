@@ -1,0 +1,243 @@
+# 3d-idea-max
+
+Web app sinh ý tưởng sản phẩm in 3D ngẫu nhiên. User nhấn **Mix** → random toàn bộ
+selectbox → sinh ra 2 thứ:
+
+1. **Prompt tiếng Anh** mô tả sản phẩm, để copy sang tool tạo ảnh
+2. **Bộ thông số in Bambu Studio** (Quality / Strength / Speed / Filament) phù hợp
+   với sản phẩm và máy in đã chọn
+
+## Tech Stack
+
+- Language: TypeScript 5.x
+- Framework: React 18 + Vite 5
+- Database: không có — toàn bộ dữ liệu tĩnh trong repo
+- Backend: không có — toàn bộ logic chạy client-side
+- Styling: CSS Modules (built-in Vite, không thêm dependency)
+- Infrastructure: static hosting (build ra `dist/`)
+- Architecture: SPA client-side, component-based
+
+## Quyết định đã chốt (không đổi nếu không có lý do rõ ràng)
+
+| #   | Quyết định                                                 | Ghi chú                                                                                |
+| --- | ---------------------------------------------------------- | -------------------------------------------------------------------------------------- |
+| 1   | **Mix random TOÀN BỘ selectbox**, ghi đè lựa chọn hiện tại | Không có cơ chế lock/giữ field                                                         |
+| 2   | Danh mục → sản phẩm là **cascading**                       | Random danh mục trước, rồi random sản phẩm thuộc danh mục đó → luôn ra đúng 1 sản phẩm |
+| 3   | **Tách 2 selectbox vật liệu**                              | `filament` (in được, sinh thông số) và `surface` (thẩm mỹ, chỉ vào prompt ảnh)         |
+| 4   | Hỗ trợ 4 máy: **A1, A1 mini, P1S, X1C**                    | Thông số + giới hạn khổ in đổi theo máy                                                |
+| 5   | Thông số in lấy từ **tài liệu Bambu Lab chính thức**       | Nguồn sự thật: `docs/research/bambu-print-parameters.md`                               |
+| 6   | Quy mô dữ liệu: **15 danh mục × 30 sản phẩm**              | Dễ nâng lên sau, không phải sửa cấu trúc                                               |
+| 7   | Tool tạo ảnh đích: **Gemini**                              | Prompt dạng câu văn tự nhiên, không keyword list, không cú pháp tham số                |
+
+## Project Conventions
+
+### Naming
+
+- Components, types, interfaces: PascalCase (`IdeaMixer`, `PrintSettings`, `ProductCategory`)
+- Functions, variables: camelCase (`buildPrompt`, `resolvePrintSettings`, `mixResult`)
+- Constants: SCREAMING_SNAKE_CASE (`DEFAULT_PRINTER_ID`, `PRODUCTS_PER_CATEGORY`)
+- Custom hooks: prefix `use` (`useIdeaMixer`)
+- File component: PascalCase khớp tên component (`IdeaMixer.tsx`)
+- File non-component: camelCase (`buildPrompt.ts`, `resolvePrintSettings.ts`)
+- CSS Modules: `{Component}.module.css`
+- Tên file/thư mục/định danh: LUÔN tiếng Anh, kể cả data file
+
+### Architecture
+
+```
+src/
+  components/       — UI, không chứa business logic
+  hooks/            — state của mixer, clipboard
+  lib/              — Pure functions: random, prompt builder, print settings resolver
+  data/             — Dữ liệu tĩnh (ideas, filaments, printers)
+  types/            — Type definitions dùng chung
+  App.tsx
+  main.tsx
+```
+
+Trách nhiệm:
+
+- `data/` — nguồn sự thật duy nhất. Thêm ý tưởng/filament/máy in = sửa ở đây,
+  KHÔNG hardcode trong component
+- `lib/` — pure function, không import React, không gọi `Math.random()` trực tiếp
+- `hooks/` — cầu nối `lib/` ↔ component, giữ state
+- `components/` — render + bắt event, không tự ghép prompt, không tự tính thông số in
+
+### Data Model
+
+```typescript
+// ---- Ý tưởng sản phẩm (cascading) ----
+export type ProductCategory = {
+  id: string; // kebab-case, BẤT BIẾN
+  label: string; // nhãn UI (tiếng Việt được)
+  promptText: string; // tiếng Anh — dùng khi ghép prompt
+  products: Product[]; // ~30 sản phẩm thuộc danh mục này
+};
+
+export type Product = {
+  id: string; // kebab-case, duy nhất trong phạm vi category
+  label: string;
+  promptText: string; // tiếng Anh, BẮT BUỘC
+};
+
+// ---- Các chiều thuộc tính (mỗi chiều 1 selectbox) ----
+export type AttributeAxis = {
+  id: string; // 'style' | 'surface' | 'color' | 'size' | 'detail' | 'strength'
+  label: string;
+  options: AttributeOption[]; // ~30 option
+};
+
+export type AttributeOption = {
+  id: string;
+  label: string;
+  promptText: string; // tiếng Anh
+};
+
+// ---- Filament: khác AttributeOption vì có ràng buộc in thật ----
+export type Filament = {
+  id: string; // 'pla-basic' | 'petg-hf' | 'tpu'
+  label: string;
+  promptText: string; // mô tả tiếng Anh cho prompt ảnh
+  nozzleTempC: Range | null; // null = CHƯA VERIFY, hiển thị "chưa có dữ liệu"
+  bedTempC: Range | null;
+  requiresEnclosure: boolean;
+  requiresHardenedNozzle: boolean;
+  sourceUrl: string; // BẮT BUỘC — link tài liệu Bambu
+};
+
+export type Range = { min: number; max: number };
+
+// ---- Máy in ----
+export type Printer = {
+  id: string; // 'a1' | 'a1-mini' | 'p1s' | 'x1c'
+  label: string;
+  buildVolumeMm: { x: number; y: number; z: number };
+  isEnclosed: boolean;
+  supportedFilamentIds: string[]; // in tốt
+  notRecommendedFilamentIds: string[]; // in được nhưng Bambu không khuyến nghị
+  sourceUrl: string; // BẮT BUỘC
+};
+```
+
+Quy ước:
+
+- `id` **bất biến** — đổi `id` sẽ phá state/URL đã share và dữ liệu cũ
+- `label` cho người đọc, `promptText` cho tool tạo ảnh — không dùng lẫn
+- Mỗi axis tối thiểu 2 option (dưới 2 thì random vô nghĩa)
+
+### Chiều dữ liệu ảnh hưởng thông số in
+
+Hai axis `detail` và `strength` **không chỉ để trang trí prompt** — chúng là input để
+tính thông số in. Không được bỏ; nếu bỏ thì mọi sản phẩm cùng filament sẽ ra cùng một
+bộ thông số và phần Printability mất ý nghĩa.
+
+| Axis                                | Ảnh hưởng tới                                              |
+| ----------------------------------- | ---------------------------------------------------------- |
+| `detail` (độ chi tiết)              | Layer Height                                               |
+| `strength` (mục đích / độ chịu lực) | Sparse Infill Density, Infill Pattern, Wall Loops          |
+| `filament`                          | Nozzle Temp, Bed Temp, yêu cầu buồng kín / hardened nozzle |
+| `size`                              | Kiểm tra có vượt khổ in của máy đã chọn không              |
+
+### Nguồn sự thật cho thông số in
+
+`docs/research/bambu-print-parameters.md` — **mọi giá trị trong `src/data/filaments.ts`
+và `src/data/printers.ts` phải khớp file đó**, kèm `sourceUrl`.
+
+Giá trị chưa verify được ghi `null` và UI hiển thị "chưa có dữ liệu" —
+**TUYỆT ĐỐI KHÔNG đoán số**. Thông số in sai làm hỏng bản in thật (tốn nhựa + nhiều
+giờ máy chạy), đây là ràng buộc nghiêm ngặt hơn mọi phần khác của project.
+
+### Xử lý tổ hợp không hợp lệ
+
+Mix random tự do nên sẽ sinh ra tổ hợp máy × filament không hợp lệ. Quy tắc:
+
+- Filament nằm trong `notRecommendedFilamentIds` của máy đã chọn → **vẫn hiển thị**,
+  kèm cảnh báo rõ lý do (ví dụ: máy open-frame, dễ cong vênh)
+- Kích thước vượt `buildVolumeMm` → cảnh báo "cần chia nhỏ mô hình"
+- Filament CF/GF trên máy chưa có hardened nozzle → cảnh báo yêu cầu đổi nozzle
+- **Không âm thầm bỏ qua** — user cần biết vì sao tổ hợp đó có vấn đề
+
+### Prompt Output Format — nhắm tới Gemini (Nano Banana / Imagen)
+
+**Tool đích đã chốt: Gemini.** Google khuyến nghị prompt dạng **câu văn tự nhiên mô tả
+cảnh**, KHÔNG phải danh sách keyword nối bằng dấu phẩy kiểu Midjourney, và KHÔNG có
+cú pháp tham số (`--ar`, `--v`) hay negative prompt kiểu Stable Diffusion.
+Nguồn: [Nano Banana prompting guide](https://cloud.google.com/blog/products/ai-machine-learning/ultimate-prompting-guide-for-nano-banana),
+[Gemini image generation best practices](https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/capabilities/gemini-image-generation-best-practices)
+
+Công thức Google đưa ra: `[Subject] + [Action] + [Location/context] + [Composition] + [Style]`
+
+Ánh xạ axis → slot trong công thức:
+
+| Slot             | Nguồn dữ liệu                                                        |
+| ---------------- | -------------------------------------------------------------------- |
+| Subject          | `product` + `size` + `filament`/`surface` (vật liệu nhìn thấy)       |
+| Action           | cố định — vật thể tĩnh, ví dụ "resting on" / "displayed on"          |
+| Location/context | cố định — phông studio trung tính cho ảnh sản phẩm                   |
+| Composition      | cố định — góc máy, ví dụ "three-quarter view, centered, medium shot" |
+| Style            | `style` + `color` + `detail`                                         |
+
+Hệ quả bắt buộc với dữ liệu:
+
+- `promptText` phải là **mảnh câu ghép được vào câu tự nhiên** (ví dụ: `"a low-poly
+geometric desk organizer"`), KHÔNG phải keyword rời (`"low-poly, geometric"`)
+- `buildPrompt` ghép thành **câu hoàn chỉnh**, không nối bằng dấu phẩy
+- **Mô tả khẳng định, không phủ định** — Google nêu rõ: viết "an empty, deserted street"
+  thay vì "no cars"
+- Prompt phải nói rõ đây là **một vật thể liền khối in 3D được**, tránh Gemini vẽ ra
+  cảnh nhiều vật thể hoặc vật thể không in được
+
+Quy tắc chung:
+
+- Luôn **tiếng Anh**
+- Thứ tự slot **cố định**, chỉ random _lựa chọn_ — prompt đọc được và tái lập được
+
+### Error Handling
+
+- Không có network call → không cần error boundary phức tạp
+- Pure function trong `lib/` throw `Error` với message rõ khi input không hợp lệ
+- Lỗi copy clipboard phải có fallback: hiện prompt trong textarea để copy tay,
+  KHÔNG im lặng nuốt lỗi
+
+### Test Conventions
+
+- Framework: Vitest + React Testing Library
+- Location: đặt cạnh file được test (`buildPrompt.ts` → `buildPrompt.test.ts`)
+- Ưu tiên test `lib/` — toàn bộ logic đáng test nằm ở đó
+- Test random: inject hàm random giả trả giá trị cố định, KHÔNG test `Math.random` thật
+- **Bắt buộc test**: `resolvePrintSettings` phải có test cho tổ hợp không hợp lệ
+  (filament không khuyến nghị, vượt khổ in, thiếu hardened nozzle)
+
+## Lệnh thường dùng
+
+```bash
+npm install
+npm run dev          # dev server (Vite)
+npm run build        # build production ra dist/
+npm run preview      # preview bản build
+npm run test         # chạy Vitest
+npx tsc --noEmit     # type check
+```
+
+## Quy tắc của project
+
+- **Không đoán thông số in.** Chưa verify thì để `null` + hiển thị "chưa có dữ liệu"
+- **Mọi filament/printer phải có `sourceUrl`** trỏ tới tài liệu Bambu chính thức
+- **Logic random phải test được**: hàm trong `lib/` nhận `random: () => number` làm
+  tham số thay vì gọi thẳng `Math.random()`
+- **Dữ liệu chỉ ở `src/data/`** — không hardcode `<option>` trong JSX
+- **`promptText` bắt buộc tiếng Anh**; `label` có thể tiếng Việt
+- **`id` bất biến** — không đổi sau khi đã phát hành
+- **Không thêm dependency** mà không hỏi trước
+- **Không đưa API key nào vào client** — app không gọi API tạo ảnh
+
+## Tài liệu liên quan
+
+- `docs/research/bambu-print-parameters.md` — bảng thông số Bambu + trạng thái verify
+
+## Ghi chú — còn phải làm
+
+- Sinh bộ dữ liệu ý tưởng: 15 danh mục × 30 sản phẩm + các axis thuộc tính
+- Bổ sung nhiệt độ ABS / ASA / PC / PA (hiện CHƯA VERIFY — xem file research)
+- Chốt tool tạo ảnh đích (Midjourney / Stable Diffusion / DALL-E) → ảnh hưởng đuôi prompt
+- Chốt static host (Vercel / Netlify / GitHub Pages / S3)

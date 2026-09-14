@@ -1,0 +1,94 @@
+{
+  "sizes": [
+    {
+      "id": "keychain",
+      "label": "Móc khóa (~40mm)",
+      "promptText": "keychain-sized, about 4 centimeters across",
+      "longestEdgeMm": 40
+    },
+    {
+      "id": "palm",
+      "label": "Vừa lòng bàn tay (~80mm)",
+      "promptText": "palm-sized, about 8 centimeters across",
+      "longestEdgeMm": 80
+    },
+    {
+      "id": "desktop",
+      "label": "Để bàn (~150mm)",
+      "promptText": "desktop-sized, about 15 centimeters across",
+      "longestEdgeMm": 150
+    },
+    {
+      "id": "large",
+      "label": "Lớn (~240mm)",
+      "promptText": "large, about 24 centimeters across",
+      "longestEdgeMm": 240
+    },
+    {
+      "id": "oversized",
+      "label": "Quá khổ (~320mm)",
+      "promptText": "oversized, about 32 centimeters across",
+      "longestEdgeMm": 320
+    }
+  ],
+  "details": [
+    {
+      "id": "draft",
+      "label": "In nhanh, ít chi tiết",
+      "promptText": "with simple, chunky forms and few fine details",
+      "layerHeightMm": 0.28
+    },
+    {
+      "id": "standard",
+      "label": "Tiêu chuẩn",
+      "promptText": "with clean, moderately detailed surfaces",
+      "layerHeightMm": 0.2
+    },
+    {
+      "id": "fine",
+      "label": "Chi tiết cao",
+      "promptText": "with crisp, finely detailed surfaces",
+      "layerHeightMm": 0.12
+    },
+    {
+      "id": "ultra-fine",
+      "label": "Siêu tinh xảo",
+      "promptText": "with extremely intricate, delicately sculpted details",
+      "layerHeightMm": 0.08
+    }
+  ],
+  "strengths": [
+    {
+      "id": "display",
+      "label": "Chỉ để trưng bày",
+      "promptText": "made as a display piece",
+      "sparseInfillDensityPercent": 10,
+      "sparseInfillPattern": "Grid",
+      "wallLoops": 3
+    },
+    {
+      "id": "everyday",
+      "label": "Dùng hằng ngày",
+      "promptText": "made for everyday use",
+      "sparseInfillDensityPercent": 20,
+      "sparseInfillPattern": "Gyroid",
+      "wallLoops": 3
+    },
+    {
+      "id": "functional",
+      "label": "Chịu lực, cơ khí",
+      "promptText": "made as a sturdy functional part",
+      "sparseInfillDensityPercent": 25,
+      "sparseInfillPattern": "Gyroid",
+      "wallLoops": 4
+    },
+    {
+      "id": "heavy-duty",
+      "label": "Chịu tải nặng",
+      "promptText": "made as a heavy-duty load-bearing part",
+      "sparseInfillDensityPercent": 40,
+      "sparseInfillPattern": "Gyroid",
+      "wallLoops": 5
+    }
+  ]
+}

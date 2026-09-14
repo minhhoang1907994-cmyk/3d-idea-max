@@ -1,0 +1,2671 @@
+[
+  {
+    "id": "toys-and-figures",
+    "label": "Đồ chơi & mô hình",
+    "promptText": "a collectible toy",
+    "products": [
+      {
+        "id": "dragon-figurine",
+        "label": "Tượng rồng",
+        "promptText": "a coiled dragon figurine"
+      },
+      {
+        "id": "robot-mech",
+        "label": "Robot mech",
+        "promptText": "a bipedal mech robot figure"
+      },
+      {
+        "id": "chess-piece-set",
+        "label": "Quân cờ vua",
+        "promptText": "a set of chess pieces"
+      },
+      {
+        "id": "dice-tower",
+        "label": "Tháp đổ xúc xắc",
+        "promptText": "a tabletop dice tower"
+      },
+      {
+        "id": "articulated-fish",
+        "label": "Cá khớp động",
+        "promptText": "an articulated fish with hinged segments"
+      },
+      {
+        "id": "fidget-spinner",
+        "label": "Con quay fidget",
+        "promptText": "a three-armed fidget spinner"
+      },
+      {
+        "id": "puzzle-cube",
+        "label": "Khối rubik",
+        "promptText": "a twisting puzzle cube"
+      },
+      {
+        "id": "toy-car",
+        "label": "Xe đồ chơi",
+        "promptText": "a small rolling toy car"
+      },
+      {
+        "id": "dinosaur-skeleton",
+        "label": "Bộ xương khủng long",
+        "promptText": "a standing dinosaur skeleton model"
+      },
+      {
+        "id": "spaceship-model",
+        "label": "Mô hình phi thuyền",
+        "promptText": "a starship model on a display stand"
+      },
+      {
+        "id": "action-figure",
+        "label": "Mô hình hành động",
+        "promptText": "a poseable action figure"
+      },
+      {
+        "id": "doll-furniture",
+        "label": "Nội thất búp bê",
+        "promptText": "a miniature armchair for a dollhouse"
+      },
+      {
+        "id": "marble-run",
+        "label": "Đường lăn bi",
+        "promptText": "a modular marble run track piece"
+      },
+      {
+        "id": "spinning-top",
+        "label": "Con quay",
+        "promptText": "a weighted spinning top"
+      },
+      {
+        "id": "stacking-rings",
+        "label": "Vòng xếp chồng",
+        "promptText": "a set of stacking rings on a post"
+      },
+      {
+        "id": "yo-yo",
+        "label": "Yo-yo",
+        "promptText": "a balanced yo-yo"
+      },
+      {
+        "id": "kite-spool",
+        "label": "Cuộn dây diều",
+        "promptText": "a hand-held kite string spool"
+      },
+      {
+        "id": "building-blocks",
+        "label": "Khối xếp hình",
+        "promptText": "a set of interlocking building blocks"
+      },
+      {
+        "id": "wind-up-walker",
+        "label": "Đồ chơi lên dây",
+        "promptText": "a wind-up walking toy"
+      },
+      {
+        "id": "mini-catapult",
+        "label": "Máy bắn đá mini",
+        "promptText": "a desktop mini catapult"
+      },
+      {
+        "id": "animal-figurine",
+        "label": "Tượng thú",
+        "promptText": "a stylized woodland animal figurine"
+      },
+      {
+        "id": "knight-helmet",
+        "label": "Mũ hiệp sĩ",
+        "promptText": "a wearable toy knight helmet"
+      },
+      {
+        "id": "toy-sword",
+        "label": "Kiếm đồ chơi",
+        "promptText": "a short toy sword with a decorated hilt"
+      },
+      {
+        "id": "balance-game",
+        "label": "Trò cân bằng",
+        "promptText": "a balancing stacking game"
+      },
+      {
+        "id": "domino-set",
+        "label": "Bộ domino",
+        "promptText": "a set of domino tiles in a tray"
+      },
+      {
+        "id": "rocket-launcher-toy",
+        "label": "Bệ phóng tên lửa",
+        "promptText": "a spring-loaded toy rocket launcher"
+      },
+      {
+        "id": "maze-ball",
+        "label": "Mê cung bi lăn",
+        "promptText": "a handheld ball maze puzzle"
+      },
+      {
+        "id": "flexi-dragon",
+        "label": "Rồng dẻo",
+        "promptText": "a flexible print-in-place dragon"
+      },
+      {
+        "id": "toy-boat",
+        "label": "Thuyền đồ chơi",
+        "promptText": "a floating toy boat"
+      },
+      {
+        "id": "monster-figure",
+        "label": "Quái vật",
+        "promptText": "a friendly cartoon monster figure"
+      }
+    ]
+  },
+  {
+    "id": "home-decor",
+    "label": "Trang trí nhà cửa",
+    "promptText": "a home decor object",
+    "products": [
+      {
+        "id": "vase",
+        "label": "Bình hoa",
+        "promptText": "a tall slender vase"
+      },
+      {
+        "id": "candle-holder",
+        "label": "Giá nến",
+        "promptText": "a sculptural candle holder"
+      },
+      {
+        "id": "wall-panel",
+        "label": "Tấm ốp tường",
+        "promptText": "a decorative wall panel tile"
+      },
+      {
+        "id": "picture-frame",
+        "label": "Khung ảnh",
+        "promptText": "a standing picture frame"
+      },
+      {
+        "id": "lamp-shade",
+        "label": "Chụp đèn",
+        "promptText": "a perforated lamp shade"
+      },
+      {
+        "id": "bookend",
+        "label": "Chặn sách",
+        "promptText": "a heavy sculptural bookend"
+      },
+      {
+        "id": "clock-face",
+        "label": "Mặt đồng hồ",
+        "promptText": "a wall clock face"
+      },
+      {
+        "id": "coaster-set",
+        "label": "Bộ lót ly",
+        "promptText": "a set of drink coasters in a holder"
+      },
+      {
+        "id": "incense-holder",
+        "label": "Giá nhang",
+        "promptText": "an incense stick holder with an ash tray"
+      },
+      {
+        "id": "wind-chime",
+        "label": "Chuông gió",
+        "promptText": "a hanging wind chime"
+      },
+      {
+        "id": "ornament-ball",
+        "label": "Quả cầu trang trí",
+        "promptText": "a hanging openwork ornament ball"
+      },
+      {
+        "id": "sculpture-abstract",
+        "label": "Tượng trừu tượng",
+        "promptText": "an abstract tabletop sculpture"
+      },
+      {
+        "id": "mirror-frame",
+        "label": "Khung gương",
+        "promptText": "a round mirror frame"
+      },
+      {
+        "id": "door-stop",
+        "label": "Chặn cửa",
+        "promptText": "a wedge-shaped door stop"
+      },
+      {
+        "id": "key-hook-rack",
+        "label": "Móc treo chìa khóa",
+        "promptText": "a wall-mounted key hook rack"
+      },
+      {
+        "id": "tissue-box-cover",
+        "label": "Hộp khăn giấy",
+        "promptText": "a tissue box cover"
+      },
+      {
+        "id": "photo-stand",
+        "label": "Giá đỡ ảnh",
+        "promptText": "a small tilted photo stand"
+      },
+      {
+        "id": "decorative-bowl",
+        "label": "Bát trang trí",
+        "promptText": "a shallow decorative bowl"
+      },
+      {
+        "id": "sculpted-letter",
+        "label": "Chữ trang trí",
+        "promptText": "a freestanding sculpted letter"
+      },
+      {
+        "id": "lantern",
+        "label": "Đèn lồng",
+        "promptText": "a pierced lantern casting patterned light"
+      },
+      {
+        "id": "curtain-tieback",
+        "label": "Móc rèm",
+        "promptText": "a curtain tieback hook"
+      },
+      {
+        "id": "shelf-bracket",
+        "label": "Giá đỡ kệ",
+        "promptText": "a decorative shelf bracket"
+      },
+      {
+        "id": "trinket-tray",
+        "label": "Khay đựng đồ nhỏ",
+        "promptText": "a small trinket tray"
+      },
+      {
+        "id": "diffuser-stand",
+        "label": "Giá máy khuếch tán",
+        "promptText": "a stand for an essential oil diffuser"
+      },
+      {
+        "id": "wall-hook-animal",
+        "label": "Móc treo hình thú",
+        "promptText": "an animal-shaped wall hook"
+      },
+      {
+        "id": "napkin-ring",
+        "label": "Vòng khăn ăn",
+        "promptText": "a set of napkin rings"
+      },
+      {
+        "id": "table-centerpiece",
+        "label": "Vật trung tâm bàn",
+        "promptText": "a low table centerpiece"
+      },
+      {
+        "id": "planter-hanger",
+        "label": "Giá treo chậu",
+        "promptText": "a hanging planter holder"
+      },
+      {
+        "id": "room-divider-tile",
+        "label": "Tấm vách ngăn",
+        "promptText": "an interlocking room divider tile"
+      },
+      {
+        "id": "night-light-cover",
+        "label": "Vỏ đèn ngủ",
+        "promptText": "a soft-glow night light cover"
+      }
+    ]
+  },
+  {
+    "id": "kitchenware",
+    "label": "Đồ dùng nhà bếp",
+    "promptText": "a kitchen utility object",
+    "products": [
+      {
+        "id": "measuring-spoon-set",
+        "label": "Bộ thìa đong",
+        "promptText": "a nested set of measuring spoons"
+      },
+      {
+        "id": "bag-clip",
+        "label": "Kẹp túi",
+        "promptText": "a spring-loaded bag sealing clip"
+      },
+      {
+        "id": "spice-rack",
+        "label": "Giá gia vị",
+        "promptText": "a tiered spice jar rack"
+      },
+      {
+        "id": "cookie-cutter",
+        "label": "Khuôn cắt bánh",
+        "promptText": "a shaped cookie cutter"
+      },
+      {
+        "id": "utensil-holder",
+        "label": "Ống đựng dụng cụ",
+        "promptText": "a countertop utensil holder"
+      },
+      {
+        "id": "pot-lid-stand",
+        "label": "Giá đỡ nắp nồi",
+        "promptText": "a stand that holds a hot pot lid upright"
+      },
+      {
+        "id": "egg-cup",
+        "label": "Ly đựng trứng",
+        "promptText": "a soft-boiled egg cup"
+      },
+      {
+        "id": "bottle-opener",
+        "label": "Đồ khui chai",
+        "promptText": "a lever bottle opener"
+      },
+      {
+        "id": "trivet",
+        "label": "Đế lót nồi",
+        "promptText": "a heat-spreading trivet"
+      },
+      {
+        "id": "napkin-holder",
+        "label": "Kẹp giấy ăn",
+        "promptText": "a weighted napkin holder"
+      },
+      {
+        "id": "sponge-holder",
+        "label": "Giá để miếng rửa",
+        "promptText": "a draining sponge holder for the sink"
+      },
+      {
+        "id": "herb-stripper",
+        "label": "Dụng cụ tuốt lá",
+        "promptText": "a herb leaf stripping tool"
+      },
+      {
+        "id": "jar-opener",
+        "label": "Dụng cụ mở nắp lọ",
+        "promptText": "a grippy jar lid opener"
+      },
+      {
+        "id": "cutting-board-feet",
+        "label": "Chân thớt",
+        "promptText": "a set of non-slip cutting board feet"
+      },
+      {
+        "id": "coffee-pod-holder",
+        "label": "Giá viên cà phê",
+        "promptText": "a coffee pod storage carousel"
+      },
+      {
+        "id": "tea-bag-rest",
+        "label": "Đế túi trà",
+        "promptText": "a small tea bag rest"
+      },
+      {
+        "id": "straw-holder",
+        "label": "Ống đựng ống hút",
+        "promptText": "a straw dispenser tube"
+      },
+      {
+        "id": "fridge-organizer",
+        "label": "Khay tủ lạnh",
+        "promptText": "a stackable fridge organizer bin"
+      },
+      {
+        "id": "cup-lid",
+        "label": "Nắp cốc",
+        "promptText": "a snap-on cup lid"
+      },
+      {
+        "id": "salt-cellar",
+        "label": "Hũ muối",
+        "promptText": "a small salt cellar with a swiveling lid"
+      },
+      {
+        "id": "dish-drying-rack",
+        "label": "Giá úp bát",
+        "promptText": "a compact dish drying rack"
+      },
+      {
+        "id": "funnel",
+        "label": "Phễu",
+        "promptText": "a wide-mouth kitchen funnel"
+      },
+      {
+        "id": "measuring-cup",
+        "label": "Cốc đong",
+        "promptText": "a graduated measuring cup"
+      },
+      {
+        "id": "garlic-press-holder",
+        "label": "Giá ép tỏi",
+        "promptText": "a hanging garlic press holder"
+      },
+      {
+        "id": "cabinet-handle",
+        "label": "Tay nắm tủ",
+        "promptText": "a cabinet door pull handle"
+      },
+      {
+        "id": "chopstick-rest",
+        "label": "Gác đũa",
+        "promptText": "a sculpted chopstick rest"
+      },
+      {
+        "id": "bottle-drying-stand",
+        "label": "Giá phơi bình",
+        "promptText": "an upside-down bottle drying stand"
+      },
+      {
+        "id": "lunchbox-divider",
+        "label": "Vách hộp cơm",
+        "promptText": "a removable lunchbox divider"
+      },
+      {
+        "id": "can-lid-cover",
+        "label": "Nắp đậy lon",
+        "promptText": "a reusable can lid cover"
+      },
+      {
+        "id": "recipe-card-stand",
+        "label": "Giá thẻ công thức",
+        "promptText": "an angled recipe card stand"
+      }
+    ]
+  },
+  {
+    "id": "desk-organization",
+    "label": "Tổ chức bàn làm việc",
+    "promptText": "a desk organizer",
+    "products": [
+      {
+        "id": "pen-holder",
+        "label": "Ống cắm bút",
+        "promptText": "a multi-compartment pen holder"
+      },
+      {
+        "id": "cable-clip",
+        "label": "Kẹp dây cáp",
+        "promptText": "an adhesive cable routing clip"
+      },
+      {
+        "id": "monitor-stand",
+        "label": "Đế màn hình",
+        "promptText": "a raised monitor stand with storage underneath"
+      },
+      {
+        "id": "business-card-holder",
+        "label": "Hộp danh thiếp",
+        "promptText": "an angled business card holder"
+      },
+      {
+        "id": "sticky-note-tray",
+        "label": "Khay giấy nhớ",
+        "promptText": "a sticky note dispenser tray"
+      },
+      {
+        "id": "drawer-divider",
+        "label": "Vách ngăn ngăn kéo",
+        "promptText": "an adjustable drawer divider"
+      },
+      {
+        "id": "paper-clip-magnet",
+        "label": "Hộp kẹp giấy",
+        "promptText": "a magnetic paper clip dish"
+      },
+      {
+        "id": "headphone-hook",
+        "label": "Móc tai nghe",
+        "promptText": "an under-desk headphone hook"
+      },
+      {
+        "id": "document-tray",
+        "label": "Khay tài liệu",
+        "promptText": "a stackable document tray"
+      },
+      {
+        "id": "pen-tray-slim",
+        "label": "Khay bút mỏng",
+        "promptText": "a slim pen tray"
+      },
+      {
+        "id": "desk-mat-clip",
+        "label": "Kẹp thảm bàn",
+        "promptText": "a desk mat edge clip"
+      },
+      {
+        "id": "usb-stick-rack",
+        "label": "Giá cắm USB",
+        "promptText": "a USB stick storage rack"
+      },
+      {
+        "id": "tape-dispenser",
+        "label": "Hộp cắt băng dính",
+        "promptText": "a weighted tape dispenser"
+      },
+      {
+        "id": "calendar-stand",
+        "label": "Giá lịch bàn",
+        "promptText": "a flip calendar stand"
+      },
+      {
+        "id": "letter-opener",
+        "label": "Dao rọc thư",
+        "promptText": "a slim letter opener"
+      },
+      {
+        "id": "whiteboard-marker-tray",
+        "label": "Khay bút bảng",
+        "promptText": "a magnetic whiteboard marker tray"
+      },
+      {
+        "id": "desk-shelf-riser",
+        "label": "Kệ nâng bàn",
+        "promptText": "a small desk shelf riser"
+      },
+      {
+        "id": "phone-dock",
+        "label": "Đế điện thoại",
+        "promptText": "an angled phone docking stand"
+      },
+      {
+        "id": "notebook-stand",
+        "label": "Giá đỡ sổ",
+        "promptText": "a tilted notebook writing stand"
+      },
+      {
+        "id": "pencil-sharpener-case",
+        "label": "Hộp gọt bút chì",
+        "promptText": "a pencil sharpener with a shavings catcher"
+      },
+      {
+        "id": "eraser-holder",
+        "label": "Hộp tẩy",
+        "promptText": "a small eraser holder"
+      },
+      {
+        "id": "label-maker-stand",
+        "label": "Giá máy in nhãn",
+        "promptText": "a label maker charging stand"
+      },
+      {
+        "id": "cable-box",
+        "label": "Hộp giấu dây",
+        "promptText": "a cable management box with slots"
+      },
+      {
+        "id": "desk-bin",
+        "label": "Thùng rác mini",
+        "promptText": "a tiny desktop waste bin"
+      },
+      {
+        "id": "pin-board-hook",
+        "label": "Móc bảng ghim",
+        "promptText": "a pegboard mounting hook"
+      },
+      {
+        "id": "stamp-holder",
+        "label": "Giá con dấu",
+        "promptText": "a rotating stamp holder"
+      },
+      {
+        "id": "ruler-stand",
+        "label": "Giá thước",
+        "promptText": "an upright ruler stand"
+      },
+      {
+        "id": "scissors-block",
+        "label": "Đế kéo",
+        "promptText": "a weighted scissors block"
+      },
+      {
+        "id": "desk-nameplate",
+        "label": "Biển tên bàn",
+        "promptText": "a desk nameplate with a slot for a card"
+      },
+      {
+        "id": "clipboard-clip",
+        "label": "Kẹp bảng viết",
+        "promptText": "a heavy-duty clipboard clip"
+      }
+    ]
+  },
+  {
+    "id": "tech-accessories",
+    "label": "Phụ kiện công nghệ",
+    "promptText": "a tech accessory",
+    "products": [
+      {
+        "id": "laptop-riser",
+        "label": "Đế nâng laptop",
+        "promptText": "a ventilated laptop riser"
+      },
+      {
+        "id": "tablet-stand",
+        "label": "Giá đỡ máy tính bảng",
+        "promptText": "an adjustable tablet stand"
+      },
+      {
+        "id": "controller-holder",
+        "label": "Giá tay cầm game",
+        "promptText": "a wall-mounted game controller holder"
+      },
+      {
+        "id": "router-wall-mount",
+        "label": "Giá treo router",
+        "promptText": "a wall mount bracket for a router"
+      },
+      {
+        "id": "camera-lens-cap-holder",
+        "label": "Kẹp nắp ống kính",
+        "promptText": "a clip-on camera lens cap holder"
+      },
+      {
+        "id": "gopro-mount",
+        "label": "Ngàm gắn action cam",
+        "promptText": "an action camera mount adapter"
+      },
+      {
+        "id": "ssd-enclosure-stand",
+        "label": "Giá ổ cứng",
+        "promptText": "a vertical stand for an external SSD"
+      },
+      {
+        "id": "charger-wall-shelf",
+        "label": "Kệ sạc treo tường",
+        "promptText": "a wall outlet charging shelf"
+      },
+      {
+        "id": "earbud-case-clip",
+        "label": "Kẹp hộp tai nghe",
+        "promptText": "a belt clip for an earbud case"
+      },
+      {
+        "id": "mic-shock-mount",
+        "label": "Giá chống rung mic",
+        "promptText": "a microphone shock mount cradle"
+      },
+      {
+        "id": "webcam-privacy-cover",
+        "label": "Nắp che webcam",
+        "promptText": "a sliding webcam privacy cover"
+      },
+      {
+        "id": "raspberry-pi-case",
+        "label": "Vỏ Raspberry Pi",
+        "promptText": "a vented single-board computer case"
+      },
+      {
+        "id": "keyboard-wrist-rest",
+        "label": "Kê tay bàn phím",
+        "promptText": "a contoured keyboard wrist rest"
+      },
+      {
+        "id": "keycap-puller-stand",
+        "label": "Giá dụng cụ keycap",
+        "promptText": "a stand for keycap pullers and switches"
+      },
+      {
+        "id": "cable-spool",
+        "label": "Cuộn dây",
+        "promptText": "a winding spool for a charging cable"
+      },
+      {
+        "id": "power-strip-mount",
+        "label": "Giá ổ cắm",
+        "promptText": "an under-desk power strip mount"
+      },
+      {
+        "id": "stylus-holder",
+        "label": "Giá bút cảm ứng",
+        "promptText": "a magnetic stylus holder"
+      },
+      {
+        "id": "projector-mount",
+        "label": "Giá máy chiếu",
+        "promptText": "a ceiling projector mount arm"
+      },
+      {
+        "id": "sd-card-case",
+        "label": "Hộp thẻ nhớ",
+        "promptText": "a snap-shut memory card case"
+      },
+      {
+        "id": "vr-headset-stand",
+        "label": "Giá kính VR",
+        "promptText": "a headset stand for VR goggles"
+      },
+      {
+        "id": "speaker-stand",
+        "label": "Chân loa",
+        "promptText": "an angled desktop speaker stand"
+      },
+      {
+        "id": "drone-propeller-guard",
+        "label": "Khung bảo vệ cánh drone",
+        "promptText": "a drone propeller guard ring"
+      },
+      {
+        "id": "phone-tripod-adapter",
+        "label": "Ngàm tripod cho điện thoại",
+        "promptText": "a phone-to-tripod adapter clamp"
+      },
+      {
+        "id": "watch-charging-dock",
+        "label": "Đế sạc đồng hồ",
+        "promptText": "a smartwatch charging dock"
+      },
+      {
+        "id": "laptop-port-plug",
+        "label": "Nút chặn cổng laptop",
+        "promptText": "a set of dust plugs for laptop ports"
+      },
+      {
+        "id": "thermal-camera-grip",
+        "label": "Tay cầm camera nhiệt",
+        "promptText": "an ergonomic grip for a handheld sensor"
+      },
+      {
+        "id": "cable-label-clip",
+        "label": "Nhãn dây cáp",
+        "promptText": "a snap-on cable labelling clip"
+      },
+      {
+        "id": "monitor-light-bar-mount",
+        "label": "Giá đèn màn hình",
+        "promptText": "a mount for a monitor light bar"
+      },
+      {
+        "id": "remote-holder",
+        "label": "Giá điều khiển",
+        "promptText": "a sofa-arm remote control holder"
+      },
+      {
+        "id": "e-reader-case-stand",
+        "label": "Giá đọc sách điện tử",
+        "promptText": "a folding e-reader stand"
+      }
+    ]
+  },
+  {
+    "id": "school-supplies",
+    "label": "Đồ dùng học tập",
+    "promptText": "a study accessory",
+    "products": [
+      {
+        "id": "bookmark",
+        "label": "Bookmark",
+        "promptText": "a decorative page bookmark"
+      },
+      {
+        "id": "book-stand",
+        "label": "Giá đỡ sách",
+        "promptText": "a folding book reading stand"
+      },
+      {
+        "id": "page-holder",
+        "label": "Kẹp giữ trang",
+        "promptText": "a thumb page holder ring"
+      },
+      {
+        "id": "geometry-set-case",
+        "label": "Hộp dụng cụ hình học",
+        "promptText": "a compact geometry tool case"
+      },
+      {
+        "id": "protractor",
+        "label": "Thước đo góc",
+        "promptText": "a half-circle protractor"
+      },
+      {
+        "id": "stencil-shapes",
+        "label": "Khuôn vẽ hình",
+        "promptText": "a shape drawing stencil sheet"
+      },
+      {
+        "id": "pencil-case",
+        "label": "Hộp bút",
+        "promptText": "a hinged pencil case"
+      },
+      {
+        "id": "flashcard-box",
+        "label": "Hộp thẻ ghi nhớ",
+        "promptText": "a flashcard storage box with dividers"
+      },
+      {
+        "id": "highlighter-stand",
+        "label": "Giá bút dạ quang",
+        "promptText": "an upright highlighter stand"
+      },
+      {
+        "id": "compass-holder",
+        "label": "Hộp compa",
+        "promptText": "a protective compass holder"
+      },
+      {
+        "id": "calculator-stand",
+        "label": "Giá máy tính bỏ túi",
+        "promptText": "an angled calculator stand"
+      },
+      {
+        "id": "binder-clip-jumbo",
+        "label": "Kẹp bìa lớn",
+        "promptText": "an oversized binder clip"
+      },
+      {
+        "id": "ring-binder-spine",
+        "label": "Gáy kẹp hồ sơ",
+        "promptText": "a snap-on ring binder spine"
+      },
+      {
+        "id": "name-tag",
+        "label": "Thẻ tên",
+        "promptText": "a clip-on name tag"
+      },
+      {
+        "id": "timer-stand",
+        "label": "Giá đồng hồ hẹn giờ",
+        "promptText": "a study timer stand"
+      },
+      {
+        "id": "water-bottle-clip",
+        "label": "Móc bình nước",
+        "promptText": "a backpack water bottle clip"
+      },
+      {
+        "id": "backpack-hook",
+        "label": "Móc treo cặp",
+        "promptText": "a desk-edge backpack hook"
+      },
+      {
+        "id": "notebook-divider",
+        "label": "Vách ngăn vở",
+        "promptText": "a tabbed notebook divider"
+      },
+      {
+        "id": "chalk-holder",
+        "label": "Kẹp phấn",
+        "promptText": "a chalk holder grip"
+      },
+      {
+        "id": "whiteboard-eraser",
+        "label": "Bông lau bảng",
+        "promptText": "a magnetic whiteboard eraser body"
+      },
+      {
+        "id": "exam-pen-tray",
+        "label": "Khay bút thi",
+        "promptText": "a shallow exam desk pen tray"
+      },
+      {
+        "id": "globe-stand",
+        "label": "Đế quả địa cầu",
+        "promptText": "a tilted globe stand"
+      },
+      {
+        "id": "periodic-table-tile",
+        "label": "Bảng tuần hoàn",
+        "promptText": "a periodic table display tile"
+      },
+      {
+        "id": "microscope-slide-box",
+        "label": "Hộp lam kính",
+        "promptText": "a microscope slide storage box"
+      },
+      {
+        "id": "lab-tube-rack",
+        "label": "Giá ống nghiệm",
+        "promptText": "a test tube rack"
+      },
+      {
+        "id": "abacus",
+        "label": "Bàn tính",
+        "promptText": "a sliding bead abacus"
+      },
+      {
+        "id": "letter-tracing-board",
+        "label": "Bảng tập viết",
+        "promptText": "a grooved letter tracing board"
+      },
+      {
+        "id": "math-block-set",
+        "label": "Bộ khối toán học",
+        "promptText": "a set of counting blocks"
+      },
+      {
+        "id": "poster-tube-cap",
+        "label": "Nắp ống đựng poster",
+        "promptText": "a screw cap for a poster tube"
+      },
+      {
+        "id": "desk-partition-clip",
+        "label": "Kẹp vách ngăn bàn",
+        "promptText": "a clip for a desk privacy partition"
+      }
+    ]
+  },
+  {
+    "id": "tools-and-hardware",
+    "label": "Dụng cụ & đồ nghề",
+    "promptText": "a workshop tool",
+    "products": [
+      {
+        "id": "screwdriver-handle",
+        "label": "Cán tua vít",
+        "promptText": "an ergonomic screwdriver handle"
+      },
+      {
+        "id": "wrench-organizer",
+        "label": "Giá cờ lê",
+        "promptText": "a wall rack that sorts wrenches by size"
+      },
+      {
+        "id": "drill-bit-holder",
+        "label": "Hộp mũi khoan",
+        "promptText": "a stepped drill bit holder"
+      },
+      {
+        "id": "screw-sorting-tray",
+        "label": "Khay phân loại ốc",
+        "promptText": "a compartmented screw sorting tray"
+      },
+      {
+        "id": "sanding-block",
+        "label": "Khối chà nhám",
+        "promptText": "a contoured sanding block"
+      },
+      {
+        "id": "clamp",
+        "label": "Kẹp gỗ",
+        "promptText": "a small screw-tightened clamp"
+      },
+      {
+        "id": "measuring-gauge",
+        "label": "Dưỡng đo",
+        "promptText": "a hole and thread measuring gauge"
+      },
+      {
+        "id": "hook-wall-mount",
+        "label": "Móc treo tường",
+        "promptText": "a heavy-duty wall tool hook"
+      },
+      {
+        "id": "bit-driver-adapter",
+        "label": "Đầu chuyển mũi vặn",
+        "promptText": "a hex bit driver adapter"
+      },
+      {
+        "id": "cable-stripper-guide",
+        "label": "Dưỡng tuốt dây",
+        "promptText": "a wire stripping guide"
+      },
+      {
+        "id": "nail-starter",
+        "label": "Giữ đinh",
+        "promptText": "a magnetic nail starter tool"
+      },
+      {
+        "id": "level-block",
+        "label": "Khối cân bằng",
+        "promptText": "a pocket level block"
+      },
+      {
+        "id": "pipe-marking-jig",
+        "label": "Dưỡng vạch ống",
+        "promptText": "a pipe marking jig"
+      },
+      {
+        "id": "hose-clip",
+        "label": "Kẹp ống mềm",
+        "promptText": "a snap-shut hose clip"
+      },
+      {
+        "id": "tool-belt-loop",
+        "label": "Móc thắt lưng dụng cụ",
+        "promptText": "a belt loop holster for a tool"
+      },
+      {
+        "id": "paint-can-pourer",
+        "label": "Miệng rót sơn",
+        "promptText": "a snap-on paint can pouring spout"
+      },
+      {
+        "id": "brush-rest",
+        "label": "Gác cọ sơn",
+        "promptText": "a paint brush rest for a can rim"
+      },
+      {
+        "id": "workbench-stop",
+        "label": "Chặn bàn thợ",
+        "promptText": "a workbench edge stop"
+      },
+      {
+        "id": "saw-guide",
+        "label": "Dưỡng cưa",
+        "promptText": "a mitre saw cutting guide"
+      },
+      {
+        "id": "tape-measure-clip",
+        "label": "Kẹp thước dây",
+        "promptText": "a belt clip for a tape measure"
+      },
+      {
+        "id": "bench-vise-jaw",
+        "label": "Má kẹp ê tô",
+        "promptText": "a soft jaw cover for a bench vise"
+      },
+      {
+        "id": "funnel-oil",
+        "label": "Phễu dầu",
+        "promptText": "a long-necked oil funnel"
+      },
+      {
+        "id": "magnet-sweeper",
+        "label": "Thanh hút ốc",
+        "promptText": "a handheld magnetic parts sweeper"
+      },
+      {
+        "id": "glue-gun-stand",
+        "label": "Giá súng keo",
+        "promptText": "a drip tray stand for a glue gun"
+      },
+      {
+        "id": "soldering-helper",
+        "label": "Tay giữ hàn",
+        "promptText": "an adjustable soldering helping-hands arm"
+      },
+      {
+        "id": "wire-spool-holder",
+        "label": "Giá cuộn dây",
+        "promptText": "a free-spinning wire spool holder"
+      },
+      {
+        "id": "caliper-stand",
+        "label": "Giá thước cặp",
+        "promptText": "an upright caliper stand"
+      },
+      {
+        "id": "plier-rack",
+        "label": "Giá kìm",
+        "promptText": "a slotted plier rack"
+      },
+      {
+        "id": "anchor-plug-set",
+        "label": "Bộ nở tường",
+        "promptText": "a set of wall anchor plugs"
+      },
+      {
+        "id": "toolbox-divider",
+        "label": "Vách hộp dụng cụ",
+        "promptText": "a modular toolbox divider"
+      }
+    ]
+  },
+  {
+    "id": "educational-toys",
+    "label": "Đồ chơi giáo dục",
+    "promptText": "an educational toy",
+    "products": [
+      {
+        "id": "gear-train-set",
+        "label": "Bộ bánh răng",
+        "promptText": "a meshing gear train demonstration set"
+      },
+      {
+        "id": "solar-system-model",
+        "label": "Mô hình hệ mặt trời",
+        "promptText": "an orbiting solar system model"
+      },
+      {
+        "id": "dna-helix",
+        "label": "Chuỗi xoắn DNA",
+        "promptText": "a rotating DNA double helix model"
+      },
+      {
+        "id": "fraction-blocks",
+        "label": "Khối phân số",
+        "promptText": "a set of fraction comparison blocks"
+      },
+      {
+        "id": "shape-sorter",
+        "label": "Hộp thả hình",
+        "promptText": "a shape sorting box with matching pieces"
+      },
+      {
+        "id": "braille-tile-set",
+        "label": "Bộ thẻ chữ nổi",
+        "promptText": "a set of braille alphabet tiles"
+      },
+      {
+        "id": "anatomy-heart",
+        "label": "Mô hình tim",
+        "promptText": "a sectioned anatomical heart model"
+      },
+      {
+        "id": "volcano-model",
+        "label": "Mô hình núi lửa",
+        "promptText": "a cutaway volcano model"
+      },
+      {
+        "id": "pulley-kit",
+        "label": "Bộ ròng rọc",
+        "promptText": "a working pulley demonstration kit"
+      },
+      {
+        "id": "lever-balance",
+        "label": "Cân đòn bẩy",
+        "promptText": "a lever and fulcrum balance toy"
+      },
+      {
+        "id": "clock-learning",
+        "label": "Đồng hồ tập xem giờ",
+        "promptText": "a teaching clock with movable hands"
+      },
+      {
+        "id": "map-puzzle",
+        "label": "Ghép bản đồ",
+        "promptText": "an interlocking map jigsaw"
+      },
+      {
+        "id": "molecule-kit",
+        "label": "Bộ mô hình phân tử",
+        "promptText": "a ball-and-stick molecule building kit"
+      },
+      {
+        "id": "counting-beads",
+        "label": "Que đếm hạt",
+        "promptText": "a counting bead rod set"
+      },
+      {
+        "id": "letter-blocks",
+        "label": "Khối chữ cái",
+        "promptText": "a set of alphabet letter blocks"
+      },
+      {
+        "id": "sundial",
+        "label": "Đồng hồ mặt trời",
+        "promptText": "a working desktop sundial"
+      },
+      {
+        "id": "wind-turbine-model",
+        "label": "Mô hình tuabin gió",
+        "promptText": "a spinning wind turbine model"
+      },
+      {
+        "id": "water-cycle-tray",
+        "label": "Khay vòng tuần hoàn nước",
+        "promptText": "a water cycle demonstration tray"
+      },
+      {
+        "id": "magnet-field-tray",
+        "label": "Khay từ trường",
+        "promptText": "a magnetic field visualisation tray"
+      },
+      {
+        "id": "geometry-solids",
+        "label": "Bộ khối hình học",
+        "promptText": "a set of geometric solid shapes"
+      },
+      {
+        "id": "tangram-set",
+        "label": "Bộ tangram",
+        "promptText": "a seven-piece tangram puzzle set"
+      },
+      {
+        "id": "braille-dice",
+        "label": "Xúc xắc chữ nổi",
+        "promptText": "a tactile dice with raised dots"
+      },
+      {
+        "id": "bridge-truss-kit",
+        "label": "Bộ giàn cầu",
+        "promptText": "a truss bridge building kit"
+      },
+      {
+        "id": "catapult-physics",
+        "label": "Máy bắn đá vật lý",
+        "promptText": "a tension-powered catapult teaching model"
+      },
+      {
+        "id": "periscope",
+        "label": "Kính tiềm vọng",
+        "promptText": "a two-mirror periscope tube"
+      },
+      {
+        "id": "kaleidoscope",
+        "label": "Kính vạn hoa",
+        "promptText": "a handheld kaleidoscope"
+      },
+      {
+        "id": "balance-scale",
+        "label": "Cân thăng bằng",
+        "promptText": "a two-pan balance scale"
+      },
+      {
+        "id": "topography-stack",
+        "label": "Mô hình địa hình",
+        "promptText": "a stacked topographic contour model"
+      },
+      {
+        "id": "circuit-board-holder",
+        "label": "Giá mạch điện",
+        "promptText": "a breadboard holder for circuit lessons"
+      },
+      {
+        "id": "skeleton-hand",
+        "label": "Mô hình bàn tay",
+        "promptText": "an articulated skeletal hand model"
+      }
+    ]
+  },
+  {
+    "id": "fashion-accessories",
+    "label": "Phụ kiện thời trang",
+    "promptText": "a wearable accessory",
+    "products": [
+      {
+        "id": "pendant",
+        "label": "Mặt dây chuyền",
+        "promptText": "a sculpted pendant on a cord"
+      },
+      {
+        "id": "ring",
+        "label": "Nhẫn",
+        "promptText": "a wide statement ring"
+      },
+      {
+        "id": "bracelet-cuff",
+        "label": "Vòng tay bản rộng",
+        "promptText": "an open cuff bracelet"
+      },
+      {
+        "id": "earrings",
+        "label": "Bông tai",
+        "promptText": "a pair of geometric drop earrings"
+      },
+      {
+        "id": "hair-comb",
+        "label": "Lược cài tóc",
+        "promptText": "a decorative hair comb"
+      },
+      {
+        "id": "hair-clip",
+        "label": "Kẹp tóc",
+        "promptText": "a sprung hair clip"
+      },
+      {
+        "id": "belt-buckle",
+        "label": "Khóa thắt lưng",
+        "promptText": "an engraved belt buckle"
+      },
+      {
+        "id": "brooch",
+        "label": "Trâm cài áo",
+        "promptText": "a pinned brooch"
+      },
+      {
+        "id": "glasses-frame",
+        "label": "Gọng kính",
+        "promptText": "a pair of eyeglass frames"
+      },
+      {
+        "id": "watch-band-link",
+        "label": "Mắt dây đồng hồ",
+        "promptText": "a replacement watch band link"
+      },
+      {
+        "id": "cufflinks",
+        "label": "Khuy măng sét",
+        "promptText": "a pair of cufflinks"
+      },
+      {
+        "id": "tie-clip",
+        "label": "Kẹp cà vạt",
+        "promptText": "a slim tie clip"
+      },
+      {
+        "id": "shoe-charm",
+        "label": "Chuông gắn giày",
+        "promptText": "a small shoe charm"
+      },
+      {
+        "id": "bag-handle",
+        "label": "Quai túi",
+        "promptText": "a moulded bag handle"
+      },
+      {
+        "id": "zipper-pull",
+        "label": "Đầu kéo khóa",
+        "promptText": "a decorative zipper pull"
+      },
+      {
+        "id": "mask-strap-adjuster",
+        "label": "Móc chỉnh khẩu trang",
+        "promptText": "an ear-saver strap adjuster"
+      },
+      {
+        "id": "hat-brim-shaper",
+        "label": "Khuôn tạo vành mũ",
+        "promptText": "a hat brim shaper"
+      },
+      {
+        "id": "scarf-ring",
+        "label": "Vòng khăn quàng",
+        "promptText": "a scarf slide ring"
+      },
+      {
+        "id": "headband",
+        "label": "Băng đô",
+        "promptText": "a sculpted headband"
+      },
+      {
+        "id": "nail-art-stencil",
+        "label": "Khuôn vẽ móng",
+        "promptText": "a nail art stencil plate"
+      },
+      {
+        "id": "sunglass-holder",
+        "label": "Kẹp kính râm",
+        "promptText": "a visor sunglass clip"
+      },
+      {
+        "id": "lapel-pin",
+        "label": "Huy hiệu ve áo",
+        "promptText": "a small lapel pin"
+      },
+      {
+        "id": "bangle-stack",
+        "label": "Bộ vòng xếp",
+        "promptText": "a set of stacking bangles"
+      },
+      {
+        "id": "hair-stick",
+        "label": "Trâm cài búi",
+        "promptText": "a slender hair stick"
+      },
+      {
+        "id": "anklet-charm",
+        "label": "Lắc chân",
+        "promptText": "a charm for an anklet"
+      },
+      {
+        "id": "button-set",
+        "label": "Bộ cúc áo",
+        "promptText": "a set of decorative coat buttons"
+      },
+      {
+        "id": "collar-stay",
+        "label": "Thanh giữ cổ áo",
+        "promptText": "a pair of shirt collar stays"
+      },
+      {
+        "id": "boot-shaper",
+        "label": "Cốt giữ dáng bốt",
+        "promptText": "a boot shaft shaper insert"
+      },
+      {
+        "id": "wallet-money-clip",
+        "label": "Kẹp tiền",
+        "promptText": "a sprung money clip"
+      },
+      {
+        "id": "keyring-fob",
+        "label": "Móc khóa trang trí",
+        "promptText": "a sculpted keyring fob"
+      }
+    ]
+  },
+  {
+    "id": "pet-supplies",
+    "label": "Đồ cho thú cưng",
+    "promptText": "a pet accessory",
+    "products": [
+      {
+        "id": "pet-bowl-stand",
+        "label": "Giá bát ăn",
+        "promptText": "a raised pet bowl stand"
+      },
+      {
+        "id": "slow-feeder",
+        "label": "Bát ăn chậm",
+        "promptText": "a maze-patterned slow feeder bowl"
+      },
+      {
+        "id": "id-tag",
+        "label": "Thẻ tên thú cưng",
+        "promptText": "an engraved pet ID tag"
+      },
+      {
+        "id": "leash-hook",
+        "label": "Móc treo dây dắt",
+        "promptText": "a wall hook for leashes"
+      },
+      {
+        "id": "treat-dispenser-ball",
+        "label": "Bóng thả thức ăn",
+        "promptText": "a rolling treat dispensing ball"
+      },
+      {
+        "id": "cat-tunnel-connector",
+        "label": "Khớp nối đường hầm mèo",
+        "promptText": "a connector for cat tunnel tubes"
+      },
+      {
+        "id": "aquarium-decor-arch",
+        "label": "Vòm trang trí bể cá",
+        "promptText": "an aquarium decoration arch"
+      },
+      {
+        "id": "bird-feeder",
+        "label": "Máng chim ăn",
+        "promptText": "a hanging bird feeder"
+      },
+      {
+        "id": "hamster-wheel-stand",
+        "label": "Giá bánh xe hamster",
+        "promptText": "a stand for a hamster exercise wheel"
+      },
+      {
+        "id": "litter-scoop",
+        "label": "Xẻng xúc cát",
+        "promptText": "a slotted litter scoop"
+      },
+      {
+        "id": "grooming-comb",
+        "label": "Lược chải lông",
+        "promptText": "a wide-tooth grooming comb"
+      },
+      {
+        "id": "collar-buckle",
+        "label": "Khóa vòng cổ",
+        "promptText": "a side-release collar buckle"
+      },
+      {
+        "id": "paw-cleaner-cup",
+        "label": "Cốc rửa chân",
+        "promptText": "a ribbed paw cleaning cup"
+      },
+      {
+        "id": "reptile-basking-ledge",
+        "label": "Bệ phơi nắng bò sát",
+        "promptText": "a suction-mounted reptile basking ledge"
+      },
+      {
+        "id": "fish-food-dispenser",
+        "label": "Hộp cho cá ăn",
+        "promptText": "a measured fish food dispenser"
+      },
+      {
+        "id": "pet-gate-latch",
+        "label": "Chốt cổng chắn",
+        "promptText": "a latch for a pet gate"
+      },
+      {
+        "id": "cat-scratcher-mount",
+        "label": "Giá gắn bàn cào",
+        "promptText": "a corner mount for a cat scratcher"
+      },
+      {
+        "id": "toy-rope-handle",
+        "label": "Tay cầm dây kéo",
+        "promptText": "a grip handle for a rope tug toy"
+      },
+      {
+        "id": "water-bottle-holder-cage",
+        "label": "Giá bình nước lồng",
+        "promptText": "a cage-mounted water bottle holder"
+      },
+      {
+        "id": "pet-stair-step",
+        "label": "Bậc thang thú cưng",
+        "promptText": "a modular pet stair step"
+      },
+      {
+        "id": "poop-bag-holder",
+        "label": "Hộp túi dọn vệ sinh",
+        "promptText": "a leash-clip waste bag holder"
+      },
+      {
+        "id": "feeding-mat-clip",
+        "label": "Kẹp thảm ăn",
+        "promptText": "a clip that keeps a feeding mat flat"
+      },
+      {
+        "id": "nail-clipper-guard",
+        "label": "Chắn bấm móng",
+        "promptText": "a safety guard for pet nail clippers"
+      },
+      {
+        "id": "chicken-coop-latch",
+        "label": "Chốt chuồng gà",
+        "promptText": "a predator-proof coop latch"
+      },
+      {
+        "id": "rabbit-hay-rack",
+        "label": "Giá cỏ khô",
+        "promptText": "a hanging hay rack"
+      },
+      {
+        "id": "tank-lid-clip",
+        "label": "Kẹp nắp bể",
+        "promptText": "a clip that secures an aquarium lid"
+      },
+      {
+        "id": "pet-brush-handle",
+        "label": "Cán bàn chải",
+        "promptText": "an ergonomic pet brush handle"
+      },
+      {
+        "id": "perch-stand",
+        "label": "Cây đậu cho chim",
+        "promptText": "a freestanding bird perch"
+      },
+      {
+        "id": "medicine-pill-hider",
+        "label": "Dụng cụ giấu thuốc",
+        "promptText": "a pill-hiding treat mould"
+      },
+      {
+        "id": "carrier-door-latch",
+        "label": "Chốt lồng vận chuyển",
+        "promptText": "a replacement latch for a pet carrier door"
+      }
+    ]
+  },
+  {
+    "id": "garden-and-plants",
+    "label": "Cây cảnh & làm vườn",
+    "promptText": "a gardening object",
+    "products": [
+      {
+        "id": "planter-pot",
+        "label": "Chậu cây",
+        "promptText": "a small planter pot with a drainage tray"
+      },
+      {
+        "id": "self-watering-pot",
+        "label": "Chậu tự tưới",
+        "promptText": "a self-watering planter with a reservoir"
+      },
+      {
+        "id": "plant-label",
+        "label": "Nhãn cắm cây",
+        "promptText": "a stake plant label"
+      },
+      {
+        "id": "trellis-panel",
+        "label": "Giàn leo",
+        "promptText": "a climbing plant trellis panel"
+      },
+      {
+        "id": "seed-starter-tray",
+        "label": "Khay ươm hạt",
+        "promptText": "a seed starter tray with cells"
+      },
+      {
+        "id": "watering-can-spout",
+        "label": "Vòi bình tưới",
+        "promptText": "a screw-on watering can rose spout"
+      },
+      {
+        "id": "hose-nozzle",
+        "label": "Đầu vòi nước",
+        "promptText": "an adjustable hose nozzle"
+      },
+      {
+        "id": "plant-stand",
+        "label": "Kệ đỡ chậu",
+        "promptText": "a three-legged plant stand"
+      },
+      {
+        "id": "grafting-clip",
+        "label": "Kẹp ghép cành",
+        "promptText": "a plant grafting clip"
+      },
+      {
+        "id": "moss-pole-bracket",
+        "label": "Giá cọc rêu",
+        "promptText": "a bracket for a moss pole"
+      },
+      {
+        "id": "bonsai-tray",
+        "label": "Khay bonsai",
+        "promptText": "a shallow bonsai tray"
+      },
+      {
+        "id": "herb-garden-rail",
+        "label": "Thanh treo chậu thảo mộc",
+        "promptText": "a rail-mounted herb pot holder"
+      },
+      {
+        "id": "soil-scoop",
+        "label": "Xẻng xúc đất",
+        "promptText": "a hand soil scoop"
+      },
+      {
+        "id": "garden-marker-arrow",
+        "label": "Mũi tên chỉ luống",
+        "promptText": "a directional garden bed marker"
+      },
+      {
+        "id": "rain-gauge",
+        "label": "Ống đo mưa",
+        "promptText": "a graduated rain gauge tube"
+      },
+      {
+        "id": "bird-bath-insert",
+        "label": "Lòng bồn tắm chim",
+        "promptText": "an insert bowl for a bird bath"
+      },
+      {
+        "id": "seed-dispenser",
+        "label": "Dụng cụ gieo hạt",
+        "promptText": "a handheld seed dispenser"
+      },
+      {
+        "id": "drip-irrigation-splitter",
+        "label": "Chia ống tưới nhỏ giọt",
+        "promptText": "a drip irrigation line splitter"
+      },
+      {
+        "id": "pot-feet",
+        "label": "Chân kê chậu",
+        "promptText": "a set of pot elevating feet"
+      },
+      {
+        "id": "cutting-propagation-vase",
+        "label": "Bình giâm cành",
+        "promptText": "a propagation vase for cuttings"
+      },
+      {
+        "id": "greenhouse-clip",
+        "label": "Kẹp nhà kính",
+        "promptText": "a film clip for a greenhouse frame"
+      },
+      {
+        "id": "compost-aerator-handle",
+        "label": "Tay cầm đảo phân",
+        "promptText": "a handle for a compost aerator"
+      },
+      {
+        "id": "slug-collar",
+        "label": "Vòng chắn ốc sên",
+        "promptText": "a protective collar ring for a seedling"
+      },
+      {
+        "id": "hanging-basket-hook",
+        "label": "Móc giỏ treo",
+        "promptText": "a ceiling hook for a hanging basket"
+      },
+      {
+        "id": "garden-hose-guide",
+        "label": "Cọc dẫn ống nước",
+        "promptText": "a ground stake hose guide"
+      },
+      {
+        "id": "succulent-tray",
+        "label": "Khay sen đá",
+        "promptText": "a multi-cell succulent display tray"
+      },
+      {
+        "id": "plant-mister-cap",
+        "label": "Nắp bình phun sương",
+        "promptText": "a fine mist spray bottle cap"
+      },
+      {
+        "id": "row-cover-clip",
+        "label": "Kẹp lưới che",
+        "promptText": "a hoop clip for a row cover"
+      },
+      {
+        "id": "tool-hanging-rack",
+        "label": "Giá treo dụng cụ vườn",
+        "promptText": "a shed rack for garden tools"
+      },
+      {
+        "id": "seed-packet-box",
+        "label": "Hộp gói hạt giống",
+        "promptText": "a divided seed packet storage box"
+      }
+    ]
+  },
+  {
+    "id": "mechanical-parts",
+    "label": "Cơ khí & khớp nối",
+    "promptText": "a mechanical part",
+    "products": [
+      {
+        "id": "spur-gear",
+        "label": "Bánh răng trụ",
+        "promptText": "a spur gear with straight teeth"
+      },
+      {
+        "id": "planetary-gearbox",
+        "label": "Hộp số hành tinh",
+        "promptText": "a planetary gearbox assembly"
+      },
+      {
+        "id": "worm-drive",
+        "label": "Trục vít bánh vít",
+        "promptText": "a worm drive gear pair"
+      },
+      {
+        "id": "living-hinge-box",
+        "label": "Hộp bản lề dẻo",
+        "promptText": "a box with a flexible living hinge"
+      },
+      {
+        "id": "ball-joint",
+        "label": "Khớp cầu",
+        "promptText": "a snap-fit ball joint"
+      },
+      {
+        "id": "universal-joint",
+        "label": "Khớp các đăng",
+        "promptText": "a universal joint coupling"
+      },
+      {
+        "id": "rack-and-pinion",
+        "label": "Thanh răng bánh răng",
+        "promptText": "a rack and pinion mechanism"
+      },
+      {
+        "id": "cam-follower",
+        "label": "Cam và cần đẩy",
+        "promptText": "a cam and follower mechanism"
+      },
+      {
+        "id": "ratchet-mechanism",
+        "label": "Cơ cấu bánh cóc",
+        "promptText": "a ratchet and pawl mechanism"
+      },
+      {
+        "id": "spring-clip",
+        "label": "Kẹp lò xo",
+        "promptText": "a printed spring clip"
+      },
+      {
+        "id": "threaded-insert-jig",
+        "label": "Dưỡng ép ren",
+        "promptText": "a jig for pressing threaded inserts"
+      },
+      {
+        "id": "bearing-housing",
+        "label": "Gối đỡ bạc đạn",
+        "promptText": "a bearing housing block"
+      },
+      {
+        "id": "linear-rail-block",
+        "label": "Con trượt ray",
+        "promptText": "a linear rail sliding block"
+      },
+      {
+        "id": "belt-tensioner",
+        "label": "Bộ căng đai",
+        "promptText": "a belt tensioner arm"
+      },
+      {
+        "id": "pulley-wheel",
+        "label": "Bánh puly",
+        "promptText": "a grooved pulley wheel"
+      },
+      {
+        "id": "shaft-coupler",
+        "label": "Khớp nối trục",
+        "promptText": "a flexible shaft coupler"
+      },
+      {
+        "id": "gear-shifter-knob",
+        "label": "Núm cần số",
+        "promptText": "a threaded shifter knob"
+      },
+      {
+        "id": "hinge-pin",
+        "label": "Bản lề chốt",
+        "promptText": "a two-part hinge with a removable pin"
+      },
+      {
+        "id": "quick-release-latch",
+        "label": "Chốt tháo nhanh",
+        "promptText": "a quick-release latch"
+      },
+      {
+        "id": "compliant-gripper",
+        "label": "Kẹp đàn hồi",
+        "promptText": "a compliant flexure gripper"
+      },
+      {
+        "id": "turntable-bearing",
+        "label": "Mâm xoay",
+        "promptText": "a lazy-susan turntable bearing"
+      },
+      {
+        "id": "escapement-wheel",
+        "label": "Bánh thoát",
+        "promptText": "a clock escapement wheel"
+      },
+      {
+        "id": "crank-handle",
+        "label": "Tay quay",
+        "promptText": "a rotating crank handle"
+      },
+      {
+        "id": "geneva-drive",
+        "label": "Cơ cấu Malta",
+        "promptText": "a Geneva intermittent drive"
+      },
+      {
+        "id": "scissor-lift-link",
+        "label": "Thanh nâng cắt kéo",
+        "promptText": "a scissor lift linkage arm"
+      },
+      {
+        "id": "threaded-knob",
+        "label": "Núm vặn ren",
+        "promptText": "a knurled threaded knob"
+      },
+      {
+        "id": "damper-piston",
+        "label": "Piston giảm chấn",
+        "promptText": "an air damper piston"
+      },
+      {
+        "id": "chain-link",
+        "label": "Mắt xích",
+        "promptText": "a modular chain link"
+      },
+      {
+        "id": "cable-drag-chain",
+        "label": "Xích dẫn cáp",
+        "promptText": "a cable drag chain segment"
+      },
+      {
+        "id": "wind-up-spring-box",
+        "label": "Hộp lò xo lên dây",
+        "promptText": "a wind-up spring motor box"
+      }
+    ]
+  },
+  {
+    "id": "gifts-and-keepsakes",
+    "label": "Quà tặng & kỷ niệm",
+    "promptText": "a keepsake gift",
+    "products": [
+      {
+        "id": "trophy",
+        "label": "Cúp",
+        "promptText": "a small engraved trophy on a base"
+      },
+      {
+        "id": "medal",
+        "label": "Huy chương",
+        "promptText": "a ribboned medal"
+      },
+      {
+        "id": "memory-box",
+        "label": "Hộp kỷ niệm",
+        "promptText": "a lidded keepsake box"
+      },
+      {
+        "id": "photo-cube",
+        "label": "Khối ảnh",
+        "promptText": "a rotating photo display cube"
+      },
+      {
+        "id": "anniversary-plaque",
+        "label": "Bảng kỷ niệm",
+        "promptText": "a commemorative wall plaque"
+      },
+      {
+        "id": "wedding-cake-topper",
+        "label": "Trang trí bánh cưới",
+        "promptText": "a wedding cake topper"
+      },
+      {
+        "id": "baby-hand-cast-frame",
+        "label": "Khung in tay bé",
+        "promptText": "a frame for a baby handprint cast"
+      },
+      {
+        "id": "puzzle-gift-box",
+        "label": "Hộp quà đố",
+        "promptText": "a puzzle gift box with a hidden catch"
+      },
+      {
+        "id": "message-capsule",
+        "label": "Ống thông điệp",
+        "promptText": "a screw-together message capsule"
+      },
+      {
+        "id": "ornament-personalised",
+        "label": "Đồ treo khắc tên",
+        "promptText": "a personalised hanging ornament"
+      },
+      {
+        "id": "coin-display-stand",
+        "label": "Giá trưng bày xu",
+        "promptText": "a coin display stand"
+      },
+      {
+        "id": "ring-box",
+        "label": "Hộp nhẫn",
+        "promptText": "a hinged ring presentation box"
+      },
+      {
+        "id": "bookplate",
+        "label": "Dấu sách kỷ niệm",
+        "promptText": "a decorative bookplate"
+      },
+      {
+        "id": "desk-award",
+        "label": "Kỷ niệm chương để bàn",
+        "promptText": "a desktop achievement award"
+      },
+      {
+        "id": "time-capsule",
+        "label": "Hộp thời gian",
+        "promptText": "a sealed time capsule container"
+      },
+      {
+        "id": "family-tree-panel",
+        "label": "Bảng gia phả",
+        "promptText": "a family tree wall panel"
+      },
+      {
+        "id": "friendship-token",
+        "label": "Kỷ vật đôi",
+        "promptText": "a two-part interlocking friendship token"
+      },
+      {
+        "id": "graduation-cap-charm",
+        "label": "Móc mũ tốt nghiệp",
+        "promptText": "a graduation cap charm"
+      },
+      {
+        "id": "pet-memorial-marker",
+        "label": "Bia tưởng niệm thú cưng",
+        "promptText": "a garden pet memorial marker"
+      },
+      {
+        "id": "love-lock",
+        "label": "Khóa tình yêu",
+        "promptText": "an engraved padlock keepsake"
+      },
+      {
+        "id": "birth-flower-tile",
+        "label": "Bảng hoa sinh nhật",
+        "promptText": "a birth-flower relief tile"
+      },
+      {
+        "id": "zodiac-medallion",
+        "label": "Huy hiệu cung hoàng đạo",
+        "promptText": "a zodiac medallion"
+      },
+      {
+        "id": "travel-map-pin-board",
+        "label": "Bảng ghim bản đồ",
+        "promptText": "a pin board for marking travel destinations"
+      },
+      {
+        "id": "milestone-ring-stack",
+        "label": "Vòng đánh dấu cột mốc",
+        "promptText": "a stack of milestone marker rings"
+      },
+      {
+        "id": "handprint-keyring",
+        "label": "Móc khóa dấu tay",
+        "promptText": "a handprint keyring"
+      },
+      {
+        "id": "wish-jar-lid",
+        "label": "Nắp lọ điều ước",
+        "promptText": "a decorative lid for a wish jar"
+      },
+      {
+        "id": "concert-ticket-frame",
+        "label": "Khung vé",
+        "promptText": "a frame for a ticket stub"
+      },
+      {
+        "id": "engraved-bookmark",
+        "label": "Bookmark khắc chữ",
+        "promptText": "an engraved metal-look bookmark"
+      },
+      {
+        "id": "candle-memorial-holder",
+        "label": "Giá nến tưởng niệm",
+        "promptText": "a memorial candle holder"
+      },
+      {
+        "id": "gift-card-holder",
+        "label": "Hộp thiệp quà",
+        "promptText": "a sculpted gift card holder"
+      }
+    ]
+  },
+  {
+    "id": "vehicle-accessories",
+    "label": "Phụ kiện xe cộ",
+    "promptText": "a vehicle accessory",
+    "products": [
+      {
+        "id": "phone-vent-mount",
+        "label": "Giá điện thoại cửa gió",
+        "promptText": "an air vent phone mount"
+      },
+      {
+        "id": "cup-holder-insert",
+        "label": "Lót giá để cốc",
+        "promptText": "a cup holder insert tray"
+      },
+      {
+        "id": "sunglass-visor-clip",
+        "label": "Kẹp kính che nắng",
+        "promptText": "a sun visor sunglass clip"
+      },
+      {
+        "id": "trunk-organizer-divider",
+        "label": "Vách ngăn cốp",
+        "promptText": "a trunk organiser divider"
+      },
+      {
+        "id": "dashboard-tray",
+        "label": "Khay taplo",
+        "promptText": "a non-slip dashboard tray"
+      },
+      {
+        "id": "bike-bottle-cage",
+        "label": "Giá bình nước xe đạp",
+        "promptText": "a bicycle bottle cage"
+      },
+      {
+        "id": "bike-phone-mount",
+        "label": "Giá điện thoại xe đạp",
+        "promptText": "a handlebar phone mount"
+      },
+      {
+        "id": "bike-mudguard",
+        "label": "Chắn bùn xe đạp",
+        "promptText": "a clip-on bicycle mudguard"
+      },
+      {
+        "id": "helmet-hook",
+        "label": "Móc treo mũ bảo hiểm",
+        "promptText": "a wall hook for a helmet"
+      },
+      {
+        "id": "key-fob-cover",
+        "label": "Vỏ chìa khóa",
+        "promptText": "a protective key fob cover"
+      },
+      {
+        "id": "license-plate-frame",
+        "label": "Khung biển số",
+        "promptText": "a license plate frame"
+      },
+      {
+        "id": "door-edge-guard",
+        "label": "Nẹp viền cửa",
+        "promptText": "a door edge protector strip"
+      },
+      {
+        "id": "seat-gap-filler",
+        "label": "Chặn khe ghế",
+        "promptText": "a seat gap filler insert"
+      },
+      {
+        "id": "headrest-hook",
+        "label": "Móc tựa đầu",
+        "promptText": "a headrest bag hook"
+      },
+      {
+        "id": "motorcycle-lever-guard",
+        "label": "Chắn tay phanh",
+        "promptText": "a motorcycle brake lever guard"
+      },
+      {
+        "id": "tyre-tread-gauge",
+        "label": "Thước đo gai lốp",
+        "promptText": "a tyre tread depth gauge"
+      },
+      {
+        "id": "wheel-valve-cap",
+        "label": "Nắp van lốp",
+        "promptText": "a set of decorative valve caps"
+      },
+      {
+        "id": "roof-rack-clip",
+        "label": "Kẹp giá nóc",
+        "promptText": "a roof rack accessory clip"
+      },
+      {
+        "id": "toolkit-tray-vehicle",
+        "label": "Khay dụng cụ xe",
+        "promptText": "an under-seat vehicle tool tray"
+      },
+      {
+        "id": "fuel-funnel",
+        "label": "Phễu đổ nhiên liệu",
+        "promptText": "a narrow fuel filling funnel"
+      },
+      {
+        "id": "bike-chain-guide",
+        "label": "Dẫn hướng xích",
+        "promptText": "a bicycle chain guide"
+      },
+      {
+        "id": "pedal-reflector-mount",
+        "label": "Giá phản quang",
+        "promptText": "a pedal reflector mount"
+      },
+      {
+        "id": "scooter-grip-end",
+        "label": "Nút bịt tay lái",
+        "promptText": "a handlebar grip end plug"
+      },
+      {
+        "id": "dash-cam-mount",
+        "label": "Giá camera hành trình",
+        "promptText": "a windshield dash cam mount"
+      },
+      {
+        "id": "snow-scraper-handle",
+        "label": "Cán cạo tuyết",
+        "promptText": "a handle for an ice scraper"
+      },
+      {
+        "id": "car-air-freshener-clip",
+        "label": "Kẹp sáp thơm",
+        "promptText": "a vent-clip air freshener holder"
+      },
+      {
+        "id": "child-seat-belt-guide",
+        "label": "Dẫn hướng dây an toàn",
+        "promptText": "a seat belt positioning guide for children"
+      },
+      {
+        "id": "boat-cleat",
+        "label": "Cọc buộc dây thuyền",
+        "promptText": "a deck rope cleat"
+      },
+      {
+        "id": "kayak-paddle-clip",
+        "label": "Kẹp mái chèo",
+        "promptText": "a kayak paddle holder clip"
+      },
+      {
+        "id": "caravan-levelling-block",
+        "label": "Đệm kê xe kéo",
+        "promptText": "a stepped caravan levelling block"
+      }
+    ]
+  },
+  {
+    "id": "bathroom-accessories",
+    "label": "Đồ dùng phòng tắm",
+    "promptText": "a bathroom accessory",
+    "products": [
+      {
+        "id": "toothbrush-holder",
+        "label": "Giá bàn chải",
+        "promptText": "a slotted toothbrush holder"
+      },
+      {
+        "id": "soap-dish",
+        "label": "Đĩa xà phòng",
+        "promptText": "a draining soap dish"
+      },
+      {
+        "id": "toothpaste-squeezer",
+        "label": "Dụng cụ vắt kem",
+        "promptText": "a rolling toothpaste tube squeezer"
+      },
+      {
+        "id": "razor-holder",
+        "label": "Giá dao cạo",
+        "promptText": "a suction-mounted razor holder"
+      },
+      {
+        "id": "shower-caddy",
+        "label": "Kệ nhà tắm",
+        "promptText": "a hanging shower caddy"
+      },
+      {
+        "id": "towel-hook",
+        "label": "Móc khăn",
+        "promptText": "a wall-mounted towel hook"
+      },
+      {
+        "id": "toilet-paper-holder",
+        "label": "Giá giấy vệ sinh",
+        "promptText": "a wall toilet paper holder"
+      },
+      {
+        "id": "shower-head-bracket",
+        "label": "Giá vòi sen",
+        "promptText": "an adjustable shower head bracket"
+      },
+      {
+        "id": "drain-hair-catcher",
+        "label": "Lọc tóc thoát sàn",
+        "promptText": "a drain hair catcher insert"
+      },
+      {
+        "id": "cotton-swab-jar",
+        "label": "Hũ tăm bông",
+        "promptText": "a lidded cotton swab jar"
+      },
+      {
+        "id": "makeup-brush-stand",
+        "label": "Giá cọ trang điểm",
+        "promptText": "an upright makeup brush stand"
+      },
+      {
+        "id": "hair-dryer-holder",
+        "label": "Giá máy sấy tóc",
+        "promptText": "a wall holster for a hair dryer"
+      },
+      {
+        "id": "mirror-demist-clip",
+        "label": "Kẹp gương",
+        "promptText": "a clip that holds a shaving mirror"
+      },
+      {
+        "id": "bath-tray",
+        "label": "Khay bồn tắm",
+        "promptText": "a bathtub caddy tray"
+      },
+      {
+        "id": "toilet-brush-base",
+        "label": "Đế chổi cọ",
+        "promptText": "a drip base for a toilet brush"
+      },
+      {
+        "id": "shelf-corner",
+        "label": "Kệ góc",
+        "promptText": "a corner shower shelf"
+      },
+      {
+        "id": "bottle-pump-adapter",
+        "label": "Đầu bơm chai",
+        "promptText": "an adapter for a pump dispenser bottle"
+      },
+      {
+        "id": "toothbrush-head-cover",
+        "label": "Nắp đầu bàn chải",
+        "promptText": "a travel cover for a brush head"
+      },
+      {
+        "id": "scale-foot-pad",
+        "label": "Đệm chân cân",
+        "promptText": "a set of levelling pads for a bathroom scale"
+      },
+      {
+        "id": "soap-bar-saver",
+        "label": "Đế giữ xà bông",
+        "promptText": "a ridged soap bar saver"
+      },
+      {
+        "id": "shower-curtain-hook",
+        "label": "Móc rèm tắm",
+        "promptText": "a rolling shower curtain hook"
+      },
+      {
+        "id": "towel-ring",
+        "label": "Vòng treo khăn",
+        "promptText": "a wall towel ring"
+      },
+      {
+        "id": "wet-wipe-lid",
+        "label": "Nắp hộp khăn ướt",
+        "promptText": "a snap-on wet wipe lid"
+      },
+      {
+        "id": "tap-extender",
+        "label": "Vòi nối cho trẻ",
+        "promptText": "a faucet extender for small hands"
+      },
+      {
+        "id": "shaving-stand",
+        "label": "Giá dao cạo râu",
+        "promptText": "a stand for a shaving brush and razor"
+      },
+      {
+        "id": "bath-toy-net-hook",
+        "label": "Móc lưới đồ chơi",
+        "promptText": "a hook for a bath toy net"
+      },
+      {
+        "id": "floss-dispenser",
+        "label": "Hộp chỉ nha khoa",
+        "promptText": "a wall-mounted floss dispenser"
+      },
+      {
+        "id": "plunger-stand",
+        "label": "Đế thụt bồn cầu",
+        "promptText": "a drip stand for a plunger"
+      },
+      {
+        "id": "shampoo-bottle-hanger",
+        "label": "Móc treo chai dầu gội",
+        "promptText": "an upside-down shampoo bottle hanger"
+      },
+      {
+        "id": "bathroom-sign",
+        "label": "Biển phòng tắm",
+        "promptText": "a door sign for a bathroom"
+      }
+    ]
+  },
+  {
+    "id": "storage-and-containers",
+    "label": "Hộp & lưu trữ",
+    "promptText": "a storage container",
+    "products": [
+      {
+        "id": "stackable-bin",
+        "label": "Khay xếp chồng",
+        "promptText": "a stackable open-front storage bin"
+      },
+      {
+        "id": "screw-top-jar",
+        "label": "Lọ nắp vặn",
+        "promptText": "a screw-top storage jar"
+      },
+      {
+        "id": "hinged-box",
+        "label": "Hộp bản lề",
+        "promptText": "a print-in-place hinged box"
+      },
+      {
+        "id": "sliding-lid-box",
+        "label": "Hộp nắp trượt",
+        "promptText": "a box with a sliding lid"
+      },
+      {
+        "id": "pill-organizer",
+        "label": "Hộp chia thuốc",
+        "promptText": "a weekly pill organiser"
+      },
+      {
+        "id": "battery-dispenser",
+        "label": "Hộp phát pin",
+        "promptText": "a gravity-fed battery dispenser"
+      },
+      {
+        "id": "card-deck-box",
+        "label": "Hộp bài",
+        "promptText": "a playing card deck box"
+      },
+      {
+        "id": "tool-drawer-insert",
+        "label": "Lót ngăn kéo",
+        "promptText": "a shadow-board drawer insert"
+      },
+      {
+        "id": "modular-tray-system",
+        "label": "Khay module",
+        "promptText": "a modular gridded tray"
+      },
+      {
+        "id": "wall-mounted-bin",
+        "label": "Khay treo tường",
+        "promptText": "a wall-mounted parts bin"
+      },
+      {
+        "id": "spool-storage-box",
+        "label": "Hộp cuộn nhựa",
+        "promptText": "an airtight filament spool box"
+      },
+      {
+        "id": "desiccant-canister",
+        "label": "Ống hút ẩm",
+        "promptText": "a perforated desiccant canister"
+      },
+      {
+        "id": "travel-bottle-set",
+        "label": "Bộ chai du lịch",
+        "promptText": "a set of small travel bottles"
+      },
+      {
+        "id": "coin-sorter",
+        "label": "Máy phân loại xu",
+        "promptText": "a coin sorting tray"
+      },
+      {
+        "id": "sewing-kit-box",
+        "label": "Hộp kim chỉ",
+        "promptText": "a compartmented sewing kit box"
+      },
+      {
+        "id": "jewelry-organizer",
+        "label": "Hộp trang sức",
+        "promptText": "a tiered jewelry organiser"
+      },
+      {
+        "id": "lego-sorting-tray",
+        "label": "Khay phân loại gạch",
+        "promptText": "a brick sorting tray with sloped bays"
+      },
+      {
+        "id": "cable-pouch",
+        "label": "Hộp đựng dây",
+        "promptText": "a clamshell cable storage pouch"
+      },
+      {
+        "id": "first-aid-box",
+        "label": "Hộp cứu thương",
+        "promptText": "a wall-mounted first aid box"
+      },
+      {
+        "id": "spice-jar-set",
+        "label": "Bộ lọ gia vị",
+        "promptText": "a set of matching spice jars in a rack"
+      },
+      {
+        "id": "shoe-rack-module",
+        "label": "Kệ giày module",
+        "promptText": "a stackable shoe rack module"
+      },
+      {
+        "id": "under-shelf-basket",
+        "label": "Giỏ gầm kệ",
+        "promptText": "a clip-on under-shelf basket"
+      },
+      {
+        "id": "tackle-box-tray",
+        "label": "Khay hộp câu",
+        "promptText": "an adjustable tackle box tray"
+      },
+      {
+        "id": "seed-bead-vial",
+        "label": "Ống hạt cườm",
+        "promptText": "a stoppered bead storage vial"
+      },
+      {
+        "id": "document-capsule",
+        "label": "Ống đựng giấy tờ",
+        "promptText": "a waterproof document capsule"
+      },
+      {
+        "id": "magnetic-parts-cup",
+        "label": "Cốc hút linh kiện",
+        "promptText": "a magnetic parts cup"
+      },
+      {
+        "id": "stackable-crate",
+        "label": "Sọt xếp chồng",
+        "promptText": "a ventilated stackable crate"
+      },
+      {
+        "id": "label-clip-bin",
+        "label": "Kẹp nhãn khay",
+        "promptText": "a clip-on label holder for a bin"
+      },
+      {
+        "id": "vacuum-seal-adapter",
+        "label": "Đầu hút chân không",
+        "promptText": "a vacuum seal valve adapter"
+      },
+      {
+        "id": "lid-organizer-rack",
+        "label": "Giá xếp nắp hộp",
+        "promptText": "a rack that stands food container lids upright"
+      }
+    ]
+  },
+  {
+    "id": "sports-and-outdoors",
+    "label": "Thể thao & dã ngoại",
+    "promptText": "an outdoor gear item",
+    "products": [
+      {
+        "id": "tent-peg",
+        "label": "Cọc lều",
+        "promptText": "a ribbed tent peg"
+      },
+      {
+        "id": "guy-line-tensioner",
+        "label": "Khóa căng dây lều",
+        "promptText": "a guy line tensioner"
+      },
+      {
+        "id": "carabiner",
+        "label": "Móc khóa leo núi",
+        "promptText": "a gated carabiner clip"
+      },
+      {
+        "id": "whistle",
+        "label": "Còi",
+        "promptText": "a loud emergency whistle"
+      },
+      {
+        "id": "compass-housing",
+        "label": "Vỏ la bàn",
+        "promptText": "a housing for a baseplate compass"
+      },
+      {
+        "id": "water-bottle-cap",
+        "label": "Nắp bình nước",
+        "promptText": "a sports bottle flip cap"
+      },
+      {
+        "id": "yoga-block",
+        "label": "Gạch tập yoga",
+        "promptText": "a lightweight yoga block"
+      },
+      {
+        "id": "resistance-band-handle",
+        "label": "Tay cầm dây kháng lực",
+        "promptText": "a handle for a resistance band"
+      },
+      {
+        "id": "dumbbell-rack",
+        "label": "Giá tạ tay",
+        "promptText": "a compact dumbbell rack"
+      },
+      {
+        "id": "golf-tee-holder",
+        "label": "Hộp tee golf",
+        "promptText": "a belt-clip golf tee holder"
+      },
+      {
+        "id": "ball-display-stand",
+        "label": "Đế trưng bày bóng",
+        "promptText": "a display stand for a signed ball"
+      },
+      {
+        "id": "fishing-lure",
+        "label": "Mồi câu giả",
+        "promptText": "a weighted fishing lure body"
+      },
+      {
+        "id": "rod-holder",
+        "label": "Giá cần câu",
+        "promptText": "a bank-mounted fishing rod holder"
+      },
+      {
+        "id": "climbing-hold",
+        "label": "Điểm bám leo núi",
+        "promptText": "a textured climbing wall hold"
+      },
+      {
+        "id": "ski-pole-basket",
+        "label": "Đĩa gậy trượt tuyết",
+        "promptText": "a replacement ski pole basket"
+      },
+      {
+        "id": "skateboard-riser",
+        "label": "Đệm nâng ván trượt",
+        "promptText": "a skateboard truck riser pad"
+      },
+      {
+        "id": "surfboard-fin",
+        "label": "Vây ván lướt",
+        "promptText": "a surfboard fin"
+      },
+      {
+        "id": "camp-stove-windshield",
+        "label": "Chắn gió bếp dã ngoại",
+        "promptText": "a folding camp stove windshield"
+      },
+      {
+        "id": "cutlery-camp-set",
+        "label": "Bộ thìa dĩa dã ngoại",
+        "promptText": "a nesting camp cutlery set"
+      },
+      {
+        "id": "hydration-tube-clip",
+        "label": "Kẹp ống nước",
+        "promptText": "a magnetic hydration tube clip"
+      },
+      {
+        "id": "trekking-pole-tip",
+        "label": "Đầu gậy leo núi",
+        "promptText": "a rubber trekking pole tip"
+      },
+      {
+        "id": "dive-mask-strap-clip",
+        "label": "Kẹp dây kính lặn",
+        "promptText": "a dive mask strap clip"
+      },
+      {
+        "id": "bike-repair-multitool-case",
+        "label": "Hộp bộ sửa xe",
+        "promptText": "a case for a bike multitool"
+      },
+      {
+        "id": "archery-arrow-rest",
+        "label": "Giá đỡ mũi tên",
+        "promptText": "an archery arrow rest"
+      },
+      {
+        "id": "dart-flight",
+        "label": "Cánh phi tiêu",
+        "promptText": "a set of dart flights"
+      },
+      {
+        "id": "shin-guard-clip",
+        "label": "Kẹp bảo vệ ống chân",
+        "promptText": "a shin guard retaining clip"
+      },
+      {
+        "id": "mouthguard-case",
+        "label": "Hộp bảo vệ răng",
+        "promptText": "a ventilated mouthguard case"
+      },
+      {
+        "id": "swim-goggle-clip",
+        "label": "Kẹp kính bơi",
+        "promptText": "a swim goggle strap clip"
+      },
+      {
+        "id": "frisbee",
+        "label": "Đĩa ném",
+        "promptText": "a flying disc"
+      },
+      {
+        "id": "campfire-toasting-fork",
+        "label": "Nĩa nướng",
+        "promptText": "a long campfire toasting fork handle"
+      }
+    ]
+  }
+]

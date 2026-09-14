@@ -1,0 +1,470 @@
+[
+  {
+    "id": "style",
+    "label": "Phong cách",
+    "options": [
+      {
+        "id": "low-poly",
+        "label": "Low-poly",
+        "promptText": "in a faceted low-poly geometric style"
+      },
+      {
+        "id": "organic",
+        "label": "Hữu cơ",
+        "promptText": "in a flowing organic style with smooth curves"
+      },
+      {
+        "id": "art-deco",
+        "label": "Art Deco",
+        "promptText": "in an Art Deco style with symmetrical stepped forms"
+      },
+      {
+        "id": "brutalist",
+        "label": "Brutalist",
+        "promptText": "in a brutalist style with heavy blocky masses"
+      },
+      {
+        "id": "minimalist",
+        "label": "Tối giản",
+        "promptText": "in a minimalist style with clean unadorned surfaces"
+      },
+      {
+        "id": "steampunk",
+        "label": "Steampunk",
+        "promptText": "in a steampunk style with exposed gears and rivets"
+      },
+      {
+        "id": "cyberpunk",
+        "label": "Cyberpunk",
+        "promptText": "in a cyberpunk style with angular panels and glowing accents"
+      },
+      {
+        "id": "art-nouveau",
+        "label": "Art Nouveau",
+        "promptText": "in an Art Nouveau style with sinuous floral lines"
+      },
+      {
+        "id": "kawaii",
+        "label": "Kawaii",
+        "promptText": "in a cute kawaii style with rounded chibi proportions"
+      },
+      {
+        "id": "gothic",
+        "label": "Gothic",
+        "promptText": "in a gothic style with pointed arches and ornate tracery"
+      },
+      {
+        "id": "scandinavian",
+        "label": "Bắc Âu",
+        "promptText": "in a Scandinavian style with soft simple silhouettes"
+      },
+      {
+        "id": "japandi",
+        "label": "Japandi",
+        "promptText": "in a Japandi style blending Japanese restraint with Nordic warmth"
+      },
+      {
+        "id": "voxel",
+        "label": "Voxel",
+        "promptText": "in a voxel style built from visible cubic blocks"
+      },
+      {
+        "id": "parametric",
+        "label": "Parametric",
+        "promptText": "in a parametric style with repeating mathematical patterns"
+      },
+      {
+        "id": "baroque",
+        "label": "Baroque",
+        "promptText": "in a baroque style with elaborate swirling ornamentation"
+      },
+      {
+        "id": "retro-futurism",
+        "label": "Retro-futurism",
+        "promptText": "in a retro-futuristic style with streamlined 1950s curves"
+      },
+      {
+        "id": "bauhaus",
+        "label": "Bauhaus",
+        "promptText": "in a Bauhaus style with primary geometric volumes"
+      },
+      {
+        "id": "tribal",
+        "label": "Thổ dân",
+        "promptText": "in a tribal style with carved totemic motifs"
+      },
+      {
+        "id": "skeletal",
+        "label": "Khung xương",
+        "promptText": "in a skeletal style with exposed ribbed structure"
+      },
+      {
+        "id": "crystalline",
+        "label": "Tinh thể",
+        "promptText": "in a crystalline style with sharp faceted growths"
+      },
+      {
+        "id": "nautical",
+        "label": "Hàng hải",
+        "promptText": "in a nautical style with rope coils and shell forms"
+      },
+      {
+        "id": "industrial",
+        "label": "Công nghiệp",
+        "promptText": "in an industrial style with bolted plates and knurled grips"
+      },
+      {
+        "id": "fantasy",
+        "label": "Giả tưởng",
+        "promptText": "in a high-fantasy style with runic carvings"
+      },
+      {
+        "id": "biomimetic",
+        "label": "Phỏng sinh học",
+        "promptText": "in a biomimetic style echoing bone and coral structures"
+      },
+      {
+        "id": "origami",
+        "label": "Origami",
+        "promptText": "in an origami style built from sharp folded planes"
+      },
+      {
+        "id": "mid-century",
+        "label": "Mid-century",
+        "promptText": "in a mid-century modern style with tapered legs and warm shapes"
+      },
+      {
+        "id": "wireframe",
+        "label": "Khung dây",
+        "promptText": "in a wireframe style with an open lattice shell"
+      },
+      {
+        "id": "mayan",
+        "label": "Maya cổ",
+        "promptText": "in an ancient Mayan style with stepped relief carvings"
+      },
+      {
+        "id": "solarpunk",
+        "label": "Solarpunk",
+        "promptText": "in a solarpunk style merging plant forms with clean technology"
+      },
+      {
+        "id": "toy-chunky",
+        "label": "Đồ chơi khối",
+        "promptText": "in a chunky toy style with thick rounded edges"
+      }
+    ]
+  },
+  {
+    "id": "surface",
+    "label": "Bề mặt",
+    "options": [
+      {
+        "id": "matte",
+        "label": "Nhám mờ",
+        "promptText": "with a soft matte finish"
+      },
+      {
+        "id": "glossy",
+        "label": "Bóng",
+        "promptText": "with a high-gloss polished finish"
+      },
+      {
+        "id": "satin",
+        "label": "Satin",
+        "promptText": "with a smooth satin sheen"
+      },
+      {
+        "id": "brushed-metal",
+        "label": "Kim loại chải",
+        "promptText": "with a brushed metallic finish"
+      },
+      {
+        "id": "hammered",
+        "label": "Gõ búa",
+        "promptText": "with a hand-hammered dimpled surface"
+      },
+      {
+        "id": "woodgrain",
+        "label": "Vân gỗ",
+        "promptText": "with a warm woodgrain texture"
+      },
+      {
+        "id": "stone",
+        "label": "Đá",
+        "promptText": "with a rough natural stone texture"
+      },
+      {
+        "id": "marble",
+        "label": "Cẩm thạch",
+        "promptText": "with veined marble patterning"
+      },
+      {
+        "id": "ceramic-glaze",
+        "label": "Men gốm",
+        "promptText": "with a glossy ceramic glaze"
+      },
+      {
+        "id": "terracotta",
+        "label": "Đất nung",
+        "promptText": "with a porous terracotta surface"
+      },
+      {
+        "id": "knurled",
+        "label": "Khía nhám",
+        "promptText": "with a knurled grip texture"
+      },
+      {
+        "id": "ribbed",
+        "label": "Gân sọc",
+        "promptText": "with evenly ribbed grooves"
+      },
+      {
+        "id": "honeycomb",
+        "label": "Tổ ong",
+        "promptText": "with a honeycomb-perforated skin"
+      },
+      {
+        "id": "woven",
+        "label": "Đan",
+        "promptText": "with a woven basket-like texture"
+      },
+      {
+        "id": "scaled",
+        "label": "Vảy",
+        "promptText": "with overlapping scale-like plating"
+      },
+      {
+        "id": "fur-like",
+        "label": "Giả lông",
+        "promptText": "with a soft fur-like sculpted texture"
+      },
+      {
+        "id": "crackle",
+        "label": "Rạn nứt",
+        "promptText": "with a crackled glaze surface"
+      },
+      {
+        "id": "frosted",
+        "label": "Mờ sương",
+        "promptText": "with a frosted translucent surface"
+      },
+      {
+        "id": "iridescent",
+        "label": "Ánh sắc",
+        "promptText": "with an iridescent color-shifting sheen"
+      },
+      {
+        "id": "weathered",
+        "label": "Phong hóa",
+        "promptText": "with a weathered, gently worn surface"
+      },
+      {
+        "id": "rusted",
+        "label": "Gỉ sét",
+        "promptText": "with a rusted patina"
+      },
+      {
+        "id": "patina-bronze",
+        "label": "Patina đồng",
+        "promptText": "with an aged bronze patina"
+      },
+      {
+        "id": "sandblasted",
+        "label": "Phun cát",
+        "promptText": "with a fine sandblasted texture"
+      },
+      {
+        "id": "quilted",
+        "label": "Chần bông",
+        "promptText": "with a quilted padded texture"
+      },
+      {
+        "id": "carved",
+        "label": "Chạm khắc",
+        "promptText": "with hand-carved relief detailing"
+      },
+      {
+        "id": "perforated",
+        "label": "Đục lỗ",
+        "promptText": "with a regularly perforated shell"
+      },
+      {
+        "id": "layered-ridges",
+        "label": "Tầng lớp",
+        "promptText": "with stacked contour ridges"
+      },
+      {
+        "id": "velvety",
+        "label": "Nhung",
+        "promptText": "with a velvety soft-touch surface"
+      },
+      {
+        "id": "glitter-fleck",
+        "label": "Lấp lánh",
+        "promptText": "with fine glittering flecks embedded in the surface"
+      },
+      {
+        "id": "clay-smooth",
+        "label": "Đất sét mịn",
+        "promptText": "with a smooth hand-shaped clay surface"
+      }
+    ]
+  },
+  {
+    "id": "color",
+    "label": "Màu sắc",
+    "options": [
+      {
+        "id": "pastel-mint",
+        "label": "Xanh bạc hà pastel",
+        "promptText": "in a soft pastel mint color"
+      },
+      {
+        "id": "pastel-pink",
+        "label": "Hồng pastel",
+        "promptText": "in a gentle pastel pink color"
+      },
+      {
+        "id": "pastel-lavender",
+        "label": "Tím oải hương pastel",
+        "promptText": "in a pale lavender color"
+      },
+      {
+        "id": "butter-yellow",
+        "label": "Vàng bơ",
+        "promptText": "in a warm butter-yellow color"
+      },
+      {
+        "id": "coral",
+        "label": "San hô",
+        "promptText": "in a bright coral color"
+      },
+      {
+        "id": "terracotta-orange",
+        "label": "Cam đất",
+        "promptText": "in a burnt terracotta orange"
+      },
+      {
+        "id": "deep-red",
+        "label": "Đỏ thẫm",
+        "promptText": "in a deep crimson red"
+      },
+      {
+        "id": "burgundy",
+        "label": "Đỏ rượu",
+        "promptText": "in a rich burgundy tone"
+      },
+      {
+        "id": "forest-green",
+        "label": "Xanh rừng",
+        "promptText": "in a deep forest green"
+      },
+      {
+        "id": "olive",
+        "label": "Ô liu",
+        "promptText": "in a muted olive green"
+      },
+      {
+        "id": "teal",
+        "label": "Xanh mòng két",
+        "promptText": "in a vivid teal"
+      },
+      {
+        "id": "navy",
+        "label": "Xanh navy",
+        "promptText": "in a dark navy blue"
+      },
+      {
+        "id": "sky-blue",
+        "label": "Xanh da trời",
+        "promptText": "in a clear sky blue"
+      },
+      {
+        "id": "electric-blue",
+        "label": "Xanh điện",
+        "promptText": "in an electric cobalt blue"
+      },
+      {
+        "id": "royal-purple",
+        "label": "Tím hoàng gia",
+        "promptText": "in a royal purple"
+      },
+      {
+        "id": "charcoal",
+        "label": "Xám than",
+        "promptText": "in a dark charcoal grey"
+      },
+      {
+        "id": "off-white",
+        "label": "Trắng ngà",
+        "promptText": "in a warm off-white"
+      },
+      {
+        "id": "bone",
+        "label": "Trắng xương",
+        "promptText": "in a pale bone white"
+      },
+      {
+        "id": "matte-black",
+        "label": "Đen nhám",
+        "promptText": "in a deep matte black"
+      },
+      {
+        "id": "silver",
+        "label": "Bạc",
+        "promptText": "in a bright silver tone"
+      },
+      {
+        "id": "gold",
+        "label": "Vàng kim",
+        "promptText": "in a warm gold tone"
+      },
+      {
+        "id": "copper",
+        "label": "Đồng đỏ",
+        "promptText": "in a polished copper tone"
+      },
+      {
+        "id": "gunmetal",
+        "label": "Xám thép",
+        "promptText": "in a dark gunmetal grey"
+      },
+      {
+        "id": "neon-green",
+        "label": "Xanh neon",
+        "promptText": "in a glowing neon green"
+      },
+      {
+        "id": "neon-orange",
+        "label": "Cam neon",
+        "promptText": "in a vivid neon orange"
+      },
+      {
+        "id": "gradient-sunset",
+        "label": "Gradient hoàng hôn",
+        "promptText": "in a sunset gradient from orange to violet"
+      },
+      {
+        "id": "gradient-ocean",
+        "label": "Gradient đại dương",
+        "promptText": "in an ocean gradient from teal to deep blue"
+      },
+      {
+        "id": "two-tone",
+        "label": "Hai tông",
+        "promptText": "in a crisp two-tone color split"
+      },
+      {
+        "id": "marbled-mix",
+        "label": "Vân trộn",
+        "promptText": "in a marbled swirl of two colors"
+      },
+      {
+        "id": "translucent-amber",
+        "label": "Hổ phách trong",
+        "promptText": "in a translucent amber tone"
+      }
+    ]
+  }
+]

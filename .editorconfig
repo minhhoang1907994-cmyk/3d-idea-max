@@ -1,0 +1,18 @@
+# Thống nhất format cơ bản giữa mọi editor, không cần cài extension
+root = true
+
+[*]
+charset = utf-8
+end_of_line = lf
+indent_style = space
+indent_size = 2
+insert_final_newline = true
+trim_trailing_whitespace = true
+max_line_length = 100
+
+[*.md]
+# Markdown dùng 2 dấu cách cuối dòng để xuống dòng — không được cắt
+trim_trailing_whitespace = false
+
+[*.{json,yml,yaml}]
+indent_size = 2

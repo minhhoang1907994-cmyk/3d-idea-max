@@ -1,0 +1,68 @@
+.panel {
+  padding: 1.1rem 1.2rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 0.75rem;
+}
+
+.title {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.copyButton {
+  padding: 0.4rem 0.9rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--accent-text);
+  background: var(--accent);
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.copyButton:hover {
+  filter: brightness(1.08);
+}
+
+.prompt {
+  margin: 0;
+  padding: 0.9rem;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.88rem;
+  line-height: 1.6;
+  color: var(--text);
+  background: var(--surface-sunken);
+  border-radius: 8px;
+  white-space: pre-wrap;
+}
+
+.fallback {
+  margin-top: 0.75rem;
+}
+
+.fallbackNote {
+  margin: 0 0 0.4rem;
+  font-size: 0.82rem;
+  color: var(--warning);
+}
+
+.textarea {
+  width: 100%;
+  padding: 0.6rem;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.82rem;
+  color: var(--text);
+  background: var(--surface-sunken);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  resize: vertical;
+}
