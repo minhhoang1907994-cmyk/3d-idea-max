@@ -61,34 +61,42 @@
     {
       "id": "display",
       "label": "Chỉ để trưng bày",
-      "promptText": "made as a display piece",
+      "promptText": "intended as a display piece",
       "sparseInfillDensityPercent": 10,
       "sparseInfillPattern": "Grid",
-      "wallLoops": 3
+      "wallLoops": 3,
+      "topShellLayers": 3,
+      "bottomShellLayers": 3
     },
     {
       "id": "everyday",
       "label": "Dùng hằng ngày",
-      "promptText": "made for everyday use",
+      "promptText": "intended for everyday use",
       "sparseInfillDensityPercent": 20,
       "sparseInfillPattern": "Gyroid",
-      "wallLoops": 3
+      "wallLoops": 3,
+      "topShellLayers": 4,
+      "bottomShellLayers": 3
     },
     {
       "id": "functional",
       "label": "Chịu lực, cơ khí",
-      "promptText": "made as a sturdy functional part",
+      "promptText": "intended as a sturdy functional part",
       "sparseInfillDensityPercent": 25,
       "sparseInfillPattern": "Gyroid",
-      "wallLoops": 4
+      "wallLoops": 4,
+      "topShellLayers": 5,
+      "bottomShellLayers": 4
     },
     {
       "id": "heavy-duty",
       "label": "Chịu tải nặng",
-      "promptText": "made as a heavy-duty load-bearing part",
+      "promptText": "intended as a heavy-duty load-bearing part",
       "sparseInfillDensityPercent": 40,
       "sparseInfillPattern": "Gyroid",
-      "wallLoops": 5
+      "wallLoops": 5,
+      "topShellLayers": 6,
+      "bottomShellLayers": 5
     }
   ]
 }

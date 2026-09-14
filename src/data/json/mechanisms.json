@@ -1,0 +1,182 @@
+[
+  {
+    "id": "articulated-print-in-place",
+    "label": "Khớp động in liền khối",
+    "description": "In xong là cử động được ngay, không cần lắp ráp — kiểu rồng/rắn nhiều đốt",
+    "promptText": "built as a print-in-place articulated chain of segments that bends and wiggles"
+  },
+  {
+    "id": "flexi-body",
+    "label": "Thân dẻo uốn được",
+    "description": "Thân chia đốt nối bằng khớp cầu nhỏ, uốn cong tự do",
+    "promptText": "with a flexible segmented body linked by tiny ball joints"
+  },
+  {
+    "id": "living-hinge",
+    "label": "Bản lề liền khối",
+    "description": "Bản lề mỏng in liền, gập được mà không cần chốt",
+    "promptText": "with a thin living hinge moulded directly into the body so it folds without a pin"
+  },
+  {
+    "id": "snap-fit",
+    "label": "Lắp khít không keo",
+    "description": "Các mảnh bấm vào nhau giữ chặt, tháo ra được",
+    "promptText": "assembled from parts that snap together without glue"
+  },
+  {
+    "id": "magnetic",
+    "label": "Nam châm hút",
+    "description": "Có hốc gắn nam châm để dính vào nhau hoặc lên bề mặt sắt",
+    "promptText": "with recessed magnets so the pieces cling together"
+  },
+  {
+    "id": "modular-interlocking",
+    "label": "Module lắp ghép",
+    "description": "Nhiều mảnh giống nhau ghép thành hệ lớn, mở rộng vô hạn",
+    "promptText": "built from repeating interlocking modules that tile into a larger system"
+  },
+  {
+    "id": "gear-driven",
+    "label": "Bánh răng truyền động",
+    "description": "Xoay núm là cả cụm bánh răng chuyển động theo",
+    "promptText": "driven by exposed meshing gears that turn when a knob is rotated"
+  },
+  {
+    "id": "spring-loaded",
+    "label": "Lò xo bật",
+    "description": "Lò xo in liền khối, bấm là bật ra",
+    "promptText": "with a printed spring that launches the mechanism when pressed"
+  },
+  {
+    "id": "telescoping",
+    "label": "Thụt lồng nhau",
+    "description": "Các ống lồng vào nhau, kéo ra dài gấp nhiều lần",
+    "promptText": "with telescoping tubes that extend to several times its collapsed length"
+  },
+  {
+    "id": "foldable-flat",
+    "label": "Gập phẳng",
+    "description": "Mở ra dùng, gập lại phẳng lì để cất",
+    "promptText": "that unfolds for use and collapses completely flat for storage"
+  },
+  {
+    "id": "puzzle-fit",
+    "label": "Ghép hình khóa nhau",
+    "description": "Các mảnh chỉ ghép đúng theo một cách duy nhất",
+    "promptText": "split into puzzle pieces that only fit together one correct way"
+  },
+  {
+    "id": "kinetic-balance",
+    "label": "Cân bằng động",
+    "description": "Đứng cân bằng ở tư thế tưởng như không thể",
+    "promptText": "balanced on a single improbable contact point like a kinetic sculpture"
+  },
+  {
+    "id": "nested-matryoshka",
+    "label": "Lồng trong nhau",
+    "description": "Nhiều lớp lồng vào nhau kiểu búp bê Nga",
+    "promptText": "with smaller copies of itself nested inside, matryoshka style"
+  },
+  {
+    "id": "screw-thread",
+    "label": "Ren vặn",
+    "description": "Nắp vặn ren in sẵn, xoay là mở",
+    "promptText": "closed by a printed screw thread that twists open"
+  },
+  {
+    "id": "sliding-drawer",
+    "label": "Ngăn kéo trượt",
+    "description": "Có ngăn kéo bí mật trượt ra",
+    "promptText": "concealing a sliding drawer that glides out from the side"
+  },
+  {
+    "id": "pop-up",
+    "label": "Bung ra khi mở",
+    "description": "Mở nắp là cấu trúc bên trong bung lên",
+    "promptText": "where opening the lid makes an inner structure pop upward"
+  },
+  {
+    "id": "chain-mail",
+    "label": "Lưới xích dẻo",
+    "description": "Mặt lưới gồm hàng trăm mắt xích in liền, mềm như vải",
+    "promptText": "woven from hundreds of print-in-place chain links that drape like fabric"
+  },
+  {
+    "id": "wind-up",
+    "label": "Lên dây cót",
+    "description": "Vặn cót rồi thả là tự chạy",
+    "promptText": "powered by a wind-up spring motor that sends it moving when released"
+  },
+  {
+    "id": "marble-run",
+    "label": "Đường lăn bi",
+    "description": "Bi lăn qua các đoạn dốc, vòng xoắn",
+    "promptText": "with a marble track spiralling through its body"
+  },
+  {
+    "id": "rotating-turntable",
+    "label": "Mâm xoay",
+    "description": "Phần trên xoay tròn trên vòng bi in sẵn",
+    "promptText": "mounted on a printed turntable bearing so the top spins freely"
+  },
+  {
+    "id": "clip-on",
+    "label": "Kẹp gắn",
+    "description": "Kẹp bám vào mép bàn, túi, cạnh màn hình",
+    "promptText": "with a sprung clip that grips onto an edge"
+  },
+  {
+    "id": "stackable-tower",
+    "label": "Xếp chồng cao",
+    "description": "Chồng lên nhau thành tháp, mỗi tầng khớp vào tầng dưới",
+    "promptText": "designed to stack into a tower, each layer keying into the one below"
+  },
+  {
+    "id": "collapsible-bellows",
+    "label": "Xếp nếp co giãn",
+    "description": "Thân xếp nếp như đèn xếp, co giãn được",
+    "promptText": "with accordion bellows walls that compress and expand"
+  },
+  {
+    "id": "lithophane-panel",
+    "label": "Tấm lithophane",
+    "description": "Tấm mỏng, soi đèn lên hiện ra hình ảnh",
+    "promptText": "with a lithophane panel that reveals a hidden image when backlit"
+  },
+  {
+    "id": "whistle-chamber",
+    "label": "Khoang thổi kêu",
+    "description": "Có khoang khí bên trong, thổi vào là kêu",
+    "promptText": "hiding an internal air chamber that whistles when blown"
+  },
+  {
+    "id": "counterweight-tilt",
+    "label": "Đối trọng lắc lư",
+    "description": "Có đối trọng nên đẩy thế nào cũng tự dựng lại",
+    "promptText": "weighted so it always rocks back upright when pushed"
+  },
+  {
+    "id": "hidden-compartment",
+    "label": "Ngăn bí mật",
+    "description": "Nhìn ngoài không thấy, xoay đúng chỗ mới mở",
+    "promptText": "with a hidden compartment that only opens when the right part is twisted"
+  },
+  {
+    "id": "tensegrity",
+    "label": "Treo lơ lửng",
+    "description": "Phần trên như bay lơ lửng nhờ dây căng",
+    "promptText": "built as a tensegrity structure where the upper half appears to float on tensioned strings"
+  },
+  {
+    "id": "swappable-faceplate",
+    "label": "Mặt thay được",
+    "description": "Mặt ngoài tháo ra thay bằng mặt khác",
+    "promptText": "with swappable snap-on faceplates that change its look"
+  },
+  {
+    "id": "dual-material-window",
+    "label": "Cửa sổ trong suốt",
+    "description": "Phần thân đục, xen phần trong mờ cho ánh sáng lọt qua",
+    "promptText": "combining opaque walls with translucent windows that glow when lit from inside"
+  }
+]

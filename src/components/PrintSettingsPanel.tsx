@@ -1,4 +1,5 @@
-import type { PrintSettings, Range } from '../types';
+import { useState } from 'react';
+import type { PrintSettings, Range, SettingsTabId } from '../types';
 import styles from './PrintSettingsPanel.module.css';
 
 type Props = { settings: PrintSettings };
@@ -10,73 +11,86 @@ function formatRange(range: Range | null, unit: string): string {
 }
 
 export function PrintSettingsPanel({ settings }: Props) {
-  const { printer, filament, quality, strength, temperature, warnings } = settings;
+  const { printer, filament, presetName, tabs, temperature, warnings } = settings;
+  const [activeTab, setActiveTab] = useState<SettingsTabId>('quality');
+
+  const currentTab = tabs.find((tab) => tab.id === activeTab) ?? tabs[0];
+  const missingCount = tabs
+    .flatMap((tab) => tab.groups.flatMap((group) => group.rows))
+    .filter((row) => row.value === null).length;
 
   return (
     <section className={styles.panel}>
       <header className={styles.header}>
-        <h2 className={styles.title}>Thông số in — Bambu Studio</h2>
+        <div>
+          <h2 className={styles.title}>Thông số in — Bambu Studio</h2>
+          <p className={styles.preset}>{presetName}</p>
+        </div>
         <span className={styles.printer}>
-          {printer.label} · {printer.buildVolumeMm.x}×{printer.buildVolumeMm.y}×
-          {printer.buildVolumeMm.z} mm
+          {printer.buildVolumeMm.x}×{printer.buildVolumeMm.y}×{printer.buildVolumeMm.z} mm
         </span>
       </header>
 
-      <div className={styles.groups}>
-        <div className={styles.group}>
-          <h3 className={styles.groupTitle}>Quality</h3>
-          <dl className={styles.rows}>
-            <div className={styles.row}>
-              <dt>Layer Height</dt>
-              <dd>{quality.layerHeightMm} mm</dd>
-            </div>
-            <div className={styles.row}>
-              <dt>Wall Loops</dt>
-              <dd>{quality.wallLoops}</dd>
-            </div>
-          </dl>
+      <div className={styles.filamentBar}>
+        <div className={styles.filamentInfo}>
+          <span className={styles.filamentLabel}>{filament.label}</span>
+          <span className={styles.temps}>
+            Nozzle{' '}
+            <strong className={temperature.nozzleC === null ? styles.missing : undefined}>
+              {formatRange(temperature.nozzleC, '°C')}
+            </strong>
+            {' · '}Bed{' '}
+            <strong className={temperature.bedC === null ? styles.missing : undefined}>
+              {formatRange(temperature.bedC, '°C')}
+            </strong>
+          </span>
         </div>
-
-        <div className={styles.group}>
-          <h3 className={styles.groupTitle}>Strength</h3>
-          <dl className={styles.rows}>
-            <div className={styles.row}>
-              <dt>Sparse Infill Density</dt>
-              <dd>{strength.sparseInfillDensityPercent}%</dd>
-            </div>
-            <div className={styles.row}>
-              <dt>Infill Pattern</dt>
-              <dd>{strength.sparseInfillPattern}</dd>
-            </div>
-          </dl>
-        </div>
-
-        <div className={styles.group}>
-          <h3 className={styles.groupTitle}>Filament — {filament.label}</h3>
-          <dl className={styles.rows}>
-            <div className={styles.row}>
-              <dt>Nozzle Temperature</dt>
-              <dd className={temperature.nozzleC === null ? styles.missing : undefined}>
-                {formatRange(temperature.nozzleC, '°C')}
-              </dd>
-            </div>
-            <div className={styles.row}>
-              <dt>Bed Temperature</dt>
-              <dd className={temperature.bedC === null ? styles.missing : undefined}>
-                {formatRange(temperature.bedC, '°C')}
-              </dd>
-            </div>
-          </dl>
-          <a
-            className={styles.source}
-            href={filament.sourceUrl}
-            target="_blank"
-            rel="noreferrer noopener"
-          >
-            Nguồn thông số ↗
-          </a>
-        </div>
+        <a
+          className={styles.source}
+          href={filament.sourceUrl}
+          target="_blank"
+          rel="noreferrer noopener"
+        >
+          Nguồn ↗
+        </a>
       </div>
+
+      <nav className={styles.tabs} aria-label="Nhóm thông số">
+        {tabs.map((tab) => (
+          <button
+            key={tab.id}
+            type="button"
+            className={tab.id === activeTab ? `${styles.tab} ${styles.tabActive}` : styles.tab}
+            onClick={() => setActiveTab(tab.id)}
+            aria-current={tab.id === activeTab ? 'true' : undefined}
+          >
+            {tab.label}
+          </button>
+        ))}
+      </nav>
+
+      {currentTab ? (
+        <div className={styles.groups}>
+          {currentTab.groups.map((group) => (
+            <div key={group.title} className={styles.group}>
+              <h3 className={styles.groupTitle}>{group.title}</h3>
+              <dl className={styles.rows}>
+                {group.rows.map((row) => (
+                  <div key={row.label} className={styles.row}>
+                    <dt className={styles.rowLabel}>
+                      {row.label}
+                      {row.note ? <span className={styles.note}>{row.note}</span> : null}
+                    </dt>
+                    <dd className={row.value === null ? styles.missingValue : styles.value}>
+                      {row.value ?? 'chưa có dữ liệu'}
+                    </dd>
+                  </div>
+                ))}
+              </dl>
+            </div>
+          ))}
+        </div>
+      ) : null}
 
       {warnings.length > 0 ? (
         <ul className={styles.warnings}>
@@ -92,8 +106,12 @@ export function PrintSettingsPanel({ settings }: Props) {
       ) : null}
 
       <p className={styles.disclaimer}>
-        Nhóm Quality / Strength lấy từ hướng dẫn bên thứ ba, chưa đối chiếu với preset chính thức
-        của Bambu. Kiểm tra lại trong Bambu Studio trước khi in thật.
+        Giá trị Quality/Strength suy từ lựa chọn độ chi tiết và mục đích sử dụng, chưa đối chiếu với
+        preset chính thức của Bambu.
+        {missingCount > 0
+          ? ` Còn ${missingCount} tham số chưa có dữ liệu — mở preset tương ứng trong Bambu Studio để lấy.`
+          : ''}{' '}
+        Luôn kiểm tra lại trong Bambu Studio trước khi in thật.
       </p>
     </section>
   );

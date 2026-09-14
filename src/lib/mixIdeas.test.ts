@@ -12,14 +12,7 @@ const {
   strengths: STRENGTH_OPTIONS,
 } = BUNDLED_DATA.technicalAxes;
 
-const input: MixInput = {
-  categories: PRODUCT_CATEGORIES,
-  attributeAxes: ATTRIBUTE_AXES,
-  sizes: SIZE_OPTIONS,
-  details: DETAIL_OPTIONS,
-  strengths: STRENGTH_OPTIONS,
-  filaments: FILAMENTS,
-};
+const input: MixInput = { ...BUNDLED_DATA, filaments: FILAMENTS };
 
 describe('pickRandom', () => {
   it('chọn phần tử đầu khi random trả về 0', () => {
@@ -69,5 +62,80 @@ describe('mixIdeas', () => {
     expect(DETAIL_OPTIONS).toContain(result.detail);
     expect(STRENGTH_OPTIONS).toContain(result.strength);
     expect(FILAMENTS).toContain(result.filament);
+  });
+});
+
+describe('mixIdeas — thang sáng tạo', () => {
+  it('mức 1 chỉ có sản phẩm, không bật chiều sáng tạo nào', () => {
+    const result = mixIdeas(input, () => 0.5, 1);
+    expect(result.mechanism).toBeNull();
+    expect(result.secondaryProduct).toBeNull();
+    expect(result.fusion).toBeNull();
+    expect(result.character).toBeNull();
+    expect(result.personalization).toBeNull();
+  });
+
+  it('mức 2 bật cơ chế nhưng chưa lai ghép', () => {
+    const result = mixIdeas(input, () => 0.5, 2);
+    expect(result.mechanism).not.toBeNull();
+    expect(result.fusion).toBeNull();
+    expect(result.character).toBeNull();
+  });
+
+  it('mức 3 bật lai ghép nhưng chưa có nhân vật', () => {
+    const result = mixIdeas(input, () => 0.5, 3);
+    expect(result.fusion).not.toBeNull();
+    expect(result.secondaryProduct).not.toBeNull();
+    expect(result.character).toBeNull();
+    expect(result.personalization).toBeNull();
+  });
+
+  it('mức 4 bật đủ mọi chiều', () => {
+    const result = mixIdeas(input, () => 0.5, 4);
+    expect(result.mechanism).not.toBeNull();
+    expect(result.fusion).not.toBeNull();
+    expect(result.character).not.toBeNull();
+    expect(result.personalization).not.toBeNull();
+  });
+});
+
+describe('mixIdeas — chọn thực thể thứ hai', () => {
+  it('thực thể thứ hai luôn thuộc danh mục khác danh mục chính', () => {
+    for (let step = 0; step < 60; step += 1) {
+      const result = mixIdeas(input, () => step / 60, 3);
+      if (result.secondaryCategory) {
+        expect(result.secondaryCategory.id).not.toBe(result.category.id);
+      }
+    }
+  });
+
+  it('sản phẩm phụ thuộc đúng danh mục phụ', () => {
+    for (let step = 0; step < 40; step += 1) {
+      const result = mixIdeas(input, () => step / 40, 4);
+      if (result.secondaryCategory && result.secondaryProduct) {
+        expect(result.secondaryCategory.products).toContain(result.secondaryProduct);
+      }
+    }
+  });
+
+  it('mức 4 ưu tiên danh mục KHÁC DOMAIN để ý tưởng va chạm xa hơn', () => {
+    let distantCount = 0;
+    let total = 0;
+    for (let step = 0; step < 60; step += 1) {
+      const result = mixIdeas(input, () => step / 60, 4);
+      if (result.secondaryCategory) {
+        total += 1;
+        if (result.secondaryCategory.domain !== result.category.domain) distantCount += 1;
+      }
+    }
+    expect(total).toBeGreaterThan(0);
+    expect(distantCount).toBe(total);
+  });
+
+  it('danh mục nào cũng có domain hợp lệ', () => {
+    const valid = ['functional', 'decorative', 'playful', 'mechanical', 'nature'];
+    for (const category of PRODUCT_CATEGORIES) {
+      expect(valid).toContain(category.domain);
+    }
   });
 });

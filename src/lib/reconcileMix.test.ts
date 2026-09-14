@@ -4,14 +4,7 @@ import { FILAMENTS } from '../data/filaments';
 import { mixIdeas, type MixInput } from './mixIdeas';
 import { reconcileMix } from './reconcileMix';
 
-const input: MixInput = {
-  categories: BUNDLED_DATA.categories,
-  attributeAxes: BUNDLED_DATA.attributeAxes,
-  sizes: BUNDLED_DATA.technicalAxes.sizes,
-  details: BUNDLED_DATA.technicalAxes.details,
-  strengths: BUNDLED_DATA.technicalAxes.strengths,
-  filaments: FILAMENTS,
-};
+const input: MixInput = { ...BUNDLED_DATA, filaments: FILAMENTS };
 
 const mix = mixIdeas(input, () => 0.4);
 

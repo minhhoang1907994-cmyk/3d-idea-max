@@ -1,0 +1,72 @@
+[
+  {
+    "id": "shaped-like",
+    "label": "A mang hình dạng B",
+    "template": "{A} shaped like {B}"
+  },
+  {
+    "id": "disguised-as",
+    "label": "A ngụy trang thành B",
+    "template": "{A} completely disguised as {B}, only revealing its real purpose when used"
+  },
+  {
+    "id": "growing-out-of",
+    "label": "A mọc ra từ B",
+    "template": "{A} growing out of {B} as if the two had fused while alive"
+  },
+  {
+    "id": "dual-function",
+    "label": "A kiêm luôn B",
+    "template": "{A} that doubles as {B}"
+  },
+  {
+    "id": "built-from",
+    "label": "A dựng từ nhiều B",
+    "template": "{A} constructed entirely out of many small {B}"
+  },
+  {
+    "id": "inhabited-by",
+    "label": "B sống bên trong A",
+    "template": "{A} with {B} living inside it, peeking out"
+  },
+  {
+    "id": "wearing",
+    "label": "A đội lốt B",
+    "template": "{A} wearing {B} like a costume"
+  },
+  {
+    "id": "miniature-world",
+    "label": "A chứa cả thế giới B",
+    "template": "{A} containing a miniature world built around {B}"
+  },
+  {
+    "id": "half-half",
+    "label": "Nửa A nửa B",
+    "template": "one half {A} and one half {B}, split cleanly down the middle"
+  },
+  {
+    "id": "mechanism-swap",
+    "label": "A chạy bằng cơ cấu của B",
+    "template": "{A} that works using the moving parts of {B}"
+  },
+  {
+    "id": "scale-flip",
+    "label": "A to bằng B, B nhỏ bằng A",
+    "template": "{A} blown up to the size of {B} while {B} shrinks to fit in the palm"
+  },
+  {
+    "id": "melting-into",
+    "label": "A tan chảy thành B",
+    "template": "{A} caught mid-transformation as it melts into {B}"
+  },
+  {
+    "id": "carrying",
+    "label": "A cõng B",
+    "template": "{A} carrying {B} on its back"
+  },
+  {
+    "id": "overgrown",
+    "label": "B mọc phủ kín A",
+    "template": "{A} overgrown and reclaimed by {B}"
+  }
+]

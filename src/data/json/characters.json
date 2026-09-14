@@ -1,0 +1,78 @@
+[
+  { "id": "shiba-dog", "label": "Chó Shiba", "promptText": "a round-cheeked shiba dog" },
+  { "id": "cat", "label": "Mèo", "promptText": "a smug sitting cat" },
+  { "id": "dragon", "label": "Rồng", "promptText": "a long-bodied eastern dragon" },
+  {
+    "id": "axolotl",
+    "label": "Kỳ giông axolotl",
+    "promptText": "a smiling axolotl with frilled gills"
+  },
+  { "id": "octopus", "label": "Bạch tuộc", "promptText": "a curling octopus with suckered arms" },
+  {
+    "id": "jellyfish",
+    "label": "Sứa",
+    "promptText": "a drifting jellyfish with trailing tentacles"
+  },
+  { "id": "whale", "label": "Cá voi", "promptText": "a chubby whale mid-dive" },
+  { "id": "sea-turtle", "label": "Rùa biển", "promptText": "a sea turtle with a patterned shell" },
+  { "id": "penguin", "label": "Chim cánh cụt", "promptText": "a waddling penguin" },
+  { "id": "owl", "label": "Cú mèo", "promptText": "a wide-eyed owl" },
+  { "id": "fox", "label": "Cáo", "promptText": "a sly fox with a bushy tail" },
+  {
+    "id": "red-panda",
+    "label": "Gấu trúc đỏ",
+    "promptText": "a red panda clinging with both paws"
+  },
+  { "id": "rabbit", "label": "Thỏ", "promptText": "a long-eared rabbit mid-hop" },
+  { "id": "tiger", "label": "Hổ", "promptText": "a prowling striped tiger" },
+  { "id": "elephant", "label": "Voi", "promptText": "a small elephant with a raised trunk" },
+  { "id": "chameleon", "label": "Tắc kè hoa", "promptText": "a chameleon with a coiled tail" },
+  { "id": "frog", "label": "Ếch", "promptText": "a squat frog mid-croak" },
+  { "id": "bee", "label": "Ong", "promptText": "a fuzzy striped bee" },
+  { "id": "butterfly", "label": "Bướm", "promptText": "a butterfly with patterned wings" },
+  { "id": "snail", "label": "Ốc sên", "promptText": "a slow snail carrying a spiral shell" },
+  { "id": "crab", "label": "Cua", "promptText": "a sideways-scuttling crab" },
+  { "id": "t-rex", "label": "Khủng long bạo chúa", "promptText": "a stubby-armed tyrannosaurus" },
+  {
+    "id": "triceratops",
+    "label": "Khủng long ba sừng",
+    "promptText": "a triceratops with a broad frill"
+  },
+  { "id": "unicorn", "label": "Kỳ lân", "promptText": "a unicorn with a spiral horn" },
+  {
+    "id": "phoenix",
+    "label": "Phượng hoàng",
+    "promptText": "a phoenix with sweeping tail feathers"
+  },
+  { "id": "kitsune", "label": "Hồ ly chín đuôi", "promptText": "a nine-tailed fox spirit" },
+  { "id": "golem", "label": "Golem đá", "promptText": "a lumbering stone golem" },
+  { "id": "ghost", "label": "Ma nhỏ", "promptText": "a floating cartoon ghost" },
+  { "id": "slime", "label": "Slime", "promptText": "a wobbling slime blob with a grin" },
+  {
+    "id": "mushroom-person",
+    "label": "Người nấm",
+    "promptText": "a tiny mushroom-capped creature"
+  },
+  {
+    "id": "cactus-buddy",
+    "label": "Xương rồng có mặt",
+    "promptText": "a potted cactus with a face"
+  },
+  { "id": "robot", "label": "Robot", "promptText": "a boxy retro robot with antenna" },
+  {
+    "id": "astronaut",
+    "label": "Phi hành gia",
+    "promptText": "a rounded astronaut in a bulky suit"
+  },
+  { "id": "knight", "label": "Hiệp sĩ", "promptText": "a stout armoured knight" },
+  { "id": "wizard", "label": "Phù thủy", "promptText": "a bearded wizard in a pointed hat" },
+  { "id": "ninja", "label": "Ninja", "promptText": "a crouching masked ninja" },
+  { "id": "mermaid", "label": "Nàng tiên cá", "promptText": "a mermaid with a curled fish tail" },
+  { "id": "maneki-neko", "label": "Mèo thần tài", "promptText": "a beckoning maneki-neko cat" },
+  {
+    "id": "totoro-like-forest-spirit",
+    "label": "Thần rừng",
+    "promptText": "a plump forest spirit with round ears"
+  },
+  { "id": "snowman", "label": "Người tuyết", "promptText": "a lopsided snowman" }
+]

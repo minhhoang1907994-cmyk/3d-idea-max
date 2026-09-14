@@ -42,13 +42,33 @@ export function useIdeaData() {
       const name = await connectDirectory();
       if (name === null) return; // user bấm hủy
 
-      const [categories, attributeAxes, technicalAxes] = await Promise.all([
+      const [
+        categories,
+        attributeAxes,
+        technicalAxes,
+        mechanisms,
+        characters,
+        personalizations,
+        fusionFormulas,
+      ] = await Promise.all([
         readJsonFile<ProductCategory[]>(DATA_FILES.categories),
         readJsonFile<AttributeAxis[]>(DATA_FILES.attributes),
         readJsonFile<IdeaData['technicalAxes']>(DATA_FILES.technicalAxes),
+        readJsonFile<IdeaData['mechanisms']>(DATA_FILES.mechanisms),
+        readJsonFile<IdeaData['characters']>(DATA_FILES.characters),
+        readJsonFile<IdeaData['personalizations']>(DATA_FILES.personalizations),
+        readJsonFile<IdeaData['fusionFormulas']>(DATA_FILES.fusionFormulas),
       ]);
 
-      setData({ categories, attributeAxes, technicalAxes });
+      setData({
+        categories,
+        attributeAxes,
+        technicalAxes,
+        mechanisms,
+        characters,
+        personalizations,
+        fusionFormulas,
+      });
       setStatus({
         connected: true,
         directoryName: name,
@@ -73,6 +93,10 @@ export function useIdeaData() {
         writeJsonFile(DATA_FILES.categories, data.categories),
         writeJsonFile(DATA_FILES.attributes, data.attributeAxes),
         writeJsonFile(DATA_FILES.technicalAxes, data.technicalAxes),
+        writeJsonFile(DATA_FILES.mechanisms, data.mechanisms),
+        writeJsonFile(DATA_FILES.characters, data.characters),
+        writeJsonFile(DATA_FILES.personalizations, data.personalizations),
+        writeJsonFile(DATA_FILES.fusionFormulas, data.fusionFormulas),
       ]);
       setStatus((current) => ({
         ...current,

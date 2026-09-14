@@ -1,3 +1,5 @@
+import { CreativitySlider } from '../components/CreativitySlider';
+import { IdeaBreakdown } from '../components/IdeaBreakdown';
 import { PrintSettingsPanel } from '../components/PrintSettingsPanel';
 import { PromptPanel } from '../components/PromptPanel';
 import { SelectField } from '../components/SelectField';
@@ -26,6 +28,8 @@ export function MixPage({ data }: Props) {
           🎲 Mix
         </button>
       </header>
+
+      <CreativitySlider value={mixer.creativity} onChange={mixer.setCreativity} />
 
       <section className={styles.controls}>
         <SelectField
@@ -88,6 +92,7 @@ export function MixPage({ data }: Props) {
       </section>
 
       <div className={styles.results}>
+        <IdeaBreakdown mix={mix} />
         <PromptPanel prompt={mixer.prompt} />
         <PrintSettingsPanel settings={mixer.printSettings} />
       </div>

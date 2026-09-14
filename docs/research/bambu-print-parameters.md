@@ -89,3 +89,46 @@ Các giá trị dưới đây do **user cung cấp**, nguồn là bài hướng 
 - [ ] Lấy bed temperature của PLA Basic và PETG-CF
 - [ ] Đối chiếu nhóm Quality / Strength / Speed với preset mặc định trong Bambu Studio
 - [ ] Xác nhận danh sách build plate (Smooth PEI / Textured PEI / Engineering / High Temp) nếu muốn thông số chính xác theo mặt bàn
+
+---
+
+## 8. Cấu trúc tham số Bambu Studio (từ ảnh chụp user cung cấp, 2026-09-14)
+
+Bambu Studio chia tham số thành **5 tab**. Đây là cấu trúc để app hiển thị theo, lấy từ
+ảnh chụp giao diện thật:
+
+| Tab          | Nhóm               | Tham số chính                                                                                                                                                                                                                       |
+| ------------ | ------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Quality**  | Wall generator     | Wall generator (Classic/Arachne)                                                                                                                                                                                                    |
+|              | Advanced           | Order of walls, Print infill first, Bridge flow, Thick bridges, Top surface flow ratio, Initial layer flow ratio, Only one wall on top surfaces, Top area threshold, Detect overhang walls, Smooth coefficient, Avoid crossing wall |
+| **Strength** | Walls              | Wall loops, Detect thin wall                                                                                                                                                                                                        |
+|              | Top/bottom shells  | Top surface pattern, Top shell layers, Bottom surface pattern, Bottom shell layers, Internal solid infill pattern                                                                                                                   |
+|              | Sparse infill      | Sparse infill density (%), Sparse infill pattern, Length of sparse infill anchor                                                                                                                                                    |
+|              | Advanced           | Infill/Wall overlap, Infill direction, Minimum sparse infill threshold, Ensure vertical shell thickness                                                                                                                             |
+| **Speed**    | First layer speed  | First layer, First layer infill, Initial layer travel speed, Number of slow layers                                                                                                                                                  |
+|              | Other layers speed | Outer wall, Inner wall, Small perimeters, Sparse infill, Internal solid infill, Top surface, Gap infill                                                                                                                             |
+|              | Overhang speed     | Slow down for overhangs, Classic mode                                                                                                                                                                                               |
+| **Support**  | Support            | Enable support, Type, Style, Threshold angle, On build plate only, Remove small overhangs                                                                                                                                           |
+|              | Raft               | Raft layers                                                                                                                                                                                                                         |
+|              | Advanced           | Tree support branch distance/diameter/angle, Top Z distance, Bottom Z distance, Top/Bottom interface layers, Support/object xy distance                                                                                             |
+| **Others**   | Special mode       | Slicing Mode, Print sequence, Spiral vase, Smooth Spiral, Timelapse, Fuzzy Skin                                                                                                                                                     |
+
+### Quy ước đặt tên preset
+
+`{layer height}mm {profile} @BBL {máy}[ {nozzle} nozzle]`
+Ví dụ thấy trong ảnh: `0.20mm Standard @BBL A1`, `0.20mm Standard @BBL X1C`,
+`0.30mm Standard @BBL X1C 0.6 nozzle`. Hậu tố nozzle chỉ xuất hiện khi khác 0.4mm.
+
+### ⚠️ Cảnh báo về số liệu trong ảnh — ĐỌC TRƯỚC KHI DÙNG
+
+| Ảnh                              | Preset                                | Dùng được số không?                                                                                                                                                                                                                                                             |
+| -------------------------------- | ------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `质量—高级设置en1.png` (Quality) | `0.20mm Standard @BBL A1`             | Chỉ các giá trị Advanced: Bridge flow 1, Top surface flow ratio 1, Initial layer flow ratio 1, Top area threshold 100%, Smooth coefficient 80, Order of walls = inner/outer                                                                                                     |
+| `petg-推荐强度en.png` (Strength) | `* 0.20mm Standard @BBL X1C`          | **KHÔNG** — dấu `*` = preset đã sửa. Wall loops 1 / Top+Bottom shell 0 / infill 100% Concentric là cấu hình **spiral vase**, không phải mặc định                                                                                                                                |
+| `e39ef81c...png` (Speed)         | `0.30mm Standard @BBL X1C 0.6 nozzle` | Chỉ cho **X1C + nozzle 0.6mm**. First layer 35, First layer infill 55, Outer wall 120, Inner wall 150, Small perimeters 50%, Sparse infill 100, Internal solid infill 150, Top surface 150, Gap infill 50 (mm/s)                                                                |
+| `is-it-normal...png` (Support)   | không rõ preset                       | Giá trị cấu trúc dùng được: Threshold angle 30°, Tree branch distance 5mm / diameter 2mm / angle 45°, Top Z distance 0.15mm, Bottom Z distance 0.2mm, Base pattern spacing 2.5mm, Top/Bottom interface layers 2, Top interface spacing 0.3mm, Support/object xy distance 0.15mm |
+| `Thu-tu-in.webp` (Others)        | `* 0.20mm Standard @BBL A1`           | Chỉ là minh hoạ vị trí tham số Special mode, các giá trị đang ở chế độ spiral vase                                                                                                                                                                                              |
+
+**Kết luận cho code**: app sinh được Quality/Strength từ axis `detail` + `strength`;
+Speed chỉ có dữ liệu cho X1C 0.6 nozzle, các máy khác để `null`; Support và Others phụ
+thuộc hình dạng mô hình nên app chỉ đưa gợi ý cần kiểm tra, không chốt giá trị.

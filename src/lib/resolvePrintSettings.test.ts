@@ -3,7 +3,7 @@ import { FILAMENTS_BY_ID } from '../data/filaments';
 import { PRINTERS_BY_ID } from '../data/printers';
 import { BUNDLED_DATA } from '../data/bundledData';
 import { resolvePrintSettings } from './resolvePrintSettings';
-import type { Filament, MixResult, SizeOption } from '../types';
+import type { Filament, MixResult, PrintSettings, SizeOption } from '../types';
 
 // Dữ liệu giờ nằm trong JSON — lấy qua BUNDLED_DATA, giữ nguyên tên cũ cho phần test bên dưới
 const PRODUCT_CATEGORIES = BUNDLED_DATA.categories;
@@ -29,6 +29,13 @@ function makeMix(overrides: { filament: Filament; size?: SizeOption }): MixResul
     detail: DETAIL_OPTIONS[1]!,
     strength: STRENGTH_OPTIONS[1]!,
     filament: overrides.filament,
+    creativity: 1,
+    mechanism: null,
+    secondaryCategory: null,
+    secondaryProduct: null,
+    fusion: null,
+    character: null,
+    personalization: null,
   };
 }
 
@@ -39,6 +46,13 @@ const a1 = PRINTERS_BY_ID['a1']!;
 const a1Mini = PRINTERS_BY_ID['a1-mini']!;
 const x1c = PRINTERS_BY_ID['x1c']!;
 
+/** Tìm một tham số theo đúng nhãn Bambu Studio, không quan tâm nó nằm tab nào. */
+function findRow(settings: PrintSettings, label: string) {
+  return settings.tabs
+    .flatMap((tab) => tab.groups.flatMap((group) => group.rows))
+    .find((row) => row.label === label);
+}
+
 describe('resolvePrintSettings — tổ hợp hợp lệ', () => {
   it('PLA trên A1 không sinh cảnh báo mức warning', () => {
     const settings = resolvePrintSettings(makeMix({ filament: pla }), a1);
@@ -47,10 +61,10 @@ describe('resolvePrintSettings — tổ hợp hợp lệ', () => {
 
   it('lấy layer height từ detail và wall loops từ strength', () => {
     const settings = resolvePrintSettings(makeMix({ filament: pla }), a1);
-    expect(settings.quality.layerHeightMm).toBe(DETAIL_OPTIONS[1]!.layerHeightMm);
-    expect(settings.quality.wallLoops).toBe(STRENGTH_OPTIONS[1]!.wallLoops);
-    expect(settings.strength.sparseInfillDensityPercent).toBe(
-      STRENGTH_OPTIONS[1]!.sparseInfillDensityPercent,
+    expect(findRow(settings, 'Layer height')?.value).toBe(`${DETAIL_OPTIONS[1]!.layerHeightMm} mm`);
+    expect(findRow(settings, 'Wall loops')?.value).toBe(String(STRENGTH_OPTIONS[1]!.wallLoops));
+    expect(findRow(settings, 'Sparse infill density')?.value).toBe(
+      `${STRENGTH_OPTIONS[1]!.sparseInfillDensityPercent} %`,
     );
   });
 });
@@ -111,5 +125,76 @@ describe('resolvePrintSettings — dữ liệu chưa verify', () => {
     expect(settings.warnings.some((w) => w.message.includes('Chưa có dữ liệu nhiệt độ'))).toBe(
       false,
     );
+  });
+});
+
+describe('resolvePrintSettings — cấu trúc 5 tab Bambu Studio', () => {
+  it('có đủ 5 tab đúng tên như trong Bambu Studio', () => {
+    const settings = resolvePrintSettings(makeMix({ filament: pla }), a1);
+    expect(settings.tabs.map((tab) => tab.label)).toEqual([
+      'Quality',
+      'Strength',
+      'Speed',
+      'Support',
+      'Others',
+    ]);
+  });
+
+  it('sinh tên preset theo quy ước Bambu', () => {
+    const settings = resolvePrintSettings(makeMix({ filament: pla }), a1);
+    expect(settings.presetName).toBe('0.20mm Standard @BBL A1');
+  });
+
+  it('thêm hậu tố nozzle khi khác 0.4mm', () => {
+    const settings = resolvePrintSettings(makeMix({ filament: pla }), x1c, 0.6);
+    expect(settings.presetName).toBe('0.20mm Standard @BBL X1C 0.6 nozzle');
+  });
+
+  it('lấy số lớp vỏ trên/dưới từ mục đích sử dụng', () => {
+    const settings = resolvePrintSettings(makeMix({ filament: pla }), a1);
+    expect(findRow(settings, 'Top shell layers')?.value).toBe(
+      String(STRENGTH_OPTIONS[1]!.topShellLayers),
+    );
+    expect(findRow(settings, 'Bottom shell layers')?.value).toBe(
+      String(STRENGTH_OPTIONS[1]!.bottomShellLayers),
+    );
+  });
+});
+
+describe('resolvePrintSettings — tốc độ chỉ có cho preset đã biết', () => {
+  it('trả về số thật cho X1C + nozzle 0.6 (preset có trong ảnh nguồn)', () => {
+    const settings = resolvePrintSettings(makeMix({ filament: pla }), x1c, 0.6);
+    expect(findRow(settings, 'Outer wall')?.value).toBe('120 mm/s');
+    expect(findRow(settings, 'First layer')?.value).toBe('35 mm/s');
+  });
+
+  it('KHÔNG suy số tốc độ của máy khác từ preset X1C 0.6', () => {
+    const settings = resolvePrintSettings(makeMix({ filament: pla }), a1);
+    expect(findRow(settings, 'Outer wall')?.value).toBeNull();
+    expect(findRow(settings, 'First layer')?.value).toBeNull();
+  });
+
+  it('nêu rõ lý do khi thiếu dữ liệu tốc độ', () => {
+    const settings = resolvePrintSettings(makeMix({ filament: pla }), a1);
+    expect(findRow(settings, 'Outer wall')?.note).toContain('Chưa có dữ liệu preset');
+  });
+
+  it('cùng máy nhưng nozzle khác thì không dùng lại preset', () => {
+    const settings = resolvePrintSettings(makeMix({ filament: pla }), x1c, 0.4);
+    expect(findRow(settings, 'Outer wall')?.value).toBeNull();
+  });
+});
+
+describe('resolvePrintSettings — không chốt thứ app không biết', () => {
+  it('để trống Enable support vì phụ thuộc hình dạng mô hình', () => {
+    const settings = resolvePrintSettings(makeMix({ filament: pla }), a1);
+    const row = findRow(settings, 'Enable support');
+    expect(row?.value).toBeNull();
+    expect(row?.note).toContain('hình dạng mô hình');
+  });
+
+  it('để Spiral vase tắt mặc định — bật nhầm sẽ in hỏng vật thể thường', () => {
+    const settings = resolvePrintSettings(makeMix({ filament: pla }), a1);
+    expect(findRow(settings, 'Spiral vase')?.value).toBe('tắt');
   });
 });

@@ -3,6 +3,7 @@
     "id": "toys-and-figures",
     "label": "Đồ chơi & mô hình",
     "promptText": "a collectible toy",
+    "domain": "playful",
     "products": [
       {
         "id": "dragon-figurine",
@@ -160,6 +161,7 @@
     "id": "home-decor",
     "label": "Trang trí nhà cửa",
     "promptText": "a home decor object",
+    "domain": "decorative",
     "products": [
       {
         "id": "vase",
@@ -317,6 +319,7 @@
     "id": "kitchenware",
     "label": "Đồ dùng nhà bếp",
     "promptText": "a kitchen utility object",
+    "domain": "functional",
     "products": [
       {
         "id": "measuring-spoon-set",
@@ -474,6 +477,7 @@
     "id": "desk-organization",
     "label": "Tổ chức bàn làm việc",
     "promptText": "a desk organizer",
+    "domain": "functional",
     "products": [
       {
         "id": "pen-holder",
@@ -631,6 +635,7 @@
     "id": "tech-accessories",
     "label": "Phụ kiện công nghệ",
     "promptText": "a tech accessory",
+    "domain": "functional",
     "products": [
       {
         "id": "laptop-riser",
@@ -788,6 +793,7 @@
     "id": "school-supplies",
     "label": "Đồ dùng học tập",
     "promptText": "a study accessory",
+    "domain": "functional",
     "products": [
       {
         "id": "bookmark",
@@ -945,6 +951,7 @@
     "id": "tools-and-hardware",
     "label": "Dụng cụ & đồ nghề",
     "promptText": "a workshop tool",
+    "domain": "functional",
     "products": [
       {
         "id": "screwdriver-handle",
@@ -1102,6 +1109,7 @@
     "id": "educational-toys",
     "label": "Đồ chơi giáo dục",
     "promptText": "an educational toy",
+    "domain": "playful",
     "products": [
       {
         "id": "gear-train-set",
@@ -1259,6 +1267,7 @@
     "id": "fashion-accessories",
     "label": "Phụ kiện thời trang",
     "promptText": "a wearable accessory",
+    "domain": "decorative",
     "products": [
       {
         "id": "pendant",
@@ -1416,6 +1425,7 @@
     "id": "pet-supplies",
     "label": "Đồ cho thú cưng",
     "promptText": "a pet accessory",
+    "domain": "playful",
     "products": [
       {
         "id": "pet-bowl-stand",
@@ -1573,6 +1583,7 @@
     "id": "garden-and-plants",
     "label": "Cây cảnh & làm vườn",
     "promptText": "a gardening object",
+    "domain": "nature",
     "products": [
       {
         "id": "planter-pot",
@@ -1730,6 +1741,7 @@
     "id": "mechanical-parts",
     "label": "Cơ khí & khớp nối",
     "promptText": "a mechanical part",
+    "domain": "mechanical",
     "products": [
       {
         "id": "spur-gear",
@@ -1887,6 +1899,7 @@
     "id": "gifts-and-keepsakes",
     "label": "Quà tặng & kỷ niệm",
     "promptText": "a keepsake gift",
+    "domain": "decorative",
     "products": [
       {
         "id": "trophy",
@@ -2044,6 +2057,7 @@
     "id": "vehicle-accessories",
     "label": "Phụ kiện xe cộ",
     "promptText": "a vehicle accessory",
+    "domain": "functional",
     "products": [
       {
         "id": "phone-vent-mount",
@@ -2201,6 +2215,7 @@
     "id": "bathroom-accessories",
     "label": "Đồ dùng phòng tắm",
     "promptText": "a bathroom accessory",
+    "domain": "functional",
     "products": [
       {
         "id": "toothbrush-holder",
@@ -2358,6 +2373,7 @@
     "id": "storage-and-containers",
     "label": "Hộp & lưu trữ",
     "promptText": "a storage container",
+    "domain": "functional",
     "products": [
       {
         "id": "stackable-bin",
@@ -2515,6 +2531,7 @@
     "id": "sports-and-outdoors",
     "label": "Thể thao & dã ngoại",
     "promptText": "an outdoor gear item",
+    "domain": "playful",
     "products": [
       {
         "id": "tent-peg",

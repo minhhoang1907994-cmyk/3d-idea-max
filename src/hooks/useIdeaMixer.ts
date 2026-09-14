@@ -6,17 +6,10 @@ import { buildPrompt } from '../lib/buildPrompt';
 import { mixIdeas, type MixInput } from '../lib/mixIdeas';
 import { reconcileMix } from '../lib/reconcileMix';
 import { resolvePrintSettings } from '../lib/resolvePrintSettings';
-import type { AttributeAxisId, MixResult } from '../types';
+import type { AttributeAxisId, CreativityLevel, MixResult } from '../types';
 
 function toMixInput(data: IdeaData): MixInput {
-  return {
-    categories: data.categories,
-    attributeAxes: data.attributeAxes,
-    sizes: data.technicalAxes.sizes,
-    details: data.technicalAxes.details,
-    strengths: data.technicalAxes.strengths,
-    filaments: FILAMENTS,
-  };
+  return { ...data, filaments: FILAMENTS };
 }
 
 /**
@@ -25,17 +18,18 @@ function toMixInput(data: IdeaData): MixInput {
  */
 export function useIdeaMixer(data: IdeaData) {
   const mixInput = useMemo(() => toMixInput(data), [data]);
-  const [rawMix, setMix] = useState<MixResult>(() => mixIdeas(mixInput, Math.random));
+  const [rawMix, setMix] = useState<MixResult>(() => mixIdeas(mixInput, Math.random, 3));
 
   // Dữ liệu có thể đã đổi bên trang Quản lý — đồng bộ lại ngay trong render,
   // không dùng useEffect + setState (gây cascading render)
   const mix = useMemo(() => reconcileMix(rawMix, data), [rawMix, data]);
   const [printerId, setPrinterId] = useState<string>(DEFAULT_PRINTER_ID);
+  const [creativity, setCreativity] = useState<CreativityLevel>(3);
 
   /** Quyết định đã chốt #1: Mix ghi đè TOÀN BỘ lựa chọn hiện tại. */
   const remix = useCallback(() => {
-    setMix(mixIdeas(mixInput, Math.random));
-  }, [mixInput]);
+    setMix(mixIdeas(mixInput, Math.random, creativity));
+  }, [mixInput, creativity]);
 
   const selectCategory = useCallback(
     (categoryId: string) => {
@@ -122,6 +116,8 @@ export function useIdeaMixer(data: IdeaData) {
     printers: PRINTERS,
     printSettings,
     setPrinterId,
+    creativity,
+    setCreativity,
     remix,
     selectCategory,
     selectProduct,
