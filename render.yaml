@@ -1,0 +1,27 @@
+# Cấu hình deploy Render.
+#
+# QUAN TRỌNG: đây là STATIC SITE, không phải Web Service.
+# App không có backend — toàn bộ chạy trong trình duyệt. Deploy dạng Web Service
+# sẽ luôn fail với "No open ports detected on 0.0.0.0" vì không có server nào
+# lắng nghe cả; `npm run dev` chỉ là dev server, không dùng cho production.
+services:
+  - type: web
+    runtime: static
+    name: 3d-idea-max
+    buildCommand: npm ci && npm run build
+    staticPublishPath: ./dist
+    # Điều hướng giữa 2 trang làm bằng state, không đổi URL, nên không cần
+    # rewrite rule cho SPA. Nếu sau này thêm react-router thì mở khối dưới ra:
+    # routes:
+    #   - type: rewrite
+    #     source: /*
+    #     destination: /index.html
+    headers:
+      # File có hash trong tên nên cache vĩnh viễn được
+      - path: /assets/*
+        name: Cache-Control
+        value: public, max-age=31536000, immutable
+      # index.html phải luôn lấy bản mới để trỏ đúng bundle sau mỗi lần deploy
+      - path: /index.html
+        name: Cache-Control
+        value: no-cache
