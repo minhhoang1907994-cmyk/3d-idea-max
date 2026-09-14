@@ -3,6 +3,7 @@ import styles from './App.module.css';
 import { SideMenu, type PageId } from './components/SideMenu';
 import { useIdeaData } from './hooks/useIdeaData';
 import { DataManagerPage } from './pages/DataManagerPage';
+import { ImageAnalyzePage } from './pages/ImageAnalyzePage';
 import { MixPage } from './pages/MixPage';
 
 export default function App() {
@@ -14,11 +15,9 @@ export default function App() {
     <div className={styles.shell}>
       <SideMenu current={page} onNavigate={setPage} dirty={dataStore.status.dirty} />
       <div className={styles.main}>
-        {page === 'mix' ? (
-          <MixPage data={dataStore.data} />
-        ) : (
-          <DataManagerPage dataStore={dataStore} />
-        )}
+        {page === 'mix' ? <MixPage data={dataStore.data} /> : null}
+        {page === 'image' ? <ImageAnalyzePage /> : null}
+        {page === 'data' ? <DataManagerPage dataStore={dataStore} /> : null}
       </div>
     </div>
   );

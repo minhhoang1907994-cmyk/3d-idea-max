@@ -1,6 +1,6 @@
 import styles from './SideMenu.module.css';
 
-export type PageId = 'mix' | 'data';
+export type PageId = 'mix' | 'image' | 'data';
 
 type Props = {
   current: PageId;
@@ -11,6 +11,12 @@ type Props = {
 
 const ITEMS: { id: PageId; label: string; description: string; icon: string }[] = [
   { id: 'mix', label: 'Trộn ý tưởng', description: 'Sinh prompt + thông số in', icon: '🎲' },
+  {
+    id: 'image',
+    label: 'Phân tích ảnh',
+    description: 'Upload ảnh → sinh prompt tương tự',
+    icon: '🖼️',
+  },
   { id: 'data', label: 'Quản lý dữ liệu', description: 'Xem, thêm, sửa, xóa option', icon: '🗂️' },
 ];
 

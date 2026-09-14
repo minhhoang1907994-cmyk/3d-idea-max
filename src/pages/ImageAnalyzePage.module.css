@@ -1,0 +1,220 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+  max-width: 900px;
+  padding: 1.75rem 1.5rem 3rem;
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.title {
+  margin: 0;
+  font-size: 1.45rem;
+}
+
+.subtitle {
+  margin: 0;
+  max-width: 62ch;
+  font-size: 0.88rem;
+  line-height: 1.55;
+  color: var(--text-muted);
+}
+
+.config {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  padding: 1rem 1.1rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+}
+
+.configRow {
+  display: grid;
+  grid-template-columns: 1fr 220px;
+  gap: 0.8rem;
+}
+
+.field,
+.fieldNarrow {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  min-width: 0;
+}
+
+.fieldLabel {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+.keyRow {
+  display: flex;
+  gap: 0.4rem;
+}
+
+.input {
+  width: 100%;
+  padding: 0.5rem 0.6rem;
+  font: inherit;
+  font-size: 0.88rem;
+  color: var(--text);
+  background: var(--surface-sunken);
+  border: 1px solid var(--border);
+  border-radius: 7px;
+}
+
+.input:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+
+.warning {
+  margin: 0;
+  padding: 0.6rem 0.75rem;
+  font-size: 0.78rem;
+  line-height: 1.5;
+  color: var(--warning-text);
+  background: var(--warning-bg);
+  border-left: 3px solid var(--warning);
+  border-radius: 7px;
+}
+
+.dropzone {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.9rem;
+  padding: 1.5rem;
+  background: var(--surface);
+  border: 2px dashed var(--border-strong);
+  border-radius: 12px;
+  text-align: center;
+}
+
+.fileInput {
+  display: none;
+}
+
+.dropHint {
+  margin: 0;
+  padding: 2rem 0;
+  font-size: 0.88rem;
+  color: var(--text-faint);
+}
+
+.preview {
+  max-width: 100%;
+  max-height: 320px;
+  border-radius: 8px;
+  object-fit: contain;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.primaryButton,
+.secondaryButton,
+.ghostButton {
+  padding: 0.55rem 1.1rem;
+  font: inherit;
+  font-size: 0.86rem;
+  font-weight: 600;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.primaryButton {
+  color: var(--accent-text);
+  background: var(--accent);
+  border: none;
+}
+
+.primaryButton:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.secondaryButton,
+.ghostButton {
+  color: var(--text);
+  background: var(--surface-sunken);
+  border: 1px solid var(--border);
+}
+
+.ghostButton {
+  padding: 0.5rem 0.7rem;
+  font-size: 0.8rem;
+  white-space: nowrap;
+}
+
+.secondaryButton:hover,
+.ghostButton:hover {
+  border-color: var(--accent);
+}
+
+.error {
+  margin: 0;
+  padding: 0.7rem 0.85rem;
+  font-size: 0.85rem;
+  line-height: 1.5;
+  font-weight: 600;
+  color: var(--warning-text);
+  background: var(--warning-bg);
+  border-left: 3px solid var(--warning);
+  border-radius: 8px;
+}
+
+.result {
+  padding: 1.1rem 1.2rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+}
+
+.resultHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 0.75rem;
+}
+
+.resultTitle {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.prompt {
+  margin: 0;
+  padding: 0.9rem;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.86rem;
+  line-height: 1.6;
+  background: var(--surface-sunken);
+  border-radius: 8px;
+  white-space: pre-wrap;
+}
+
+.resultNote {
+  margin: 0.8rem 0 0;
+  font-size: 0.76rem;
+  line-height: 1.5;
+  color: var(--text-faint);
+}
+
+@media (max-width: 760px) {
+  .configRow {
+    grid-template-columns: 1fr;
+  }
+}

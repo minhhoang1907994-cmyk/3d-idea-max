@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { suggestId, validateOptionDraft, type OptionDraft } from '../lib/validateOption';
+import { translateLabelToPrompt } from '../lib/translateLabel';
+import { suggestId, validateOptionDraft } from '../lib/validateOption';
 import styles from './OptionEditor.module.css';
 
 export type EditableOption = { id: string; label: string; promptText: string };
@@ -13,32 +14,69 @@ type Props = {
   onDelete: (optionId: string) => void;
 };
 
-const EMPTY_DRAFT: OptionDraft = { id: '', label: '', promptText: '' };
+type AddState =
+  | { kind: 'idle' }
+  | { kind: 'translating'; progress: number | null }
+  | { kind: 'error'; errors: string[] };
 
 export function OptionEditor({ title, options, onAdd, onUpdate, onDelete }: Props) {
-  const [draft, setDraft] = useState<OptionDraft>(EMPTY_DRAFT);
-  const [errors, setErrors] = useState<string[]>([]);
+  const [label, setLabel] = useState('');
+  const [manualPrompt, setManualPrompt] = useState('');
+  /** Bật khi dịch tự động hỏng — cho user gõ tay thay vì bị chặn hẳn */
+  const [manualMode, setManualMode] = useState(false);
+  const [addState, setAddState] = useState<AddState>({ kind: 'idle' });
   const [confirmingId, setConfirmingId] = useState<string | null>(null);
 
-  function handleAdd() {
-    const candidate: OptionDraft = {
-      // Chưa gõ ID thì tự suy từ nhãn để đỡ thao tác
-      id: draft.id.trim() || suggestId(draft.label),
-      label: draft.label.trim(),
-      promptText: draft.promptText.trim(),
-    };
+  function commit(trimmedLabel: string, promptText: string) {
+    const candidate = { id: suggestId(trimmedLabel), label: trimmedLabel, promptText };
     const result = validateOptionDraft(
       candidate,
       options.map((option) => option.id),
     );
     if (!result.ok) {
-      setErrors(result.errors);
+      setAddState({ kind: 'error', errors: result.errors });
       return;
     }
+
     onAdd(candidate);
-    setDraft(EMPTY_DRAFT);
-    setErrors([]);
+    setLabel('');
+    setManualPrompt('');
+    setAddState({ kind: 'idle' });
   }
+
+  async function handleAdd() {
+    const trimmedLabel = label.trim();
+    if (trimmedLabel === '') {
+      setAddState({ kind: 'error', errors: ['Nhãn hiển thị không được để trống.'] });
+      return;
+    }
+
+    if (manualMode) {
+      commit(trimmedLabel, manualPrompt.trim());
+      return;
+    }
+
+    setAddState({ kind: 'translating', progress: null });
+
+    let promptText: string;
+    try {
+      promptText = await translateLabelToPrompt(trimmedLabel, (percent) => {
+        setAddState({ kind: 'translating', progress: percent });
+      });
+    } catch (error) {
+      setAddState({
+        kind: 'error',
+        errors: [error instanceof Error ? error.message : 'Không dịch được nhãn sang tiếng Anh.'],
+      });
+      // Dịch hỏng thì mở ô nhập tay để user vẫn thêm được
+      setManualMode(true);
+      return;
+    }
+
+    commit(trimmedLabel, promptText);
+  }
+
+  const isTranslating = addState.kind === 'translating';
 
   return (
     <div className={styles.editor}>
@@ -50,30 +88,70 @@ export function OptionEditor({ title, options, onAdd, onUpdate, onDelete }: Prop
       <div className={styles.addRow}>
         <input
           className={styles.input}
-          placeholder="ID (bỏ trống để tự sinh)"
-          value={draft.id}
-          onChange={(event) => setDraft({ ...draft, id: event.target.value })}
+          placeholder="Nhãn hiển thị, ví dụ: Đèn bàn gấp gọn"
+          value={label}
+          disabled={isTranslating}
+          onChange={(event) => {
+            setLabel(event.target.value);
+            if (addState.kind === 'error') setAddState({ kind: 'idle' });
+          }}
+          onKeyDown={(event) => {
+            if (event.key === 'Enter' && !isTranslating) void handleAdd();
+          }}
         />
-        <input
-          className={styles.input}
-          placeholder="Nhãn hiển thị (tiếng Việt được)"
-          value={draft.label}
-          onChange={(event) => setDraft({ ...draft, label: event.target.value })}
-        />
-        <input
-          className={styles.input}
-          placeholder="Prompt text (tiếng Anh)"
-          value={draft.promptText}
-          onChange={(event) => setDraft({ ...draft, promptText: event.target.value })}
-        />
-        <button type="button" className={styles.addButton} onClick={handleAdd}>
-          Thêm
+        {manualMode ? (
+          <input
+            className={styles.input}
+            placeholder="Prompt tiếng Anh, ví dụ: a foldable desk lamp"
+            value={manualPrompt}
+            onChange={(event) => setManualPrompt(event.target.value)}
+            onKeyDown={(event) => {
+              if (event.key === 'Enter') void handleAdd();
+            }}
+          />
+        ) : null}
+        <button
+          type="button"
+          className={styles.addButton}
+          disabled={isTranslating}
+          onClick={() => void handleAdd()}
+        >
+          {isTranslating ? 'Đang dịch…' : 'Thêm'}
         </button>
       </div>
 
-      {errors.length > 0 ? (
+      <p className={styles.addHint}>
+        {manualMode ? (
+          <>
+            Đang ở chế độ nhập tay: gõ cả nhãn tiếng Việt và prompt tiếng Anh.{' '}
+            <button
+              type="button"
+              className={styles.linkButton}
+              onClick={() => {
+                setManualMode(false);
+                setAddState({ kind: 'idle' });
+              }}
+            >
+              Thử lại dịch tự động
+            </button>
+          </>
+        ) : (
+          <>
+            Chỉ cần nhập nhãn tiếng Việt — ID và prompt tiếng Anh tự sinh khi bấm Thêm. Dịch chạy
+            ngay trong trình duyệt, lần đầu Chrome tải gói ngôn ngữ nên hơi lâu.
+            {addState.kind === 'translating' && addState.progress !== null
+              ? ` Đang tải gói ngôn ngữ: ${addState.progress}%`
+              : ''}{' '}
+            <button type="button" className={styles.linkButton} onClick={() => setManualMode(true)}>
+              Nhập prompt tay
+            </button>
+          </>
+        )}
+      </p>
+
+      {addState.kind === 'error' ? (
         <ul className={styles.errors}>
-          {errors.map((error) => (
+          {addState.errors.map((error) => (
             <li key={error}>{error}</li>
           ))}
         </ul>
@@ -145,7 +223,8 @@ export function OptionEditor({ title, options, onAdd, onUpdate, onDelete }: Prop
       </div>
 
       <p className={styles.note}>
-        ID không sửa được sau khi tạo — đổi ID sẽ phá dữ liệu đã lưu. Cần đổi thì xóa rồi thêm lại.
+        Prompt tự sinh là bản dịch máy — sửa lại trực tiếp trong bảng nếu chưa sát ý. ID không sửa
+        được sau khi tạo; cần đổi thì xóa rồi thêm lại.
       </p>
     </div>
   );

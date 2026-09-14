@@ -1,4 +1,5 @@
 import type { MixResult } from '../types';
+import { characterTraitTexts, isCharacterSubject } from './characterTraits';
 
 /**
  * Ghép prompt cho Gemini.
@@ -62,20 +63,27 @@ export function buildPrompt(mix: MixResult): string {
   // ----- Subject: nơi lai ghép diễn ra -----
   let subject = product.promptText;
 
-  if (fusion && secondaryProduct) {
-    subject = applyFusionTemplate(fusion.template, subject, secondaryProduct.promptText);
+  // Text tự do người dùng gõ được ưu tiên hơn lựa chọn từ danh sách
+  const secondaryText = mix.secondaryOverride?.trim() || secondaryProduct?.promptText;
+  if (fusion && secondaryText) {
+    subject = applyFusionTemplate(fusion.template, subject, secondaryText);
   }
 
-  if (character) {
+  const characterText = mix.characterOverride?.trim() || character?.promptText;
+  if (characterText) {
     // Nhân vật lai vào sau công thức chính, tạo lớp ý tưởng thứ hai
-    subject = `${subject}, styled as ${character.promptText}`;
+    subject = `${subject}, styled as ${characterText}`;
   }
 
-  const subjectParts = [
-    `A single ${stripLeadingArticle(subject)}`,
-    size.promptText,
-    `made of ${filament.promptText}`,
-  ];
+  const subjectParts = [`A single ${stripLeadingArticle(subject)}`];
+
+  // Thế đứng / biểu cảm / trang phục chỉ có nghĩa khi chủ thể là nhân vật —
+  // với bình hoa hay hộp bút thì bỏ qua, xem lib/characterTraits.ts
+  if (isCharacterSubject(mix)) {
+    subjectParts.push(...characterTraitTexts(mix));
+  }
+
+  subjectParts.push(size.promptText, `made of ${filament.promptText}`);
 
   if (mechanism) {
     subjectParts.push(mechanism.promptText);

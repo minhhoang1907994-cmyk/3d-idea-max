@@ -17,56 +17,60 @@
 .chips {
   display: flex;
   flex-wrap: wrap;
-  align-items: center;
-  gap: 0.45rem;
+  align-items: stretch;
+  gap: 0.5rem;
 }
 
-.chip {
-  display: inline-flex;
+.chipStatic {
+  display: flex;
   flex-direction: column;
-  gap: 0.1rem;
-  padding: 0.4rem 0.7rem;
-  font-size: 0.88rem;
-  font-weight: 600;
+  justify-content: center;
+  gap: 0.2rem;
+  padding: 0.5rem 0.7rem;
   background: var(--surface-sunken);
   border: 1px solid var(--border);
   border-radius: 8px;
 }
 
-.chipSecondary {
-  border-color: var(--accent);
-}
-
-.chipCharacter {
-  border-color: var(--warning);
-}
-
 .chipRole {
   font-size: 0.66rem;
-  font-weight: 600;
+  font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.04em;
   color: var(--text-faint);
 }
 
-.operator {
+.chipValue {
+  font-size: 0.88rem;
+  font-weight: 600;
+}
+
+.fusionSelect {
+  align-self: center;
+  padding: 0.3rem 0.45rem;
+  font: inherit;
   font-size: 0.78rem;
   font-style: italic;
   color: var(--text-muted);
-}
-
-.formula,
-.mechanism,
-.personalization {
-  margin: 0.6rem 0 0;
-  font-size: 0.82rem;
-  line-height: 1.5;
-  color: var(--text-muted);
-}
-
-.mechanism {
-  padding: 0.5rem 0.7rem;
-  background: var(--surface-sunken);
-  border-left: 3px solid var(--accent);
+  background: var(--surface);
+  border: 1px dashed var(--border-strong);
   border-radius: 6px;
+  cursor: pointer;
+}
+
+.fusionSelect:hover {
+  color: var(--text);
+  border-color: var(--accent);
+}
+
+.fusionSelect:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+
+.operator {
+  align-self: center;
+  font-size: 0.78rem;
+  font-style: italic;
+  color: var(--text-muted);
 }

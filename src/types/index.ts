@@ -13,6 +13,15 @@ export type Product = {
   label: string;
   /** Mảnh câu tiếng Anh ghép vào slot Subject — phải ghép được thành câu tự nhiên */
   promptText: string;
+  /**
+   * Sản phẩm có mặt / tay chân — chỉ khi đó các axis Thế đứng / Biểu cảm / Trang phục /
+   * Bộ cosplay mới có nghĩa. Vắng mặt nghĩa là không phải nhân vật (bình hoa, hộp bút...).
+   *
+   * Chỉ cần đánh dấu sản phẩm lẻ nằm trong danh mục KHÔNG phải danh mục nhân vật; nếu cả
+   * danh mục là nhân vật thì đánh dấu `ProductCategory.isCharacter` gọn hơn.
+   * Xem CHARACTER_TRAIT_AXIS_IDS trong lib/characterTraits.ts.
+   */
+  isCharacter?: boolean;
 };
 
 /**
@@ -29,6 +38,11 @@ export type ProductCategory = {
   /** Mảnh câu tiếng Anh mô tả loại sản phẩm, dùng khi cần bổ nghĩa cho Subject */
   promptText: string;
   domain: CategoryDomain;
+  /**
+   * Cả danh mục là nhân vật — MỌI sản phẩm trong đó bật các axis Thế đứng / Biểu cảm /
+   * Trang phục / Bộ cosplay, không cần đánh dấu từng sản phẩm.
+   */
+  isCharacter?: boolean;
   products: Product[];
 };
 
@@ -41,9 +55,15 @@ export type AttributeOption = {
 
 /**
  * Axis thẩm mỹ thuần — chỉ ảnh hưởng prompt ảnh, không ảnh hưởng thông số in.
- * Mỗi axis ~30 option.
+ * Mỗi axis ~20-30 option.
+ *
+ * `style` / `surface` / `color` áp dụng cho mọi sản phẩm.
+ * `pose` / `expression` / `outfit` / `costume` chỉ ghép vào prompt khi sản phẩm là nhân vật
+ * (`ProductCategory.isCharacter` / `Product.isCharacter`) hoặc mix đang bật lớp nhân vật —
+ * xem lib/characterTraits.ts.
  */
-export type AttributeAxisId = 'style' | 'surface' | 'color';
+export type AttributeAxisId =
+  'style' | 'surface' | 'color' | 'pose' | 'expression' | 'outfit' | 'costume';
 
 export type AttributeAxis = {
   id: AttributeAxisId;
@@ -179,6 +199,14 @@ export type MixResult = {
   /** Từ mức 4 */
   character: Character | null;
   personalization: Personalization | null;
+
+  /**
+   * Text tự do người dùng gõ, thay cho lựa chọn từ danh sách.
+   * Khi có giá trị thì buildPrompt dùng nó thay cho promptText của mục tương ứng.
+   * Không ghi vào file dữ liệu — chỉ sống trong phiên làm việc.
+   */
+  secondaryOverride: string | null;
+  characterOverride: string | null;
 };
 
 /** Mức độ nghiêm trọng của cảnh báo về tính khả thi khi in. */

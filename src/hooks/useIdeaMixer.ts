@@ -100,6 +100,59 @@ export function useIdeaMixer(data: IdeaData) {
     });
   }, []);
 
+  /** Đổi sản phẩm phụ trong công thức lai (chọn từ danh sách). */
+  const selectSecondaryProduct = useCallback(
+    (categoryId: string, productId: string) => {
+      setMix((current) => {
+        const category = data.categories.find((item) => item.id === categoryId);
+        const product = category?.products.find((item) => item.id === productId);
+        if (!category || !product) return current;
+        return {
+          ...current,
+          secondaryCategory: category,
+          secondaryProduct: product,
+          secondaryOverride: null,
+        };
+      });
+    },
+    [data],
+  );
+
+  /** Đổi nhân vật (chọn từ danh sách). Chuỗi rỗng nghĩa là bỏ hẳn nhân vật. */
+  const selectCharacter = useCallback(
+    (characterId: string) => {
+      setMix((current) => {
+        if (characterId === '') {
+          return { ...current, character: null, characterOverride: null };
+        }
+        const character = data.characters.find((item) => item.id === characterId);
+        if (!character) return current;
+        return { ...current, character, characterOverride: null };
+      });
+    },
+    [data],
+  );
+
+  /** Đổi công thức lai. */
+  const selectFusion = useCallback(
+    (fusionId: string) => {
+      setMix((current) => {
+        const fusion = data.fusionFormulas.find((item) => item.id === fusionId);
+        return fusion ? { ...current, fusion } : current;
+      });
+    },
+    [data],
+  );
+
+  /** Gõ text tự do cho sản phẩm phụ — chuỗi rỗng nghĩa là quay về dùng lựa chọn từ danh sách. */
+  const setSecondaryOverride = useCallback((text: string) => {
+    setMix((current) => ({ ...current, secondaryOverride: text === '' ? null : text }));
+  }, []);
+
+  const setCharacterOverride = useCallback((text: string) => {
+    setMix((current) => ({ ...current, characterOverride: text === '' ? null : text }));
+  }, []);
+
   const prompt = useMemo(() => buildPrompt(mix), [mix]);
 
   const fallbackPrinter = PRINTERS[0];
@@ -126,5 +179,10 @@ export function useIdeaMixer(data: IdeaData) {
     selectDetail,
     selectStrength,
     selectFilament,
+    selectSecondaryProduct,
+    selectCharacter,
+    selectFusion,
+    setSecondaryOverride,
+    setCharacterOverride,
   };
 }

@@ -3,7 +3,14 @@ import { FILAMENTS_BY_ID } from '../data/filaments';
 import { PRINTERS_BY_ID } from '../data/printers';
 import { BUNDLED_DATA } from '../data/bundledData';
 import { resolvePrintSettings } from './resolvePrintSettings';
-import type { Filament, MixResult, PrintSettings, SizeOption } from '../types';
+import type {
+  AttributeAxisId,
+  AttributeOption,
+  Filament,
+  MixResult,
+  PrintSettings,
+  SizeOption,
+} from '../types';
 
 // Dữ liệu giờ nằm trong JSON — lấy qua BUNDLED_DATA, giữ nguyên tên cũ cho phần test bên dưới
 const PRODUCT_CATEGORIES = BUNDLED_DATA.categories;
@@ -14,6 +21,14 @@ const {
   strengths: STRENGTH_OPTIONS,
 } = BUNDLED_DATA.technicalAxes;
 
+/** Lấy option đầu của một axis theo id — bền hơn chỉ số mảng khi thêm axis mới. */
+function firstOption(axisId: AttributeAxisId): AttributeOption {
+  const axis = ATTRIBUTE_AXES.find((item) => item.id === axisId);
+  const option = axis?.options[0];
+  if (!option) throw new Error(`fixture sai: attributes.json thiếu axis "${axisId}"`);
+  return option;
+}
+
 const category = PRODUCT_CATEGORIES[0]!;
 
 function makeMix(overrides: { filament: Filament; size?: SizeOption }): MixResult {
@@ -21,9 +36,13 @@ function makeMix(overrides: { filament: Filament; size?: SizeOption }): MixResul
     category,
     product: category.products[0]!,
     attributes: {
-      style: ATTRIBUTE_AXES[0]!.options[0]!,
-      surface: ATTRIBUTE_AXES[1]!.options[0]!,
-      color: ATTRIBUTE_AXES[2]!.options[0]!,
+      style: firstOption('style'),
+      surface: firstOption('surface'),
+      color: firstOption('color'),
+      pose: firstOption('pose'),
+      expression: firstOption('expression'),
+      outfit: firstOption('outfit'),
+      costume: firstOption('costume'),
     },
     size: overrides.size ?? SIZE_OPTIONS[1]!,
     detail: DETAIL_OPTIONS[1]!,
@@ -36,6 +55,8 @@ function makeMix(overrides: { filament: Filament; size?: SizeOption }): MixResul
     fusion: null,
     character: null,
     personalization: null,
+    secondaryOverride: null,
+    characterOverride: null,
   };
 }
 

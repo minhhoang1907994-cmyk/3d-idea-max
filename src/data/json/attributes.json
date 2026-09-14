@@ -464,6 +464,550 @@
         "id": "translucent-amber",
         "label": "Hổ phách trong",
         "promptText": "in a translucent amber tone"
+      },
+      {
+        "id": "split-2-random",
+        "label": "2 màu tách khối random",
+        "promptText": "in two solid blocks of randomly chosen contrasting colors"
+      },
+      {
+        "id": "split-3-random",
+        "label": "3 màu tách khối random",
+        "promptText": "in three solid blocks of randomly chosen colors"
+      },
+      {
+        "id": "split-4-random",
+        "label": "4 màu tách khối random",
+        "promptText": "in four solid blocks of randomly chosen colors"
+      },
+      {
+        "id": "split-5-random",
+        "label": "5 màu tách khối random",
+        "promptText": "in five solid blocks of randomly chosen colors"
+      },
+      {
+        "id": "palette-3-random",
+        "label": "3 màu phối random",
+        "promptText": "in a randomly chosen three-color palette"
+      },
+      {
+        "id": "palette-4-random",
+        "label": "4 màu phối random",
+        "promptText": "in a randomly chosen four-color palette"
+      },
+      {
+        "id": "gradient-random",
+        "label": "Gradient random",
+        "promptText": "in a smooth gradient between two randomly chosen colors"
+      },
+      {
+        "id": "marbled-multi-random",
+        "label": "Vân trộn nhiều màu random",
+        "promptText": "in a marbled swirl of several randomly chosen colors"
+      },
+      {
+        "id": "accent-random",
+        "label": "Màu nhấn random",
+        "promptText": "in neutral tones with sharp accents of one randomly chosen color"
+      },
+      {
+        "id": "true-to-source",
+        "label": "Màu gốc theo nguyên tác",
+        "promptText": "in the subject's own well-known original colors"
+      },
+      {
+        "id": "true-to-life",
+        "label": "Màu thật ngoài đời",
+        "promptText": "in true-to-life natural colors matching the real thing"
+      }
+    ]
+  },
+  {
+    "id": "pose",
+    "label": "Thế đứng",
+    "options": [
+      {
+        "id": "arms-crossed",
+        "label": "Khoanh tay",
+        "promptText": "standing with its arms crossed"
+      },
+      {
+        "id": "hands-on-hips",
+        "label": "Chống nạnh",
+        "promptText": "standing with both hands on its hips"
+      },
+      {
+        "id": "waving",
+        "label": "Vẫy tay",
+        "promptText": "raising one hand in a wave"
+      },
+      {
+        "id": "sitting-cross-legged",
+        "label": "Ngồi xếp bằng",
+        "promptText": "sitting cross-legged"
+      },
+      {
+        "id": "mid-stride",
+        "label": "Đang bước",
+        "promptText": "caught mid-stride with one foot forward"
+      },
+      {
+        "id": "leaning-back",
+        "label": "Ngả người",
+        "promptText": "leaning back in a relaxed slouch"
+      },
+      {
+        "id": "chin-on-hand",
+        "label": "Chống cằm",
+        "promptText": "resting its chin on one hand in thought"
+      },
+      {
+        "id": "stretching",
+        "label": "Vươn vai",
+        "promptText": "stretching both arms overhead"
+      },
+      {
+        "id": "crouching",
+        "label": "Ngồi xổm",
+        "promptText": "crouching low on both feet"
+      },
+      {
+        "id": "thumbs-up",
+        "label": "Giơ ngón cái",
+        "promptText": "giving a thumbs up"
+      },
+      {
+        "id": "holding-object",
+        "label": "Ôm đồ",
+        "promptText": "holding a small object against its chest"
+      },
+      {
+        "id": "peace-sign",
+        "label": "Giơ chữ V",
+        "promptText": "flashing a peace sign beside its face"
+      },
+      {
+        "id": "hands-in-pockets",
+        "label": "Tay đút túi",
+        "promptText": "standing with both hands tucked in its pockets"
+      },
+      {
+        "id": "looking-back",
+        "label": "Ngoái nhìn",
+        "promptText": "glancing back over one shoulder"
+      },
+      {
+        "id": "lying-on-front",
+        "label": "Nằm sấp",
+        "promptText": "lying on its front with its chin propped up"
+      },
+      {
+        "id": "jumping",
+        "label": "Nhảy lên",
+        "promptText": "leaping with both feet off the ground"
+      },
+      {
+        "id": "bowing",
+        "label": "Cúi chào",
+        "promptText": "bowing politely with one hand across its chest"
+      },
+      {
+        "id": "pointing-ahead",
+        "label": "Chỉ tay",
+        "promptText": "pointing straight ahead"
+      },
+      {
+        "id": "legs-dangling",
+        "label": "Ngồi thõng chân",
+        "promptText": "sitting on a ledge with its legs dangling"
+      },
+      {
+        "id": "hugging-knees",
+        "label": "Ôm gối",
+        "promptText": "sitting and hugging its knees"
+      }
+    ]
+  },
+  {
+    "id": "expression",
+    "label": "Biểu cảm",
+    "options": [
+      {
+        "id": "smug-half-lidded",
+        "label": "Lim dim tự tin",
+        "promptText": "with a smug half-lidded expression"
+      },
+      {
+        "id": "bright-smile",
+        "label": "Cười tươi",
+        "promptText": "with a wide bright smile"
+      },
+      {
+        "id": "gentle-smile",
+        "label": "Cười mỉm",
+        "promptText": "with a gentle closed-mouth smile"
+      },
+      {
+        "id": "surprised",
+        "label": "Ngạc nhiên",
+        "promptText": "with wide surprised eyes and a round open mouth"
+      },
+      {
+        "id": "sleepy",
+        "label": "Buồn ngủ",
+        "promptText": "with sleepy drooping eyelids"
+      },
+      {
+        "id": "grumpy",
+        "label": "Cau có",
+        "promptText": "with furrowed brows and a grumpy pout"
+      },
+      {
+        "id": "laughing",
+        "label": "Cười phá",
+        "promptText": "with its eyes squeezed shut in laughter"
+      },
+      {
+        "id": "curious",
+        "label": "Tò mò",
+        "promptText": "with one brow raised in curiosity"
+      },
+      {
+        "id": "determined",
+        "label": "Quyết tâm",
+        "promptText": "with a determined focused stare"
+      },
+      {
+        "id": "shy",
+        "label": "Ngại ngùng",
+        "promptText": "with blushing cheeks and a shy sideways glance"
+      },
+      {
+        "id": "mischievous",
+        "label": "Tinh nghịch",
+        "promptText": "with a mischievous lopsided grin"
+      },
+      {
+        "id": "serene",
+        "label": "Điềm tĩnh",
+        "promptText": "with a serene face and closed eyes"
+      },
+      {
+        "id": "pleading-eyes",
+        "label": "Mắt long lanh",
+        "promptText": "with big glossy pleading eyes"
+      },
+      {
+        "id": "proud",
+        "label": "Đắc ý",
+        "promptText": "with its chin lifted in a proud look"
+      },
+      {
+        "id": "worried",
+        "label": "Lo lắng",
+        "promptText": "with tilted brows and a worried little frown"
+      },
+      {
+        "id": "singing",
+        "label": "Đang hát",
+        "promptText": "with its mouth open mid-song"
+      },
+      {
+        "id": "winking",
+        "label": "Nháy mắt",
+        "promptText": "with one eye winking"
+      },
+      {
+        "id": "thoughtful",
+        "label": "Trầm ngâm",
+        "promptText": "with a thoughtful faraway gaze"
+      },
+      {
+        "id": "tongue-out",
+        "label": "Lè lưỡi",
+        "promptText": "with its tongue poking out cheekily"
+      },
+      {
+        "id": "relieved",
+        "label": "Nhẹ nhõm",
+        "promptText": "with a relieved soft-eyed sigh"
+      }
+    ]
+  },
+  {
+    "id": "outfit",
+    "label": "Trang phục",
+    "options": [
+      {
+        "id": "shirt-and-tie",
+        "label": "Sơ mi + cà vạt",
+        "promptText": "wearing an untucked shirt with a loosened tie"
+      },
+      {
+        "id": "hoodie",
+        "label": "Áo hoodie",
+        "promptText": "wearing an oversized hoodie"
+      },
+      {
+        "id": "denim-jacket",
+        "label": "Áo khoác jean",
+        "promptText": "wearing a denim jacket"
+      },
+      {
+        "id": "lab-coat",
+        "label": "Áo blouse",
+        "promptText": "wearing an open lab coat"
+      },
+      {
+        "id": "chef-apron",
+        "label": "Tạp dề đầu bếp",
+        "promptText": "wearing a chef apron and a tall hat"
+      },
+      {
+        "id": "raincoat",
+        "label": "Áo mưa",
+        "promptText": "wearing a hooded raincoat"
+      },
+      {
+        "id": "knit-sweater",
+        "label": "Áo len",
+        "promptText": "wearing a chunky knitted sweater"
+      },
+      {
+        "id": "sports-jersey",
+        "label": "Áo thể thao",
+        "promptText": "wearing a numbered sports jersey"
+      },
+      {
+        "id": "overalls",
+        "label": "Yếm bảo hộ",
+        "promptText": "wearing a pair of work overalls"
+      },
+      {
+        "id": "cape",
+        "label": "Áo choàng",
+        "promptText": "wearing a flowing cape"
+      },
+      {
+        "id": "kimono",
+        "label": "Kimono",
+        "promptText": "wearing a wrapped kimono"
+      },
+      {
+        "id": "long-tunic",
+        "label": "Áo dài",
+        "promptText": "wearing a long fitted tunic over loose trousers"
+      },
+      {
+        "id": "space-suit",
+        "label": "Đồ phi hành gia",
+        "promptText": "wearing a padded space suit"
+      },
+      {
+        "id": "pyjamas",
+        "label": "Đồ ngủ",
+        "promptText": "wearing striped pyjamas"
+      },
+      {
+        "id": "beanie-and-scarf",
+        "label": "Mũ len + khăn",
+        "promptText": "wearing a knitted beanie and a long scarf"
+      },
+      {
+        "id": "backpack",
+        "label": "Balô",
+        "promptText": "wearing a small backpack on its shoulders"
+      },
+      {
+        "id": "tool-belt",
+        "label": "Đai đồ nghề",
+        "promptText": "wearing a loaded tool belt"
+      },
+      {
+        "id": "graduation-gown",
+        "label": "Áo tốt nghiệp",
+        "promptText": "wearing a graduation gown and cap"
+      },
+      {
+        "id": "trench-coat",
+        "label": "Áo trench",
+        "promptText": "wearing a belted trench coat"
+      },
+      {
+        "id": "bare",
+        "label": "Để mộc",
+        "promptText": "bare, showing only its sculpted natural form"
+      }
+    ]
+  },
+  {
+    "id": "costume",
+    "label": "Bộ cosplay",
+    "options": [
+      {
+        "id": "none",
+        "label": "— Không có —",
+        "promptText": "in its own ordinary clothes"
+      },
+      {
+        "id": "pirate",
+        "label": "Hải tặc",
+        "promptText": "dressed as a pirate in a long coat and tricorn hat with a cutlass at its belt"
+      },
+      {
+        "id": "samurai",
+        "label": "Samurai",
+        "promptText": "in full samurai armor with a sheathed katana at its hip"
+      },
+      {
+        "id": "astronaut",
+        "label": "Phi hành gia",
+        "promptText": "in a padded astronaut suit holding a bubble helmet under one arm"
+      },
+      {
+        "id": "knight",
+        "label": "Hiệp sĩ",
+        "promptText": "in plate knight armor with a kite shield"
+      },
+      {
+        "id": "ninja",
+        "label": "Ninja",
+        "promptText": "in a dark ninja outfit with a face wrap and a shuriken pouch"
+      },
+      {
+        "id": "cowboy",
+        "label": "Cao bồi",
+        "promptText": "dressed as a cowboy in a fringed vest, wide-brim hat and tall boots"
+      },
+      {
+        "id": "wizard",
+        "label": "Phù thủy",
+        "promptText": "in a star-patterned wizard robe with a pointed hat and a gnarled staff"
+      },
+      {
+        "id": "doctor",
+        "label": "Bác sĩ",
+        "promptText": "dressed as a doctor in scrubs with a stethoscope around its neck"
+      },
+      {
+        "id": "firefighter",
+        "label": "Lính cứu hỏa",
+        "promptText": "in firefighter turnout gear with a helmet and an axe"
+      },
+      {
+        "id": "chef",
+        "label": "Đầu bếp",
+        "promptText": "dressed as a chef in a double-breasted jacket and a tall toque"
+      },
+      {
+        "id": "detective",
+        "label": "Thám tử",
+        "promptText": "dressed as a detective in a trench coat and flat cap with a magnifying glass"
+      },
+      {
+        "id": "scuba-diver",
+        "label": "Thợ lặn",
+        "promptText": "in a scuba wetsuit with a mask, snorkel and air tank"
+      },
+      {
+        "id": "racer",
+        "label": "Tay đua",
+        "promptText": "in a racing suit covered in sponsor patches with a helmet under one arm"
+      },
+      {
+        "id": "viking",
+        "label": "Viking",
+        "promptText": "in Viking furs with a riveted helmet and a round wooden shield"
+      },
+      {
+        "id": "steampunk",
+        "label": "Steampunk",
+        "promptText": "in a steampunk outfit of brass goggles, a leather corset belt and arm braces"
+      },
+      {
+        "id": "superhero",
+        "label": "Siêu anh hùng",
+        "promptText": "in a superhero suit with a chest emblem and a billowing cape"
+      },
+      {
+        "id": "gladiator",
+        "label": "Đấu sĩ La Mã",
+        "promptText": "in gladiator armor with a shoulder guard, leather skirt and short sword"
+      },
+      {
+        "id": "mecha-pilot",
+        "label": "Phi công mecha",
+        "promptText": "in a mecha pilot flight suit with a visored helmet"
+      },
+      {
+        "id": "sumo",
+        "label": "Võ sĩ sumo",
+        "promptText": "in a sumo wrestler ceremonial belt and apron"
+      },
+      {
+        "id": "scholar",
+        "label": "Nho sinh",
+        "promptText": "in a scholar long robe with a book tucked under one arm"
+      },
+      {
+        "id": "santa",
+        "label": "Ông già Noel",
+        "promptText": "dressed as Santa in a fur-trimmed red coat with a sack of gifts"
+      },
+      {
+        "id": "beekeeper",
+        "label": "Người nuôi ong",
+        "promptText": "in a beekeeper suit with a mesh veil hat and a smoker"
+      },
+      {
+        "id": "mountaineer",
+        "label": "Leo núi",
+        "promptText": "in mountaineering gear with a coiled rope, harness and ice axe"
+      },
+      {
+        "id": "mecha-armor",
+        "label": "Giáp mecha (Gundam)",
+        "promptText": "rebuilt as a mecha with segmented Gundam-style armor plating over its limbs and glowing joint accents"
+      },
+      {
+        "id": "power-armor",
+        "label": "Giáp động lực",
+        "promptText": "encased in heavy powered exo-armor with thick shoulder pauldrons and hydraulic pistons"
+      },
+      {
+        "id": "cyborg",
+        "label": "Cyborg",
+        "promptText": "half rebuilt as a cyborg with cybernetic plating and exposed mechanical limbs"
+      },
+      {
+        "id": "battle-worn",
+        "label": "Giáp trận sứt sẹo",
+        "promptText": "in battle-worn armor with scratched plating, a torn cloak and a heavy shoulder guard"
+      },
+      {
+        "id": "tactical-gear",
+        "label": "Đồ tác chiến",
+        "promptText": "in tactical gear with a plate carrier vest, knee pads and a headset"
+      },
+      {
+        "id": "stealth-suit",
+        "label": "Đồ tàng hình",
+        "promptText": "in a sleek matte stealth suit with glowing edge lines along the seams"
+      },
+      {
+        "id": "canon-outfit",
+        "label": "Theo nguyên tác (tự động)",
+        "promptText": "wearing the outfit this character is actually known for"
+      },
+      {
+        "id": "canon-outfit-accessories",
+        "label": "Nguyên tác + phụ kiện",
+        "promptText": "wearing the outfit this character is known for, plus a few fitting accessories such as a hat, glasses or a bag"
+      },
+      {
+        "id": "random-accessories",
+        "label": "Phụ kiện ngẫu nhiên",
+        "promptText": "with a few fitting accessories such as a hat, sunglasses, a scarf or a small shoulder bag"
       }
     ]
   }

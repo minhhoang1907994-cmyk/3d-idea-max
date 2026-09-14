@@ -71,6 +71,7 @@ export type ProductCategory = {
   id: string; // kebab-case, BẤT BIẾN
   label: string; // nhãn UI (tiếng Việt được)
   promptText: string; // tiếng Anh — dùng khi ghép prompt
+  isCharacter?: boolean; // CẢ danh mục là nhân vật — mọi sản phẩm trong đó mở khoá 4 axis trên
   products: Product[]; // ~30 sản phẩm thuộc danh mục này
 };
 
@@ -78,13 +79,15 @@ export type Product = {
   id: string; // kebab-case, duy nhất trong phạm vi category
   label: string;
   promptText: string; // tiếng Anh, BẮT BUỘC
+  isCharacter?: boolean; // sản phẩm lẻ là nhân vật — mở khoá pose/expression/outfit/costume
 };
 
 // ---- Các chiều thuộc tính (mỗi chiều 1 selectbox) ----
 export type AttributeAxis = {
-  id: string; // 'style' | 'surface' | 'color' | 'size' | 'detail' | 'strength'
+  id: string; // 'style' | 'surface' | 'color' | 'pose' | 'expression' | 'outfit' | 'costume'
+  //          |  + các axis kỹ thuật: 'size' | 'detail' | 'strength'
   label: string;
-  options: AttributeOption[]; // ~30 option
+  options: AttributeOption[]; // ~20-30 option
 };
 
 export type AttributeOption = {
@@ -124,6 +127,42 @@ Quy ước:
 - `id` **bất biến** — đổi `id` sẽ phá state/URL đã share và dữ liệu cũ
 - `label` cho người đọc, `promptText` cho tool tạo ảnh — không dùng lẫn
 - Mỗi axis tối thiểu 2 option (dưới 2 thì random vô nghĩa)
+
+### Phối nhiều màu — nằm ngay trong axis Màu sắc
+
+Axis `color` chứa cả màu đơn lẫn phương án nhiều màu (`split-2-random` … `split-5-random`,
+`palette-3-random`, `palette-4-random`, `gradient-random`, `marbled-multi-random`,
+`accent-random`). KHÔNG tách thành axis riêng: một mô hình chỉ có một phương án màu, tách
+ra hai selectbox sẽ sinh tổ hợp mâu thuẫn (vừa "1 màu" vừa "gradient").
+
+Các option nhiều màu chỉ nêu SỐ màu, để Gemini tự chọn màu cụ thể — bảng màu Gemini phối
+thường hài hoà hơn là ghép vài màu rời từ danh sách.
+
+Hai option `true-to-source` (màu gốc theo nguyên tác) và `true-to-life` (màu thật ngoài đời)
+KHÔNG chỉ định màu nào cả, mà bảo Gemini dùng màu vốn có của chủ thể. Chúng chỉ phát huy khi
+chủ thể đủ cụ thể để Gemini nhận ra — rõ nhất là khi gõ tên nhân vật vào ô text tự do ở phần
+"Ý tưởng này ghép từ".
+
+### Chiều nhân vật — chỉ áp dụng cho sản phẩm có mặt/tay chân
+
+Bốn axis `pose` (Thế đứng), `expression` (Biểu cảm), `outfit` (Trang phục), `costume`
+(Bộ cosplay) làm biến thể
+nhẹ cho mức sáng tạo An toàn: cùng một tượng thú, đổi thế đứng / biểu cảm / áo quần là
+ra ý tưởng mới, không cần lai ghép gì.
+
+Axis `costume` (Bộ cosplay) là TRỌN BỘ trang phục theo chủ đề (samurai, phi hành gia, hải
+tặc...). Chọn bộ nào là **ghi đè** axis `outfit` — mô tả cùng lúc "mặc áo giáp samurai" và
+"mặc áo hoodie" cho Gemini hai bộ đồ mâu thuẫn. Option `none` ("— Không có —") là lối thoát
+duy nhất: promptText của nó KHÔNG bao giờ vào prompt, xem `NO_COSTUME_ID`.
+
+Chúng chỉ có nghĩa khi chủ thể là nhân vật, nên `buildPrompt` và UI chỉ dùng chúng khi
+`isCharacterSubject(mix)` đúng — tức **danh mục** có `isCharacter: true` (hiện là
+`toys-and-figures`, mọi sản phẩm trong đó đều bật), hoặc **sản phẩm lẻ** ở danh mục khác có
+`isCharacter: true` (`wall-hook-animal`, `wedding-cake-topper`), hoặc mix đang bật lớp nhân
+vật (`character` / text tự do). Với bình hoa hay hộp bút
+thì bỏ hẳn, tránh sinh câu vô nghĩa kiểu "a vase wearing a hoodie with a grumpy expression".
+
+Nguồn sự thật: `src/lib/characterTraits.ts`.
 
 ### Chiều dữ liệu ảnh hưởng thông số in
 
@@ -229,7 +268,11 @@ npx tsc --noEmit     # type check
 - **`promptText` bắt buộc tiếng Anh**; `label` có thể tiếng Việt
 - **`id` bất biến** — không đổi sau khi đã phát hành
 - **Không thêm dependency** mà không hỏi trước
-- **Không đưa API key nào vào client** — app không gọi API tạo ảnh
+- **Không hardcode API key vào source.** Trang Phân tích ảnh có gọi Gemini API, nhưng key
+  do user tự nhập trong UI và lưu ở `localStorage` máy họ — không nằm trong repo, không
+  commit, không có trong bundle. Đây là ngoại lệ có chủ đích của quyết định "không backend":
+  đánh đổi là ai dùng được máy đó cũng lấy được key, nên UI phải cảnh báo rõ điều này.
+  Muốn giấu key thật sự thì bắt buộc phải có backend proxy.
 
 ## Tài liệu liên quan
 

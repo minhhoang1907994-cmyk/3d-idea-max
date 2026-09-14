@@ -106,5 +106,8 @@ export function mixIdeas(
     fusion,
     character,
     personalization,
+    // Mix mới thì bỏ mọi text tự do của lần trước
+    secondaryOverride: null,
+    characterOverride: null,
   };
 }

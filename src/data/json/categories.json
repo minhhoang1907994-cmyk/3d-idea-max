@@ -155,7 +155,8 @@
         "label": "Quái vật",
         "promptText": "a friendly cartoon monster figure"
       }
-    ]
+    ],
+    "isCharacter": true
   },
   {
     "id": "home-decor",
@@ -286,7 +287,8 @@
       {
         "id": "wall-hook-animal",
         "label": "Móc treo hình thú",
-        "promptText": "an animal-shaped wall hook"
+        "promptText": "an animal-shaped wall hook",
+        "isCharacter": true
       },
       {
         "id": "napkin-ring",
@@ -628,6 +630,21 @@
         "id": "clipboard-clip",
         "label": "Kẹp bảng viết",
         "promptText": "a heavy-duty clipboard clip"
+      },
+      {
+        "id": "task-planner-board",
+        "label": "Bảng kế hoạch công việc",
+        "promptText": "a task planner board with rearrangeable labelled tiles"
+      },
+      {
+        "id": "chore-chart",
+        "label": "Bảng phân công việc nhà",
+        "promptText": "a chore chart with sliding name tokens"
+      },
+      {
+        "id": "habit-tracker-board",
+        "label": "Bảng theo dõi thói quen",
+        "promptText": "a habit tracker board with flip tokens for each day"
       }
     ]
   },
@@ -944,6 +961,21 @@
         "id": "desk-partition-clip",
         "label": "Kẹp vách ngăn bàn",
         "promptText": "a clip for a desk privacy partition"
+      },
+      {
+        "id": "weekly-timetable-board",
+        "label": "Bảng thời khóa biểu",
+        "promptText": "a weekly timetable board with slots for subject tiles"
+      },
+      {
+        "id": "subject-tile-set",
+        "label": "Bộ thẻ môn học",
+        "promptText": "a set of labelled subject tiles that slide into a board"
+      },
+      {
+        "id": "homework-tracker",
+        "label": "Bảng theo dõi bài tập",
+        "promptText": "a homework tracking board with movable markers"
       }
     ]
   },
@@ -1929,7 +1961,8 @@
       {
         "id": "wedding-cake-topper",
         "label": "Trang trí bánh cưới",
-        "promptText": "a wedding cake topper"
+        "promptText": "a wedding cake topper",
+        "isCharacter": true
       },
       {
         "id": "baby-hand-cast-frame",

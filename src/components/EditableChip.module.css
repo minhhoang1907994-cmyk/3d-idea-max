@@ -1,0 +1,78 @@
+.chip {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  min-width: 200px;
+  padding: 0.5rem 0.6rem;
+  background: var(--surface-sunken);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+
+.chipSecondary {
+  border-color: var(--accent);
+}
+
+.chipCharacter {
+  border-color: var(--warning);
+}
+
+.head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.role {
+  font-size: 0.66rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text-faint);
+}
+
+.modeToggle {
+  padding: 0.1rem 0.35rem;
+  font: inherit;
+  font-size: 0.68rem;
+  color: var(--accent);
+  background: none;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.modeToggle:hover {
+  background: var(--surface);
+}
+
+.select,
+.input {
+  width: 100%;
+  padding: 0.35rem 0.4rem;
+  font: inherit;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+}
+
+.input {
+  font-weight: 500;
+}
+
+.select:focus-visible,
+.input:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+
+.hint {
+  font-size: 0.68rem;
+  line-height: 1.35;
+  color: var(--warning);
+}

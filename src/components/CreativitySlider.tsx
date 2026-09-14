@@ -7,7 +7,12 @@ type Props = {
 };
 
 const LEVELS: { level: CreativityLevel; label: string; description: string }[] = [
-  { level: 1, label: 'An toàn', description: 'Một sản phẩm quen thuộc, chỉ đổi phong cách' },
+  {
+    level: 1,
+    label: 'An toàn',
+    description:
+      'Một sản phẩm quen thuộc, chỉ đổi phong cách — nếu là nhân vật thì đổi thế đứng, biểu cảm, trang phục',
+  },
   { level: 2, label: 'Thú vị', description: 'Thêm một cơ chế in 3D (khớp động, nam châm...)' },
   { level: 3, label: 'Lai ghép', description: 'Ghép hai sản phẩm khác danh mục với nhau' },
   {
