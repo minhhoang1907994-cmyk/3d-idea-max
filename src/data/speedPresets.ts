@@ -1,3 +1,5 @@
+import type { Range } from '../types';
+
 /**
  * Preset tốc độ in.
  *
@@ -47,4 +49,34 @@ export const DEFAULT_NOZZLE_MM = 0.4;
 
 export function findSpeedPreset(printerId: string, nozzleMm: number): SpeedPreset | null {
   return SPEED_PRESETS[`${printerId}@${nozzleMm}`] ?? null;
+}
+
+/**
+ * Khuyến nghị tốc độ theo VẬT LIỆU do chính hãng máy công bố — áp cho mọi máy của hãng đó,
+ * không phụ thuộc nozzle. Khác `SPEED_PRESETS` (preset của một máy + một nozzle cụ thể),
+ * nên hiển thị ở nhóm riêng chứ không trộn vào các ô preset.
+ */
+export type FilamentSpeedAdvice = {
+  firstLayer: Range;
+  outerWall: Range;
+  /** Hãng gọi là "core speed" — tốc độ phần thân mô hình */
+  core: Range;
+  sourceUrl: string;
+};
+
+/** Khoá: `{vendor}@{filamentId}` */
+const FILAMENT_SPEED_ADVICE: Record<string, FilamentSpeedAdvice> = {
+  'Anycubic@tpu': {
+    firstLayer: { min: 10, max: 15 },
+    outerWall: { min: 15, max: 20 },
+    core: { min: 20, max: 30 },
+    sourceUrl: 'https://wiki.anycubic.com/en/home/knowledge-sharing/tpu-printing-recommendations',
+  },
+};
+
+export function findFilamentSpeedAdvice(
+  vendor: string,
+  filamentId: string,
+): FilamentSpeedAdvice | null {
+  return FILAMENT_SPEED_ADVICE[`${vendor}@${filamentId}`] ?? null;
 }

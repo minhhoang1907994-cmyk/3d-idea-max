@@ -24,8 +24,8 @@ selectbox → sinh ra 2 thứ:
 | 1   | **Mix random TOÀN BỘ selectbox**, ghi đè lựa chọn hiện tại | Không có cơ chế lock/giữ field                                                         |
 | 2   | Danh mục → sản phẩm là **cascading**                       | Random danh mục trước, rồi random sản phẩm thuộc danh mục đó → luôn ra đúng 1 sản phẩm |
 | 3   | **Tách 2 selectbox vật liệu**                              | `filament` (in được, sinh thông số) và `surface` (thẩm mỹ, chỉ vào prompt ảnh)         |
-| 4   | Hỗ trợ 4 máy: **A1, A1 mini, P1S, X1C**                    | Thông số + giới hạn khổ in đổi theo máy                                                |
-| 5   | Thông số in lấy từ **tài liệu Bambu Lab chính thức**       | Nguồn sự thật: `docs/research/bambu-print-parameters.md`                               |
+| 4   | Hỗ trợ 5 máy: **A1, A1 mini, P1S, X1C, Anycubic Kobra X**  | Thông số + giới hạn khổ in đổi theo máy                                                |
+| 5   | Thông số in lấy từ **tài liệu chính thức của hãng máy**    | Nguồn sự thật: `docs/research/bambu-print-parameters.md`, `docs/research/anycubic-print-parameters.md` |
 | 6   | Quy mô dữ liệu: **15 danh mục × 30 sản phẩm**              | Dễ nâng lên sau, không phải sửa cấu trúc                                               |
 | 7   | Tool tạo ảnh đích: **Gemini**                              | Prompt dạng câu văn tự nhiên, không keyword list, không cú pháp tham số                |
 
@@ -179,8 +179,15 @@ bộ thông số và phần Printability mất ý nghĩa.
 
 ### Nguồn sự thật cho thông số in
 
-`docs/research/bambu-print-parameters.md` — **mọi giá trị trong `src/data/filaments.ts`
-và `src/data/printers.ts` phải khớp file đó**, kèm `sourceUrl`.
+`docs/research/bambu-print-parameters.md` (máy Bambu Lab + filament) và
+`docs/research/anycubic-print-parameters.md` (máy Anycubic + Anycubic Slicer Next) —
+**mọi giá trị trong `src/data/filaments.ts` và `src/data/printers.ts` phải khớp hai file
+đó**, kèm `sourceUrl`.
+
+Bảng thông số hiển thị theo từng **slicer** (`SlicerSettings`): Bambu Studio và Anycubic
+Slicer Next. Tên tham số dùng chung được vì Anycubic Slicer Next fork từ OrcaSlicer, mà
+OrcaSlicer fork từ Bambu Studio. Khác nhau là phần preset máy — chỉ slicer chính hãng của
+máy đang chọn mới có profile, slicer còn lại đánh dấu `supportsSelectedPrinter: false`.
 
 Giá trị chưa verify được ghi `null` và UI hiển thị "chưa có dữ liệu" —
 **TUYỆT ĐỐI KHÔNG đoán số**. Thông số in sai làm hỏng bản in thật (tốn nhựa + nhiều
@@ -277,6 +284,7 @@ npx tsc --noEmit     # type check
 ## Tài liệu liên quan
 
 - `docs/research/bambu-print-parameters.md` — bảng thông số Bambu + trạng thái verify
+- `docs/research/anycubic-print-parameters.md` — bảng thông số Anycubic + Anycubic Slicer Next
 
 ## Ghi chú — còn phải làm
 

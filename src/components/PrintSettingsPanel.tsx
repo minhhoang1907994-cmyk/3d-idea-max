@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import type { PrintSettings, Range, SettingsTabId } from '../types';
+import { useMemo, useState } from 'react';
+import type { PrintSettings, Range, SettingsTabId, SlicerId } from '../types';
 import styles from './PrintSettingsPanel.module.css';
 
 type Props = { settings: PrintSettings };
@@ -11,8 +11,16 @@ function formatRange(range: Range | null, unit: string): string {
 }
 
 export function PrintSettingsPanel({ settings }: Props) {
-  const { printer, filament, presetName, tabs, temperature, warnings } = settings;
+  const { printer, filament, slicers, temperature, warnings } = settings;
   const [activeTab, setActiveTab] = useState<SettingsTabId>('quality');
+  // Slicer chính hãng của máy luôn đứng đầu — mặc định mở đúng phần mềm user đang dùng.
+  const [activeSlicerId, setActiveSlicerId] = useState<SlicerId | null>(null);
+
+  const slicer = useMemo(
+    () => slicers.find((item) => item.id === activeSlicerId) ?? slicers[0]!,
+    [slicers, activeSlicerId],
+  );
+  const { tabs } = slicer;
 
   const currentTab = tabs.find((tab) => tab.id === activeTab) ?? tabs[0];
   const missingCount = tabs
@@ -23,13 +31,37 @@ export function PrintSettingsPanel({ settings }: Props) {
     <section className={styles.panel}>
       <header className={styles.header}>
         <div>
-          <h2 className={styles.title}>Thông số in — Bambu Studio</h2>
-          <p className={styles.preset}>{presetName}</p>
+          <h2 className={styles.title}>Thông số in — {slicer.label}</h2>
+          {slicer.presetName ? (
+            <>
+              <p className={styles.preset}>{slicer.presetName}</p>
+              {slicer.presetNote ? <p className={styles.presetNote}>{slicer.presetNote}</p> : null}
+            </>
+          ) : (
+            <p className={styles.presetMissing}>{slicer.presetNote}</p>
+          )}
         </div>
         <span className={styles.printer}>
           {printer.buildVolumeMm.x}×{printer.buildVolumeMm.y}×{printer.buildVolumeMm.z} mm
         </span>
       </header>
+
+      <nav className={styles.slicers} aria-label="Phần mềm cắt lớp">
+        {slicers.map((item) => (
+          <button
+            key={item.id}
+            type="button"
+            className={
+              item.id === slicer.id ? `${styles.slicer} ${styles.slicerActive}` : styles.slicer
+            }
+            onClick={() => setActiveSlicerId(item.id)}
+            aria-current={item.id === slicer.id ? 'true' : undefined}
+          >
+            {item.label}
+            {item.supportsSelectedPrinter ? null : <span className={styles.slicerTag}>≠ máy</span>}
+          </button>
+        ))}
+      </nav>
 
       <div className={styles.filamentBar}>
         <div className={styles.filamentInfo}>
@@ -100,6 +132,19 @@ export function PrintSettingsPanel({ settings }: Props) {
               className={warning.level === 'warning' ? styles.warning : styles.info}
             >
               {warning.message}
+              {warning.sourceUrl ? (
+                <>
+                  {' '}
+                  <a
+                    className={styles.source}
+                    href={warning.sourceUrl}
+                    target="_blank"
+                    rel="noreferrer noopener"
+                  >
+                    Nguồn ↗
+                  </a>
+                </>
+              ) : null}
             </li>
           ))}
         </ul>
@@ -109,9 +154,17 @@ export function PrintSettingsPanel({ settings }: Props) {
         Giá trị Quality/Strength suy từ lựa chọn độ chi tiết và mục đích sử dụng, chưa đối chiếu với
         preset chính thức của Bambu.
         {missingCount > 0
-          ? ` Còn ${missingCount} tham số chưa có dữ liệu — mở preset tương ứng trong Bambu Studio để lấy.`
+          ? ` Còn ${missingCount} tham số chưa có dữ liệu — mở preset tương ứng trong ${slicer.label} để lấy.`
           : ''}{' '}
-        Luôn kiểm tra lại trong Bambu Studio trước khi in thật.
+        Luôn kiểm tra lại trong {slicer.label} trước khi in thật.{' '}
+        <a
+          className={styles.source}
+          href={slicer.sourceUrl}
+          target="_blank"
+          rel="noreferrer noopener"
+        >
+          Trang {slicer.label} ↗
+        </a>
       </p>
     </section>
   );

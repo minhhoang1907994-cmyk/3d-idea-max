@@ -3,10 +3,60 @@
 ## Session gần nhất
 
 - Ngày: 2026-09-15
+- Tóm tắt: Thêm máy Anycubic Kobra X và tách bảng thông số in theo từng phần mềm cắt lớp
+  (Bambu Studio / Anycubic Slicer Next).
+
+## Đã thực hiện
+
+### 1. Thêm máy Anycubic Kobra X
+
+- `src/data/printers.ts`: thêm `kobra-x` — khổ 260×260×260 mm, khung hở, nguồn
+  <https://store.anycubic.com/products/kobra-x>. Thêm 2 trường cho CẢ 5 máy: `vendor`
+  (tên hãng, dùng trong câu cảnh báo) và `slicerId` (slicer chính hãng của máy).
+- `supportedFilamentIds`: PLA / PETG / TPU / PLA-CF / PETG-CF.
+  `notRecommendedFilamentIds`: ABS / ASA / PC / ASA-CF — máy hở.
+  **Ba nguồn không thống nhất** về ABS/ASA (wiki máy chỉ nêu PLA/PETG/TPU; store liệt kê ASA;
+  Anycubic Slicer Next có sẵn profile ABS/ASA cho Kobra X) → chọn cảnh báo, không khẳng định
+  in tốt, và ghi rõ mâu thuẫn đó trong file research.
+- `resolvePrintSettings`: câu cảnh báo bỏ hardcode "Bambu", dùng `printer.vendor`.
+
+### 2. Tab phần mềm cắt lớp trong mục Thông số in
+
+- `types/index.ts`: thêm `SlicerId` + `SlicerSettings`. `PrintSettings.tabs` / `.presetName`
+  **đã bị thay** bằng `PrintSettings.slicers[]` — mỗi slicer một bảng 5 tab riêng.
+- `resolvePrintSettings`: sinh 2 bảng, slicer chính hãng của máy đang chọn **đứng đầu mảng**.
+  Slicer còn lại `supportsSelectedPrinter: false` + `presetNote` nói rõ "không có profile cho
+  máy này — chỉ để đối chiếu tên tham số".
+- `PrintSettingsPanel`: thêm hàng nút chọn slicer phía trên hàng tab tham số; nút của slicer
+  không khớp máy có nhãn phụ `≠ máy`. Tiêu đề và câu disclaimer đổi theo slicer đang mở.
+- **Vì sao dùng chung một bộ tham số cho cả hai slicer**: Anycubic Slicer Next là fork của
+  OrcaSlicer, mà OrcaSlicer fork từ Bambu Studio → tên tham số trùng nhau. Nguồn:
+  <https://wiki.anycubic.com/en/software-and-app>. Thứ khác nhau thật sự là preset máy.
+
+### 3. Tài liệu
+
+- `docs/research/anycubic-print-parameters.md` (mới) — nguồn sự thật cho máy Anycubic,
+  cùng quy tắc CHƯA VERIFY như file Bambu.
+- `CLAUDE.md`: quyết định #4 (4 máy → 5 máy), #5 (nguồn = tài liệu chính thức của hãng máy),
+  mục "Nguồn sự thật cho thông số in" + danh sách tài liệu liên quan.
+
+## Trạng thái hiện tại
+
+- `npx tsc --noEmit` → No errors found
+- `npx vitest run` → **167 passed / 0 failed** (thêm 7 test: thứ tự slicer, slicer không khớp
+  máy, không bịa tên preset Anycubic, khổ in 260mm, cảnh báo ABS ghi đúng tên hãng, không mượn
+  preset tốc độ X1C cho Kobra X)
+- `npx eslint src` → exit 0 · `npx prettier --check` → sạch · `npx vite build` → OK
+- **CHƯA recheck UI bằng browser** — user chọn tự kiểm tra thủ công.
+- Thay đổi còn ở working tree, **chưa commit** (branch `main`).
+
+## Session trước — 2026-09-15 (printability / checklist mesh / prompt Flow)
+
+- Ngày: 2026-09-15
 - Tóm tắt: Tách ràng buộc in được thành núm điều khiển riêng, thêm checklist hậu kỳ cho khâu
   ảnh → STL, và thêm prompt ảnh nhiều góc riêng cho Google Flow (2 biến thể).
 
-## Đã thực hiện
+### Đã thực hiện
 
 ### 1. Tách `printability` khỏi `creativity` (2 núm độc lập)
 
@@ -15,7 +65,7 @@
   phức tạp nhất, dễ sinh cấu trúc bất khả thi nhất, thì guardrail biến mất.
 - **`src/lib/buildPrompt.ts`**: `buildPrompt(mix, { printability })`, mặc định bật.
   `GROUNDED_CLAUSE` (1 câu) thay bằng `printabilityClauses()` — 5 câu, áp dụng ở MỌI mức
-  sáng tạo. `CREATIVE_CLAUSE` giờ chỉ *thêm vào* ở mức >= 3 chứ không *thay thế* nữa.
+  sáng tạo. `CREATIVE_CLAUSE` giờ chỉ _thêm vào_ ở mức >= 3 chứ không _thay thế_ nữa.
 - **`minFeatureMm()`** = 2 × `DEFAULT_NOZZLE_MM` = 0.8mm — tính từ nozzle, KHÔNG phải số đoán.
   **`minFeaturePercent()`** quy đổi theo `size.longestEdgeMm` (ảnh không mang đơn vị mm).
   Dùng % chứ không dùng phân số vì "one 188th" vừa khó đọc vừa khó cho model bám vào.
@@ -54,7 +104,7 @@
 - **`src/components/FlowSourceToggle.tsx`** (mới), **`PromptPanel`** nhận thêm
   `title` / `hint` / `controls` để render được nhiều panel prompt.
 
-## Trạng thái hiện tại
+### Trạng thái khi kết thúc session đó
 
 - `npx tsc --noEmit` → No errors found
 - `npx eslint src` → exit 0
@@ -69,6 +119,8 @@
 
 ## Việc tiếp theo
 
+0. **Recheck UI hàng tab slicer** (user tự làm): `npm run dev` → chọn máy "Anycubic Kobra X",
+   bấm qua lại 2 tab Bambu Studio / Anycubic Slicer Next, xác nhận tiêu đề + dòng preset đổi đúng.
 1. **Test prompt thực tế** — chưa verify được trong session này:
    - Prompt ảnh trên Gemini (key do user nhập trong UI, lưu localStorage)
    - Prompt ảnh nhiều góc trên flow.google (cần tài khoản Flow)
@@ -89,13 +141,18 @@
    - Bề mặt bóng/trong (nghi làm tool image→3D đọc sai hình khối — CHƯA VERIFY, cần test thật):
      `glossy`, `iridescent`, `frosted`, `brushed-metal`, color `translucent-amber`
    - Cấu trúc mảnh: style `wireframe`, `skeletal`, `crystalline`
-   Hướng đã bàn: KHÔNG xóa option, mà thay bằng biến thể in được khi bật chế độ in được
-   (`fur-like` → "fur suggested by deep carved grooves").
+     Hướng đã bàn: KHÔNG xóa option, mà thay bằng biến thể in được khi bật chế độ in được
+     (`fur-like` → "fur suggested by deep carved grooves").
 5. Các việc tồn từ session trước: thêm danh mục "Nhân vật & figurine"; xóa 4 option màu trùng
    chức năng (`two-tone`, `marbled-mix`, `gradient-sunset`, `gradient-ocean`); tỉ lệ axis
    `costume` (33 option mà chỉ 1 là "Không có" → Mix ra cosplay ~97%); cảnh báo AMS
    (CẦN verify số khay AMS từ tài liệu Bambu trước khi viết).
 6. Commit (đang ở branch `main` — tạo branch mới trước khi commit).
+7. **Verify nốt phần Anycubic còn thiếu** (xem `docs/research/anycubic-print-parameters.md` mục 7):
+   - wiki Kobra X trả HTTP 403 khi fetch → nhiệt độ tối đa (300/100 °C) mới lấy từ trích dẫn
+     kết quả tìm kiếm, CHƯA fetch trực tiếp; loại thép nozzle mặc định vẫn CHƯA VERIFY
+   - quy ước đặt tên preset của Anycubic Slicer Next → hiện để `presetName: null`
+   - preset Standard (layer height / speed) cho Kobra X → tab Speed đang "chưa có dữ liệu"
 
 ## Ghi chú quan trọng
 
@@ -124,3 +181,11 @@
   nhiều màu chỉ nêu SỐ màu để Gemini tự chọn.
 - Vẫn giữ nguyên ràng buộc gốc của project: **KHÔNG đoán thông số in**, giá trị chưa verify
   để `null` + hiển thị "chưa có dữ liệu".
+- Quyết định trong session này: **KHÔNG bịa chuỗi tên preset của Anycubic Slicer Next** và
+  KHÔNG mượn số tốc độ preset Bambu X1C cho Kobra X. Cả hai để `null` + hướng dẫn user tự mở
+  preset trong phần mềm — đúng ràng buộc gốc "không đoán thông số in".
+- Quyết định trong session này: **hai slicer dùng CHUNG một bộ tham số**, chỉ khác phần preset
+  máy. Lý do có nguồn (Anycubic Slicer Next fork OrcaSlicer, OrcaSlicer fork Bambu Studio), nên
+  nếu sau này thấy tên tham số lệch nhau thì sửa ở `buildSlicerSettings`, đừng nhân đôi data.
+- Breaking change nội bộ: code nào còn đọc `PrintSettings.tabs` / `PrintSettings.presetName`
+  sẽ hỏng — giờ phải đi qua `PrintSettings.slicers[i].tabs` / `.presetName`.

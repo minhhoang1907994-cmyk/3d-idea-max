@@ -120,11 +120,15 @@ export type Filament = {
 export type Printer = {
   id: string;
   label: string;
+  /** Hãng máy — dùng trong câu cảnh báo ("Bambu Lab không khuyến nghị...") */
+  vendor: string;
+  /** Slicer chính hãng của máy này — quyết định tab nào có preset thật */
+  slicerId: SlicerId;
   buildVolumeMm: { x: number; y: number; z: number };
   isEnclosed: boolean;
   /** Filament máy in tốt */
   supportedFilamentIds: string[];
-  /** Filament in được nhưng Bambu không khuyến nghị trên máy này */
+  /** Filament in được nhưng hãng không khuyến nghị trên máy này */
   notRecommendedFilamentIds: string[];
   sourceUrl: string;
 };
@@ -216,6 +220,8 @@ export type PrintWarning = {
   level: WarningLevel;
   /** Thông điệp tiếng Việt hiển thị cho user */
   message: string;
+  /** Link tài liệu chính hãng của con số nêu trong message — có thì UI render "Nguồn ↗" */
+  sourceUrl?: string;
 };
 
 export type InfillPattern =
@@ -253,15 +259,41 @@ export type SettingsTab = {
 };
 
 /**
+ * Phần mềm cắt lớp. Anycubic Slicer Next là bản fork của OrcaSlicer, mà OrcaSlicer lại
+ * fork từ Bambu Studio — nên tên tham số hai bên trùng nhau, chỉ khác preset máy.
+ * Nguồn: https://wiki.anycubic.com/en/software-and-app
+ */
+export type SlicerId = 'bambu-studio' | 'anycubic-slicer-next';
+
+/** Bảng thông số trình bày theo đúng một slicer cụ thể. */
+export type SlicerSettings = {
+  id: SlicerId;
+  /** Tên phần mềm đúng như hãng đặt */
+  label: string;
+  /**
+   * Tên preset theo quy ước của slicer đó, ví dụ "0.20mm Standard @BBL A1".
+   * `null` = slicer này không có profile cho máy đang chọn, hoặc quy ước đặt tên
+   * CHƯA VERIFY được từ tài liệu chính hãng — không đoán.
+   */
+  presetName: string | null;
+  /** Lý do khi `presetName === null`, hoặc ghi chú thêm về preset */
+  presetNote?: string;
+  /** Slicer có profile chính thức cho máy đang chọn không */
+  supportsSelectedPrinter: boolean;
+  /** Link tải / tài liệu chính hãng của slicer */
+  sourceUrl: string;
+  tabs: SettingsTab[];
+};
+
+/**
  * Thông số in suy ra từ MixResult + máy in đã chọn, tổ chức theo đúng 5 tab của
- * Bambu Studio để user đối chiếu được từng ô.
+ * slicer để user đối chiếu được từng ô.
  */
 export type PrintSettings = {
   printer: Printer;
   filament: Filament;
-  /** Tên preset theo quy ước Bambu: "0.20mm Standard @BBL A1" */
-  presetName: string;
-  tabs: SettingsTab[];
+  /** Mỗi slicer một bảng — user chọn bảng khớp phần mềm đang dùng */
+  slicers: SlicerSettings[];
   /** Giữ riêng vì đây là dữ liệu có nguồn Bambu chính thức, hiển thị nổi bật */
   temperature: {
     nozzleC: Range | null;

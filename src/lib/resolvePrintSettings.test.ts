@@ -66,11 +66,17 @@ const plaCf = FILAMENTS_BY_ID['pla-cf']!;
 const a1 = PRINTERS_BY_ID['a1']!;
 const a1Mini = PRINTERS_BY_ID['a1-mini']!;
 const x1c = PRINTERS_BY_ID['x1c']!;
+const kobraX = PRINTERS_BY_ID['kobra-x']!;
 
-/** Tìm một tham số theo đúng nhãn Bambu Studio, không quan tâm nó nằm tab nào. */
+/** Bảng của slicer chính hãng — luôn đứng đầu danh sách. */
+function nativeSlicer(settings: PrintSettings) {
+  return settings.slicers[0]!;
+}
+
+/** Tìm một tham số theo đúng nhãn trong slicer, không quan tâm nó nằm tab nào. */
 function findRow(settings: PrintSettings, label: string) {
-  return settings.tabs
-    .flatMap((tab) => tab.groups.flatMap((group) => group.rows))
+  return nativeSlicer(settings)
+    .tabs.flatMap((tab) => tab.groups.flatMap((group) => group.rows))
     .find((row) => row.label === label);
 }
 
@@ -149,10 +155,10 @@ describe('resolvePrintSettings — dữ liệu chưa verify', () => {
   });
 });
 
-describe('resolvePrintSettings — cấu trúc 5 tab Bambu Studio', () => {
+describe('resolvePrintSettings — cấu trúc 5 tab của slicer', () => {
   it('có đủ 5 tab đúng tên như trong Bambu Studio', () => {
     const settings = resolvePrintSettings(makeMix({ filament: pla }), a1);
-    expect(settings.tabs.map((tab) => tab.label)).toEqual([
+    expect(nativeSlicer(settings).tabs.map((tab) => tab.label)).toEqual([
       'Quality',
       'Strength',
       'Speed',
@@ -163,12 +169,12 @@ describe('resolvePrintSettings — cấu trúc 5 tab Bambu Studio', () => {
 
   it('sinh tên preset theo quy ước Bambu', () => {
     const settings = resolvePrintSettings(makeMix({ filament: pla }), a1);
-    expect(settings.presetName).toBe('0.20mm Standard @BBL A1');
+    expect(nativeSlicer(settings).presetName).toBe('0.20mm Standard @BBL A1');
   });
 
   it('thêm hậu tố nozzle khi khác 0.4mm', () => {
     const settings = resolvePrintSettings(makeMix({ filament: pla }), x1c, 0.6);
-    expect(settings.presetName).toBe('0.20mm Standard @BBL X1C 0.6 nozzle');
+    expect(nativeSlicer(settings).presetName).toBe('0.20mm Standard @BBL X1C 0.6 nozzle');
   });
 
   it('lấy số lớp vỏ trên/dưới từ mục đích sử dụng', () => {
@@ -217,5 +223,120 @@ describe('resolvePrintSettings — không chốt thứ app không biết', () =>
   it('để Spiral vase tắt mặc định — bật nhầm sẽ in hỏng vật thể thường', () => {
     const settings = resolvePrintSettings(makeMix({ filament: pla }), a1);
     expect(findRow(settings, 'Spiral vase')?.value).toBe('tắt');
+  });
+});
+
+describe('resolvePrintSettings — nhiều slicer', () => {
+  it('đưa slicer chính hãng của máy lên đầu', () => {
+    const onA1 = resolvePrintSettings(makeMix({ filament: pla }), a1);
+    const onKobra = resolvePrintSettings(makeMix({ filament: pla }), kobraX);
+    expect(nativeSlicer(onA1).id).toBe('bambu-studio');
+    expect(nativeSlicer(onKobra).id).toBe('anycubic-slicer-next');
+  });
+
+  it('có cả hai bảng slicer để đối chiếu tên tham số', () => {
+    const settings = resolvePrintSettings(makeMix({ filament: pla }), kobraX);
+    expect(settings.slicers.map((item) => item.label)).toEqual([
+      'Anycubic Slicer Next',
+      'Bambu Studio',
+    ]);
+  });
+
+  it('đánh dấu slicer không có profile cho máy đang chọn', () => {
+    const settings = resolvePrintSettings(makeMix({ filament: pla }), kobraX);
+    const bambu = settings.slicers.find((item) => item.id === 'bambu-studio')!;
+    expect(bambu.supportsSelectedPrinter).toBe(false);
+    expect(bambu.presetName).toBeNull();
+    expect(bambu.presetNote).toContain('không có profile');
+  });
+
+  it('sinh tên preset theo quy ước bộ profile Anycubic Slicer Next', () => {
+    const settings = resolvePrintSettings(makeMix({ filament: pla }), kobraX);
+    const anycubic = nativeSlicer(settings);
+    expect(anycubic.supportsSelectedPrinter).toBe(true);
+    // Máy Anycubic đời mới LUÔN có hậu tố nozzle, khác Bambu (0.4 thì không có)
+    expect(anycubic.presetName).toBe('0.20mm Standard @Anycubic Kobra X 0.4 nozzle');
+    expect(anycubic.presetNote).toContain('đối chiếu lại');
+  });
+
+  it('dùng đúng bậc chất lượng của Anycubic theo layer height', () => {
+    const tiers = DETAIL_OPTIONS.map((detail) => {
+      const settings = resolvePrintSettings({ ...makeMix({ filament: pla }), detail }, kobraX);
+      return nativeSlicer(settings).presetName;
+    });
+    expect(tiers).toEqual([
+      '0.28mm SuperDraft @Anycubic Kobra X 0.4 nozzle',
+      '0.20mm Standard @Anycubic Kobra X 0.4 nozzle',
+      '0.12mm Detail @Anycubic Kobra X 0.4 nozzle',
+      '0.08mm HighDetail @Anycubic Kobra X 0.4 nozzle',
+    ]);
+  });
+});
+
+describe('resolvePrintSettings — Anycubic Kobra X', () => {
+  it('dùng khổ in 260mm: kích thước 240mm vẫn lọt, không cảnh báo', () => {
+    const size = SIZE_OPTIONS.find((s) => s.longestEdgeMm === 240)!;
+    const settings = resolvePrintSettings(makeMix({ filament: pla, size }), kobraX);
+    expect(settings.warnings.some((w) => w.message.includes('vượt khổ in'))).toBe(false);
+  });
+
+  it('cảnh báo ABS trên máy hở và ghi đúng tên hãng', () => {
+    const settings = resolvePrintSettings(makeMix({ filament: abs }), kobraX);
+    expect(settings.warnings.some((w) => w.message.includes('Anycubic không khuyến nghị'))).toBe(
+      true,
+    );
+    expect(settings.warnings.some((w) => w.message.includes('máy hở'))).toBe(true);
+  });
+
+  it('chưa có preset tốc độ cho Kobra X — không mượn số của máy Bambu', () => {
+    const settings = resolvePrintSettings(makeMix({ filament: pla }), kobraX);
+    expect(findRow(settings, 'Outer wall')?.value).toBeNull();
+  });
+});
+
+describe('resolvePrintSettings — khuyến nghị TPU của Anycubic', () => {
+  const tpu = FILAMENTS_BY_ID['tpu']!;
+
+  it('điền dải tốc độ TPU vào tab Speed của máy Anycubic dù chưa có preset máy', () => {
+    const settings = resolvePrintSettings(makeMix({ filament: tpu }), kobraX);
+    expect(findRow(settings, 'First layer')?.value).toBe('10 – 15 mm/s');
+    expect(findRow(settings, 'Outer wall')?.value).toBe('15 – 20 mm/s');
+    expect(findRow(settings, 'Sparse infill')?.value).toBe('20 – 30 mm/s');
+    expect(findRow(settings, 'Outer wall')?.note).toContain('Anycubic khuyến nghị');
+  });
+
+  it('ô không có khuyến nghị vẫn để trống, không suy từ dải có sẵn', () => {
+    const settings = resolvePrintSettings(makeMix({ filament: tpu }), kobraX);
+    expect(findRow(settings, 'Top surface')?.value).toBeNull();
+    expect(findRow(settings, 'First layer infill')?.value).toBeNull();
+  });
+
+  it('KHÔNG áp khuyến nghị của Anycubic cho máy hãng khác', () => {
+    const settings = resolvePrintSettings(makeMix({ filament: tpu }), a1);
+    expect(findRow(settings, 'Outer wall')?.value).toBeNull();
+  });
+
+  it('nhắc sấy filament kèm link nguồn chính hãng', () => {
+    const settings = resolvePrintSettings(makeMix({ filament: tpu }), kobraX);
+    const drying = settings.warnings.find((w) => w.message.includes('sấy 50–55 °C'));
+    expect(drying?.sourceUrl).toContain('wiki.anycubic.com');
+  });
+
+  it('cảnh báo khi layer height mỏng hơn ngưỡng Anycubic khuyến nghị cho TPU', () => {
+    const thin = DETAIL_OPTIONS.find((d) => d.layerHeightMm < 0.16)!;
+    const mix = { ...makeMix({ filament: tpu }), detail: thin };
+    const settings = resolvePrintSettings(mix, kobraX);
+    expect(
+      settings.warnings.some(
+        (w) => w.level === 'warning' && w.message.includes('quá mỏng cho TPU'),
+      ),
+    ).toBe(true);
+  });
+
+  it('không cảnh báo layer height khi đã ở 0.16mm trở lên', () => {
+    const ok = DETAIL_OPTIONS.find((d) => d.layerHeightMm >= 0.16)!;
+    const mix = { ...makeMix({ filament: tpu }), detail: ok };
+    const settings = resolvePrintSettings(mix, kobraX);
+    expect(settings.warnings.some((w) => w.message.includes('quá mỏng cho TPU'))).toBe(false);
   });
 });

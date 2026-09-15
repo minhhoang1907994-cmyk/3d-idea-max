@@ -26,6 +26,62 @@
   color: var(--accent);
 }
 
+.presetNote {
+  margin: 0.15rem 0 0;
+  font-size: 0.71rem;
+  line-height: 1.4;
+  color: var(--text-faint);
+}
+
+.presetMissing {
+  margin: 0;
+  font-size: 0.75rem;
+  line-height: 1.4;
+  font-style: italic;
+  color: var(--warning);
+}
+
+/* Hàng chọn phần mềm cắt lớp — cấp trên của hàng tab tham số */
+.slicers {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin-bottom: 0.9rem;
+}
+
+.slicer {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.35rem 0.8rem;
+  font: inherit;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  background: var(--surface-sunken);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  cursor: pointer;
+}
+
+.slicer:hover {
+  color: var(--text);
+  border-color: var(--border-strong);
+}
+
+.slicerActive,
+.slicerActive:hover {
+  color: var(--text);
+  background: var(--surface);
+  border-color: var(--accent);
+}
+
+.slicerTag {
+  font-size: 0.68rem;
+  font-weight: 500;
+  color: var(--text-faint);
+}
+
 .printer {
   font-size: 0.78rem;
   color: var(--text-muted);
