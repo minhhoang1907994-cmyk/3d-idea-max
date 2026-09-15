@@ -9,7 +9,12 @@ import { SelectField } from '../components/SelectField';
 import type { IdeaData } from '../data/bundledData';
 import { FILAMENTS } from '../data/filaments';
 import { useIdeaMixer } from '../hooks/useIdeaMixer';
-import { isCharacterSubject, isCharacterTraitAxis, NO_COSTUME_ID } from '../lib/characterTraits';
+import {
+  allowsFreeText,
+  isCharacterSubject,
+  isCharacterTraitAxis,
+  NO_COSTUME_ID,
+} from '../lib/characterTraits';
 import type { AttributeAxisId } from '../types';
 import styles from './MixPage.module.css';
 
@@ -17,8 +22,8 @@ type Props = { data: IdeaData };
 
 /** Ghi chú dưới selectbox của một vài axis cần giải thích thêm. */
 const AXIS_HINTS: Partial<Record<AttributeAxisId, string>> = {
-  pose: 'Chỉ áp dụng cho sản phẩm nhân vật',
-  expression: 'Chỉ áp dụng cho sản phẩm nhân vật',
+  pose: 'Chỉ áp dụng cho sản phẩm nhân vật — chọn "Mặc định" để Gemini tự quyết',
+  expression: 'Chỉ áp dụng cho sản phẩm nhân vật — chọn "Mặc định" để Gemini tự quyết',
   outfit: 'Chỉ áp dụng cho sản phẩm nhân vật',
   costume: 'Trọn bộ theo chủ đề — chọn bộ nào là ghi đè Trang phục',
 };
@@ -90,6 +95,12 @@ export function MixPage({ data }: Props) {
             options={axis.options}
             onChange={(optionId) => mixer.selectAttribute(axis.id, optionId)}
             hint={axisHint(axis.id)}
+            {...(allowsFreeText(axis.id)
+              ? {
+                  overrideText: mix.attributeOverrides?.[axis.id] ?? null,
+                  onOverrideChange: (text: string) => mixer.setAttributeOverride(axis.id, text),
+                }
+              : {})}
           />
         ))}
         <SelectField

@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { FILAMENTS_BY_ID } from '../data/filaments';
 import { PRINTERS_BY_ID } from '../data/printers';
 import { BUNDLED_DATA } from '../data/bundledData';
+import { DEFAULT_TRAIT_OPTION_ID } from './characterTraits';
 import { resolvePrintSettings } from './resolvePrintSettings';
 import type {
   AttributeAxisId,
@@ -21,10 +22,13 @@ const {
   strengths: STRENGTH_OPTIONS,
 } = BUNDLED_DATA.technicalAxes;
 
-/** Lấy option đầu của một axis theo id — bền hơn chỉ số mảng khi thêm axis mới. */
+/**
+ * Lấy option đầu của một axis theo id — bền hơn chỉ số mảng khi thêm axis mới.
+ * Bỏ qua option "mặc định" của pose/expression vì promptText của nó không vào prompt.
+ */
 function firstOption(axisId: AttributeAxisId): AttributeOption {
   const axis = ATTRIBUTE_AXES.find((item) => item.id === axisId);
-  const option = axis?.options[0];
+  const option = axis?.options.find((item) => item.id !== DEFAULT_TRAIT_OPTION_ID);
   if (!option) throw new Error(`fixture sai: attributes.json thiếu axis "${axisId}"`);
   return option;
 }

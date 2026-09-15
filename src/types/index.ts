@@ -211,6 +211,12 @@ export type MixResult = {
    */
   secondaryOverride: string | null;
   characterOverride: string | null;
+
+  /**
+   * Text tự do cho các axis nhân vật (Thế đứng / Biểu cảm), thay cho lựa chọn từ danh sách.
+   * Key vắng mặt = dùng option đã chọn. Cũng chỉ sống trong phiên như hai override trên.
+   */
+  attributeOverrides?: Partial<Record<AttributeAxisId, string>>;
 };
 
 /** Mức độ nghiêm trọng của cảnh báo về tính khả thi khi in. */

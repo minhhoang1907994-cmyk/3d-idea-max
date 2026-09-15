@@ -19,15 +19,15 @@ selectbox → sinh ra 2 thứ:
 
 ## Quyết định đã chốt (không đổi nếu không có lý do rõ ràng)
 
-| #   | Quyết định                                                 | Ghi chú                                                                                |
-| --- | ---------------------------------------------------------- | -------------------------------------------------------------------------------------- |
-| 1   | **Mix random TOÀN BỘ selectbox**, ghi đè lựa chọn hiện tại | Không có cơ chế lock/giữ field                                                         |
-| 2   | Danh mục → sản phẩm là **cascading**                       | Random danh mục trước, rồi random sản phẩm thuộc danh mục đó → luôn ra đúng 1 sản phẩm |
-| 3   | **Tách 2 selectbox vật liệu**                              | `filament` (in được, sinh thông số) và `surface` (thẩm mỹ, chỉ vào prompt ảnh)         |
-| 4   | Hỗ trợ 5 máy: **A1, A1 mini, P1S, X1C, Anycubic Kobra X**  | Thông số + giới hạn khổ in đổi theo máy                                                |
+| #   | Quyết định                                                 | Ghi chú                                                                                                |
+| --- | ---------------------------------------------------------- | ------------------------------------------------------------------------------------------------------ |
+| 1   | **Mix random TOÀN BỘ selectbox**, ghi đè lựa chọn hiện tại | Không có cơ chế lock/giữ field                                                                         |
+| 2   | Danh mục → sản phẩm là **cascading**                       | Random danh mục trước, rồi random sản phẩm thuộc danh mục đó → luôn ra đúng 1 sản phẩm                 |
+| 3   | **Tách 2 selectbox vật liệu**                              | `filament` (in được, sinh thông số) và `surface` (thẩm mỹ, chỉ vào prompt ảnh)                         |
+| 4   | Hỗ trợ 5 máy: **A1, A1 mini, P1S, X1C, Anycubic Kobra X**  | Thông số + giới hạn khổ in đổi theo máy                                                                |
 | 5   | Thông số in lấy từ **tài liệu chính thức của hãng máy**    | Nguồn sự thật: `docs/research/bambu-print-parameters.md`, `docs/research/anycubic-print-parameters.md` |
-| 6   | Quy mô dữ liệu: **15 danh mục × 30 sản phẩm**              | Dễ nâng lên sau, không phải sửa cấu trúc                                               |
-| 7   | Tool tạo ảnh đích: **Gemini**                              | Prompt dạng câu văn tự nhiên, không keyword list, không cú pháp tham số                |
+| 6   | Quy mô dữ liệu: **15 danh mục × 30 sản phẩm**              | Dễ nâng lên sau, không phải sửa cấu trúc                                                               |
+| 7   | Tool tạo ảnh đích: **Gemini**                              | Prompt dạng câu văn tự nhiên, không keyword list, không cú pháp tham số                                |
 
 ## Project Conventions
 
@@ -161,6 +161,16 @@ Chúng chỉ có nghĩa khi chủ thể là nhân vật, nên `buildPrompt` và 
 `isCharacter: true` (`wall-hook-animal`, `wedding-cake-topper`), hoặc mix đang bật lớp nhân
 vật (`character` / text tự do). Với bình hoa hay hộp bút
 thì bỏ hẳn, tránh sinh câu vô nghĩa kiểu "a vase wearing a hoodie with a grumpy expression".
+
+Hai axis `pose` và `expression` có thêm option **`default`** ("— Mặc định —"): cùng cơ chế
+với `NO_COSTUME_ID` — là option thật để Mix random chọn được, nhưng promptText KHÔNG bao giờ
+vào prompt, nghĩa là không mô tả gì cả và để Gemini tự chọn thứ hợp với chủ thể.
+Xem `DEFAULT_TRAIT_OPTION_ID`.
+
+Riêng hai axis này còn cho **gõ text tự do** thay cho lựa chọn trong danh sách
+(`MixResult.attributeOverrides`, xem `FREE_TEXT_TRAIT_AXIS_IDS`). Text tự do thắng mọi option
+kể cả `default`, chỉ sống trong phiên, KHÔNG ghi vào file dữ liệu — giống
+`secondaryOverride` / `characterOverride`.
 
 Nguồn sự thật: `src/lib/characterTraits.ts`.
 

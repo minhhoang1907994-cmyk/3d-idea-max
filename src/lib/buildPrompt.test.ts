@@ -11,7 +11,7 @@ import {
 } from './buildPrompt';
 import { mixIdeas, type MixInput } from './mixIdeas';
 import type { AttributeAxisId, AttributeOption, MixResult } from '../types';
-import { NO_COSTUME_ID } from './characterTraits';
+import { DEFAULT_TRAIT_OPTION_ID, NO_COSTUME_ID } from './characterTraits';
 
 const input: MixInput = { ...BUNDLED_DATA, filaments: FILAMENTS };
 
@@ -24,11 +24,22 @@ const {
   strengths: STRENGTH_OPTIONS,
 } = BUNDLED_DATA.technicalAxes;
 
-/** Lấy option đầu của một axis theo id — bền hơn chỉ số mảng khi thêm axis mới. */
+/**
+ * Lấy option đầu của một axis theo id — bền hơn chỉ số mảng khi thêm axis mới.
+ * Bỏ qua option "mặc định" của pose/expression vì promptText của nó không vào prompt.
+ */
 function firstOption(axisId: AttributeAxisId): AttributeOption {
   const axis = ATTRIBUTE_AXES.find((item) => item.id === axisId);
-  const option = axis?.options[0];
+  const option = axis?.options.find((item) => item.id !== DEFAULT_TRAIT_OPTION_ID);
   if (!option) throw new Error(`fixture sai: attributes.json thiếu axis "${axisId}"`);
+  return option;
+}
+
+/** Lấy option "mặc định" thật trong dữ liệu, không dựng option giả. */
+function defaultOption(axisId: 'pose' | 'expression'): AttributeOption {
+  const axis = ATTRIBUTE_AXES.find((item) => item.id === axisId);
+  const option = axis?.options.find((item) => item.id === DEFAULT_TRAIT_OPTION_ID);
+  if (!option) throw new Error(`attributes.json thiếu option "mặc định" của axis "${axisId}"`);
   return option;
 }
 
@@ -331,6 +342,75 @@ describe('buildPrompt — thế đứng / biểu cảm / trang phục', () => {
     const [pose, expression, outfit] = traitTexts as [string, string, string];
     expect(prompt.indexOf(pose)).toBeLessThan(prompt.indexOf(expression));
     expect(prompt.indexOf(expression)).toBeLessThan(prompt.indexOf(outfit));
+  });
+});
+
+describe('buildPrompt — option "Mặc định" của thế đứng / biểu cảm', () => {
+  it('không mô tả thế đứng khi chọn Mặc định', () => {
+    const pose = defaultOption('pose');
+    const prompt = buildPrompt({
+      ...heroMix,
+      attributes: { ...heroMix.attributes, pose },
+    });
+    expect(prompt).not.toContain(pose.promptText);
+    // các chiều còn lại vẫn nguyên
+    expect(prompt).toContain(heroMix.attributes.expression.promptText);
+  });
+
+  it('chọn Mặc định cả hai thì prompt không còn thế đứng lẫn biểu cảm', () => {
+    const pose = defaultOption('pose');
+    const expression = defaultOption('expression');
+    const prompt = buildPrompt({
+      ...heroMix,
+      attributes: { ...heroMix.attributes, pose, expression },
+    });
+    expect(prompt).not.toContain(pose.promptText);
+    expect(prompt).not.toContain(expression.promptText);
+    expect(prompt).toContain(heroMix.attributes.outfit.promptText);
+  });
+});
+
+describe('buildPrompt — text tự do cho thế đứng / biểu cảm', () => {
+  it('dùng text tự do thay cho option đã chọn', () => {
+    const prompt = buildPrompt({
+      ...heroMix,
+      attributeOverrides: { pose: 'balancing on one foot atop a beach ball' },
+    });
+    expect(prompt).toContain('balancing on one foot atop a beach ball');
+    expect(prompt).not.toContain(heroMix.attributes.pose.promptText);
+  });
+
+  it('giữ nguyên thứ tự thế đứng → biểu cảm khi cả hai là text tự do', () => {
+    const prompt = buildPrompt({
+      ...heroMix,
+      attributeOverrides: { pose: 'hanging upside down', expression: 'with a dizzy stare' },
+    });
+    expect(prompt.indexOf('hanging upside down')).toBeLessThan(
+      prompt.indexOf('with a dizzy stare'),
+    );
+  });
+
+  it('text toàn khoảng trắng thì quay về option đã chọn', () => {
+    const prompt = buildPrompt({ ...heroMix, attributeOverrides: { pose: '   ' } });
+    expect(prompt).toContain(heroMix.attributes.pose.promptText);
+  });
+
+  it('text tự do ghi đè cả option Mặc định', () => {
+    const pose = defaultOption('pose');
+    const prompt = buildPrompt({
+      ...heroMix,
+      attributes: { ...heroMix.attributes, pose },
+      attributeOverrides: { pose: 'perched on a mushroom' },
+    });
+    expect(prompt).toContain('perched on a mushroom');
+  });
+
+  it('bỏ text tự do khi sản phẩm không phải nhân vật', () => {
+    const prompt = buildPrompt({
+      ...plainMix,
+      attributeOverrides: { pose: 'perched on a mushroom' },
+    });
+    expect(prompt).not.toContain('perched on a mushroom');
   });
 });
 

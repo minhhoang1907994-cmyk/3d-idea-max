@@ -158,6 +158,22 @@ export function useIdeaMixer(data: IdeaData) {
     setMix((current) => ({ ...current, secondaryOverride: text === '' ? null : text }));
   }, []);
 
+  /**
+   * Gõ text tự do cho một axis nhân vật (Thế đứng / Biểu cảm).
+   * Chuỗi rỗng = quay về dùng lựa chọn từ danh sách.
+   */
+  const setAttributeOverride = useCallback((axisId: AttributeAxisId, text: string) => {
+    setMix((current) => {
+      const next = { ...current.attributeOverrides };
+      if (text === '') {
+        delete next[axisId];
+      } else {
+        next[axisId] = text;
+      }
+      return { ...current, attributeOverrides: next };
+    });
+  }, []);
+
   const setCharacterOverride = useCallback((text: string) => {
     setMix((current) => ({ ...current, characterOverride: text === '' ? null : text }));
   }, []);
@@ -196,6 +212,7 @@ export function useIdeaMixer(data: IdeaData) {
     selectCategory,
     selectProduct,
     selectAttribute,
+    setAttributeOverride,
     selectSize,
     selectDetail,
     selectStrength,

@@ -527,6 +527,11 @@
     "label": "Thế đứng",
     "options": [
       {
+        "id": "default",
+        "label": "— Mặc định —",
+        "promptText": "in a pose of its own choosing"
+      },
+      {
         "id": "arms-crossed",
         "label": "Khoanh tay",
         "promptText": "standing with its arms crossed"
@@ -625,6 +630,51 @@
         "id": "hugging-knees",
         "label": "Ôm gối",
         "promptText": "sitting and hugging its knees"
+      },
+      {
+        "id": "kneeling-one-knee",
+        "label": "Quỳ một gối",
+        "promptText": "kneeling down on one knee"
+      },
+      {
+        "id": "arms-raised-cheer",
+        "label": "Giơ hai tay",
+        "promptText": "throwing both arms up in celebration"
+      },
+      {
+        "id": "hands-behind-back",
+        "label": "Chắp tay sau lưng",
+        "promptText": "standing with both hands clasped behind its back"
+      },
+      {
+        "id": "tiptoe-reaching",
+        "label": "Kiễng chân với",
+        "promptText": "rising on tiptoes to reach upward"
+      },
+      {
+        "id": "sitting-on-heels",
+        "label": "Ngồi quỳ",
+        "promptText": "sitting back on its heels"
+      },
+      {
+        "id": "running",
+        "label": "Đang chạy",
+        "promptText": "running forward with both arms pumping"
+      },
+      {
+        "id": "arms-spread-balance",
+        "label": "Dang tay giữ thăng bằng",
+        "promptText": "spreading both arms wide for balance"
+      },
+      {
+        "id": "head-tilt",
+        "label": "Nghiêng đầu",
+        "promptText": "tilting its head curiously to one side"
+      },
+      {
+        "id": "holding-book",
+        "label": "Cầm sách đọc",
+        "promptText": "holding an open book in both hands"
       }
     ]
   },
@@ -632,6 +682,11 @@
     "id": "expression",
     "label": "Biểu cảm",
     "options": [
+      {
+        "id": "default",
+        "label": "— Mặc định —",
+        "promptText": "with an expression of its own choosing"
+      },
       {
         "id": "smug-half-lidded",
         "label": "Lim dim tự tin",
@@ -731,6 +786,51 @@
         "id": "relieved",
         "label": "Nhẹ nhõm",
         "promptText": "with a relieved soft-eyed sigh"
+      },
+      {
+        "id": "pouting",
+        "label": "Phụng phịu",
+        "promptText": "with its cheeks puffed out in a pout"
+      },
+      {
+        "id": "teary",
+        "label": "Mếu máo",
+        "promptText": "with teary eyes and a wobbly frown"
+      },
+      {
+        "id": "smirking",
+        "label": "Nhếch mép",
+        "promptText": "with a one-sided smirk"
+      },
+      {
+        "id": "starry-eyed",
+        "label": "Mắt long lanh sao",
+        "promptText": "with sparkling star-struck eyes"
+      },
+      {
+        "id": "embarrassed",
+        "label": "Xấu hổ",
+        "promptText": "with a flustered grimace and flushed ears"
+      },
+      {
+        "id": "yawning",
+        "label": "Ngáp",
+        "promptText": "with its mouth open in a wide yawn"
+      },
+      {
+        "id": "concentrating",
+        "label": "Tập trung",
+        "promptText": "with its brows knitted in deep concentration"
+      },
+      {
+        "id": "scowling",
+        "label": "Quắc mắt",
+        "promptText": "with a sharp narrow-eyed scowl"
+      },
+      {
+        "id": "hopeful",
+        "label": "Hy vọng",
+        "promptText": "with bright hopeful eyes and a small smile"
       }
     ]
   },

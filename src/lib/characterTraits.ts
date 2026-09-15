@@ -18,6 +18,22 @@ export const CHARACTER_TRAIT_AXIS_IDS = ['pose', 'expression', 'outfit', 'costum
  */
 export const NO_COSTUME_ID = 'none';
 
+/**
+ * Option "để model tự quyết" của axis `pose` và `expression`.
+ *
+ * Cùng cơ chế với [NO_COSTUME_ID]: là option thật trong danh sách (Mix random vẫn chọn
+ * được), nhưng promptText của nó KHÔNG bao giờ vào prompt — chọn nó nghĩa là không mô tả
+ * thế đứng / biểu cảm, để Gemini tự chọn thứ hợp với chủ thể.
+ */
+export const DEFAULT_TRAIT_OPTION_ID = 'default';
+
+/** Axis nhân vật cho phép gõ text tự do thay cho lựa chọn từ danh sách. */
+export const FREE_TEXT_TRAIT_AXIS_IDS = ['pose', 'expression'] as const;
+
+export function allowsFreeText(axisId: AttributeAxisId): boolean {
+  return (FREE_TEXT_TRAIT_AXIS_IDS as readonly string[]).includes(axisId);
+}
+
 export type CharacterTraitAxisId = (typeof CHARACTER_TRAIT_AXIS_IDS)[number];
 
 export function isCharacterTraitAxis(axisId: AttributeAxisId): axisId is CharacterTraitAxisId {
@@ -49,12 +65,25 @@ export function isCharacterSubject(mix: MixResult): boolean {
  * Axis có thể đã bị xóa bên trang Quản lý dữ liệu nên chỗ nào cũng phải chịu được `undefined`.
  */
 export function characterTraitTexts(mix: MixResult): string[] {
-  const { pose, expression, outfit, costume } = mix.attributes;
+  const { outfit, costume } = mix.attributes;
 
   const costumeText = costume && costume.id !== NO_COSTUME_ID ? costume.promptText : undefined;
   const clothing = costumeText ?? outfit?.promptText;
 
-  return [pose?.promptText, expression?.promptText, clothing].filter(
+  return [traitText(mix, 'pose'), traitText(mix, 'expression'), clothing].filter(
     (text): text is string => typeof text === 'string' && text !== '',
   );
+}
+
+/**
+ * Text của một axis nhân vật: text tự do người dùng gõ được ưu tiên, rồi mới tới option
+ * đã chọn. Option "mặc định" trả `undefined` — không mô tả gì cả.
+ */
+function traitText(mix: MixResult, axisId: AttributeAxisId): string | undefined {
+  const override = mix.attributeOverrides?.[axisId]?.trim();
+  if (override) return override;
+
+  const option = mix.attributes[axisId];
+  if (!option || option.id === DEFAULT_TRAIT_OPTION_ID) return undefined;
+  return option.promptText;
 }
