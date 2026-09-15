@@ -2,11 +2,13 @@ import { useCallback, useMemo, useState } from 'react';
 import type { IdeaData } from '../data/bundledData';
 import { FILAMENTS, FILAMENTS_BY_ID } from '../data/filaments';
 import { DEFAULT_PRINTER_ID, PRINTERS, PRINTERS_BY_ID } from '../data/printers';
+import { buildMeshChecklist } from '../lib/buildMeshChecklist';
+import { buildFlowPrompt } from '../lib/buildFlowPrompt';
 import { buildPrompt } from '../lib/buildPrompt';
 import { mixIdeas, type MixInput } from '../lib/mixIdeas';
 import { reconcileMix } from '../lib/reconcileMix';
 import { resolvePrintSettings } from '../lib/resolvePrintSettings';
-import type { AttributeAxisId, CreativityLevel, MixResult } from '../types';
+import type { AttributeAxisId, CreativityLevel, FlowPromptSource, MixResult } from '../types';
 
 function toMixInput(data: IdeaData): MixInput {
   return { ...data, filaments: FILAMENTS };
@@ -25,6 +27,13 @@ export function useIdeaMixer(data: IdeaData) {
   const mix = useMemo(() => reconcileMix(rawMix, data), [rawMix, data]);
   const [printerId, setPrinterId] = useState<string>(DEFAULT_PRINTER_ID);
   const [creativity, setCreativity] = useState<CreativityLevel>(3);
+  /**
+   * Tách khỏi `creativity`: ý tưởng táo bạo tới đâu là một chuyện, mô hình có in được
+   * hay không là chuyện khác. Mặc định bật vì mục đích của app là in ra thật.
+   */
+  const [printability, setPrintability] = useState(true);
+  /** Hai cách dựng ảnh nhiều góc ở Flow — xem lib/buildFlowPrompt.ts */
+  const [flowSource, setFlowSource] = useState<FlowPromptSource>('text');
 
   /** Quyết định đã chốt #1: Mix ghi đè TOÀN BỘ lựa chọn hiện tại. */
   const remix = useCallback(() => {
@@ -153,7 +162,12 @@ export function useIdeaMixer(data: IdeaData) {
     setMix((current) => ({ ...current, characterOverride: text === '' ? null : text }));
   }, []);
 
-  const prompt = useMemo(() => buildPrompt(mix), [mix]);
+  const prompt = useMemo(() => buildPrompt(mix, { printability }), [mix, printability]);
+  // Ảnh nhiều góc dựng ở Flow — nhiều góc cho mesh sát hơn, xem lib/buildFlowPrompt.ts
+  const flowPrompt = useMemo(
+    () => buildFlowPrompt(mix, { printability, source: flowSource }),
+    [mix, printability, flowSource],
+  );
 
   const fallbackPrinter = PRINTERS[0];
   if (!fallbackPrinter) {
@@ -161,16 +175,23 @@ export function useIdeaMixer(data: IdeaData) {
   }
   const printer = PRINTERS_BY_ID[printerId] ?? fallbackPrinter;
   const printSettings = useMemo(() => resolvePrintSettings(mix, printer), [mix, printer]);
+  const meshChecklist = useMemo(() => buildMeshChecklist(mix, printer), [mix, printer]);
 
   return {
     mix,
     prompt,
+    flowPrompt,
     printer,
     printers: PRINTERS,
     printSettings,
+    meshChecklist,
     setPrinterId,
     creativity,
     setCreativity,
+    printability,
+    setPrintability,
+    flowSource,
+    setFlowSource,
     remix,
     selectCategory,
     selectProduct,

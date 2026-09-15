@@ -1,0 +1,75 @@
+.panel {
+  padding: 1.1rem 1.2rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+}
+
+.header {
+  margin-bottom: 0.9rem;
+}
+
+.title {
+  margin: 0 0 0.25rem;
+  font-size: 1rem;
+}
+
+.subtitle {
+  margin: 0;
+  font-size: 0.78rem;
+  line-height: 1.5;
+  color: var(--text-muted);
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  margin: 0;
+  padding-left: 1.2rem;
+}
+
+.item {
+  padding: 0.6rem 0.75rem;
+  background: var(--surface-sunken);
+  border-radius: 8px;
+}
+
+.itemHead {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.5rem;
+  margin-bottom: 0.25rem;
+}
+
+.label {
+  font-size: 0.88rem;
+  font-weight: 700;
+}
+
+.badge {
+  padding: 0.1rem 0.4rem;
+  font-size: 0.68rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text-muted);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+}
+
+.risk {
+  margin: 0 0 0.3rem;
+  font-size: 0.79rem;
+  line-height: 1.5;
+  color: var(--text-muted);
+}
+
+.tool {
+  margin: 0;
+  font-size: 0.74rem;
+  line-height: 1.4;
+  color: var(--text-faint);
+}

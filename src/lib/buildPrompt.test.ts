@@ -1,7 +1,14 @@
 import { describe, expect, it } from 'vitest';
 import { FILAMENTS, FILAMENTS_BY_ID } from '../data/filaments';
 import { BUNDLED_DATA } from '../data/bundledData';
-import { applyFusionTemplate, buildPrompt, stripLeadingArticle } from './buildPrompt';
+import {
+  applyFusionTemplate,
+  buildPrompt,
+  minFeatureMm,
+  minFeaturePercent,
+  printabilityClauses,
+  stripLeadingArticle,
+} from './buildPrompt';
 import { mixIdeas, type MixInput } from './mixIdeas';
 import type { AttributeAxisId, AttributeOption, MixResult } from '../types';
 import { NO_COSTUME_ID } from './characterTraits';
@@ -126,9 +133,16 @@ describe('buildPrompt — lai ghép', () => {
     expect(prompt).toContain(wild.personalization?.promptText ?? 'KHÔNG-CÓ');
   });
 
-  it('mức thấp giữ ràng buộc in được, mức cao nới ra cho ý tưởng táo bạo', () => {
-    expect(buildPrompt(mixIdeas(input, () => 0.5, 1))).toContain('flat stable base');
-    expect(buildPrompt(mixIdeas(input, () => 0.5, 4))).toContain('bold and unexpected');
+  it('mức cao thêm câu nới ý tưởng nhưng KHÔNG bỏ ràng buộc in được', () => {
+    const wild = buildPrompt(mixIdeas(input, () => 0.5, 4));
+    expect(wild).toContain('bold and unexpected');
+    expect(wild).toContain('flat stable base');
+  });
+
+  it('ràng buộc in được có ở mọi mức sáng tạo khi bật', () => {
+    for (const level of [1, 2, 3, 4] as const) {
+      expect(buildPrompt(mixIdeas(input, () => 0.5, level))).toContain('flat stable base');
+    }
   });
 
   it('prompt mức 4 dài hơn mức 1 vì nhiều lớp ý tưởng hơn', () => {
@@ -358,5 +372,85 @@ describe('buildPrompt — bộ cosplay', () => {
       expect(prompt).not.toContain('  ');
       expect(prompt.toLowerCase()).not.toMatch(/\b(no|without|avoid)\b/);
     }
+  });
+});
+
+describe('buildPrompt — ràng buộc in được', () => {
+  it('mặc định bật, chặn đủ bốn lỗi hình học của khâu ảnh → STL', () => {
+    const prompt = buildPrompt(mix);
+    // 1. rời rạc / lơ lửng
+    expect(prompt).toContain('one connected mass');
+    // 2. bộ phận chìa ra không có gì đỡ
+    expect(prompt).toContain('rests on something beneath it');
+    // 3. overhang quá dốc
+    expect(prompt).toContain('45 degrees');
+    // 4. chi tiết mỏng hơn đường phun
+    expect(prompt).toContain(`${minFeatureMm()} mm thick`);
+  });
+
+  it('tắt thì bỏ hết ràng buộc hình học, chỉ còn "là vật thể in 3D"', () => {
+    const prompt = buildPrompt(mix, { printability: false });
+    expect(prompt).not.toContain('flat stable base');
+    expect(prompt).not.toContain('45 degrees');
+    expect(prompt).toContain('3D printed');
+  });
+
+  it('tắt ở mức cao vẫn giữ câu nới ý tưởng', () => {
+    const prompt = buildPrompt(
+      mixIdeas(input, () => 0.5, 4),
+      { printability: false },
+    );
+    expect(prompt).toContain('bold and unexpected');
+    expect(prompt).not.toContain('flat stable base');
+  });
+
+  it('bật/tắt là hai núm độc lập với mức sáng tạo', () => {
+    for (const level of [1, 2, 3, 4] as const) {
+      const base = mixIdeas(input, () => 0.5, level);
+      expect(buildPrompt(base, { printability: true })).toContain('flat stable base');
+      expect(buildPrompt(base, { printability: false })).not.toContain('flat stable base');
+    }
+  });
+
+  // Chỉ xét phần câu do ràng buộc in được sinh ra. Vài promptText trong mechanisms.json
+  // đang dùng "without" — đó là dữ liệu, thuộc phạm vi khác.
+  it('mọi câu ràng buộc đều viết khẳng định, không dùng no/without/avoid', () => {
+    for (const size of SIZE_OPTIONS) {
+      for (const clause of printabilityClauses({ ...mix, size })) {
+        expect(clause.toLowerCase()).not.toMatch(/\b(no|without|avoid)\b/);
+      }
+    }
+  });
+
+  it('ngưỡng bề dày đổi theo kích thước — vật càng lớn thì % càng nhỏ', () => {
+    const [small, large] = [SIZE_OPTIONS[0]!, SIZE_OPTIONS[SIZE_OPTIONS.length - 1]!];
+    expect(large.longestEdgeMm).toBeGreaterThan(small.longestEdgeMm);
+    expect(minFeaturePercent(large.longestEdgeMm)).toBeLessThan(
+      minFeaturePercent(small.longestEdgeMm),
+    );
+    expect(buildPrompt({ ...mix, size: small })).toContain(
+      `${minFeaturePercent(small.longestEdgeMm)}% of the object's width`,
+    );
+  });
+});
+
+describe('minFeatureMm / minFeaturePercent', () => {
+  it('bề dày tối thiểu = 2 vòng tường của đầu phun', () => {
+    expect(minFeatureMm(0.4)).toBe(0.8);
+    expect(minFeatureMm(0.6)).toBe(1.2);
+  });
+
+  it('% = bề dày tối thiểu trên chiều dài lớn nhất', () => {
+    expect(minFeaturePercent(40, 0.4)).toBe(2);
+    expect(minFeaturePercent(80, 0.4)).toBe(1);
+  });
+
+  it('đầu phun to hơn thì % lớn lên — chi tiết phải dày hơn', () => {
+    expect(minFeaturePercent(40, 0.6)).toBeGreaterThan(minFeaturePercent(40, 0.4));
+  });
+
+  it('kích thước không hợp lệ thì throw, không trả số vô nghĩa', () => {
+    expect(() => minFeaturePercent(0)).toThrow(/phải dương/);
+    expect(() => minFeaturePercent(-10)).toThrow(/phải dương/);
   });
 });

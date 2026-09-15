@@ -269,3 +269,44 @@ export type PrintSettings = {
   };
   warnings: PrintWarning[];
 };
+
+/** Tuỳ chọn khi ghép prompt — tách khỏi MixResult vì đây là lựa chọn của user, không random. */
+export type BuildPromptOptions = {
+  /**
+   * Bật ràng buộc hình học in được (liền khối, đế phẳng, overhang ≤45°, bề dày tối thiểu).
+   * Mặc định bật. Tắt thì Gemini tự do về hình dạng — ảnh đẹp hơn nhưng dựng mesh
+   * thường ra cấu trúc không in nổi.
+   */
+  printability?: boolean;
+};
+
+/**
+ * Đầu vào của ảnh nhiều góc dựng ở Flow.
+ * 'text'  — gõ thẳng prompt vào Flow, model tự dựng cả vật thể lẫn bốn góc nhìn
+ * 'image' — sinh ảnh ở Gemini trước, đưa ảnh đó vào Flow rồi yêu cầu trải ra thành bốn góc.
+ *           Hình dạng đã bị ảnh khoá nên prompt ngắn hơn hẳn và các góc bám nhau sát hơn.
+ */
+export type FlowPromptSource = 'text' | 'image';
+
+export type BuildFlowPromptOptions = BuildPromptOptions & {
+  /** Mặc định 'text' */
+  source?: FlowPromptSource;
+};
+
+/** Mức độ bắt buộc của một mục trong checklist hậu kỳ. */
+export type MeshCheckLevel = 'required' | 'conditional';
+
+/**
+ * Một việc phải làm SAU khi có file STL — khâu app không kiểm soát được bằng prompt.
+ * Xem src/lib/buildMeshChecklist.ts.
+ */
+export type MeshCheckItem = {
+  id: string;
+  level: MeshCheckLevel;
+  /** Việc cần làm, tiếng Việt */
+  label: string;
+  /** Lỗi sẽ gặp nếu bỏ qua bước này */
+  risk: string;
+  /** Công cụ gợi ý */
+  tool: string;
+};

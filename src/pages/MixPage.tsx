@@ -1,6 +1,9 @@
 import { CreativitySlider } from '../components/CreativitySlider';
+import { FlowSourceToggle } from '../components/FlowSourceToggle';
 import { IdeaBreakdown } from '../components/IdeaBreakdown';
+import { MeshChecklistPanel } from '../components/MeshChecklistPanel';
 import { PrintSettingsPanel } from '../components/PrintSettingsPanel';
+import { PrintabilityToggle } from '../components/PrintabilityToggle';
 import { PromptPanel } from '../components/PromptPanel';
 import { SelectField } from '../components/SelectField';
 import type { IdeaData } from '../data/bundledData';
@@ -53,7 +56,10 @@ export function MixPage({ data }: Props) {
         </button>
       </header>
 
-      <CreativitySlider value={mixer.creativity} onChange={mixer.setCreativity} />
+      <div className={styles.knobs}>
+        <CreativitySlider value={mixer.creativity} onChange={mixer.setCreativity} />
+        <PrintabilityToggle value={mixer.printability} onChange={mixer.setPrintability} />
+      </div>
 
       <section className={styles.controls}>
         <SelectField
@@ -126,8 +132,19 @@ export function MixPage({ data }: Props) {
           onSecondaryOverrideChange={mixer.setSecondaryOverride}
           onCharacterOverrideChange={mixer.setCharacterOverride}
         />
-        <PromptPanel prompt={mixer.prompt} />
+        <PromptPanel
+          prompt={mixer.prompt}
+          title="Prompt ảnh — Gemini"
+          hint="Dán vào Gemini để ra ảnh sản phẩm. Ảnh này là đầu vào cho tool dựng mô hình 3D."
+        />
+        <PromptPanel
+          prompt={mixer.flowPrompt}
+          title="Prompt ảnh nhiều góc — Google Flow"
+          hint="Dán vào flow.google để ra MỘT ảnh chứa bốn góc nhìn của cùng vật thể. Tool dựng mesh sát hơn hẳn so với ảnh đơn, và thấy được mặt sau — chỗ hình dạng không in được hay trốn."
+          controls={<FlowSourceToggle value={mixer.flowSource} onChange={mixer.setFlowSource} />}
+        />
         <PrintSettingsPanel settings={mixer.printSettings} />
+        <MeshChecklistPanel items={mixer.meshChecklist} />
       </div>
     </div>
   );

@@ -2,69 +2,125 @@
 
 ## Session gần nhất
 
-- Ngày: 2026-09-14
-- Tóm tắt: Bổ sung chiều nhân vật (thế đứng / biểu cảm / trang phục / bộ cosplay) và mở rộng
-  axis Màu sắc (nhiều màu random + màu gốc theo nguyên tác) cho trang Trộn ý tưởng.
+- Ngày: 2026-09-15
+- Tóm tắt: Tách ràng buộc in được thành núm điều khiển riêng, thêm checklist hậu kỳ cho khâu
+  ảnh → STL, và thêm prompt ảnh nhiều góc riêng cho Google Flow (2 biến thể).
 
 ## Đã thực hiện
 
-- **4 axis mới trong `attributes.json`**: `pose` (Thế đứng), `expression` (Biểu cảm),
-  `outfit` (Trang phục) — mỗi axis 20 option — và `costume` (Bộ cosplay) 33 option:
-  cosplay chủ đề (samurai, hải tặc, phi hành gia, thợ lặn...), nhóm "ngầu" dựng lại nhân vật
-  thành mecha (`mecha-armor`, `power-armor`, `cyborg`, `battle-worn`, `tactical-gear`,
-  `stealth-suit`), nhóm để Gemini tự quyết (`canon-outfit`, `canon-outfit-accessories`,
-  `random-accessories`), và `none` "— Không có —".
-- **Cờ nhân vật 2 tầng** (`src/types/index.ts`): `ProductCategory.isCharacter` đánh dấu CẢ
-  danh mục (hiện `toys-and-figures` — mọi sản phẩm trong đó đều bật 4 axis nhân vật), và
-  `Product.isCharacter` cho sản phẩm lẻ ở danh mục khác (`wall-hook-animal` home-decor,
-  `wedding-cake-topper` gifts-and-keepsakes). Cờ trên 6 sản phẩm trong toys-and-figures đã
-  được gỡ vì cờ danh mục phủ hết.
-- **`src/lib/characterTraits.ts`** (mới): `CHARACTER_TRAIT_AXIS_IDS`, `isCharacterTraitAxis`,
-  `isCharacterSubject`, `characterTraitTexts`. Ba axis chỉ ghép vào prompt khi chủ thể là
-  nhân vật — tránh câu vô nghĩa kiểu "a vase wearing a hoodie".
-- **`buildPrompt.ts`**: chèn các chiều nhân vật vào Subject khi `isCharacterSubject(mix)`.
-  `costume` GHI ĐÈ `outfit` (trừ option `NO_COSTUME_ID = 'none'`) để Gemini không nhận
-  hai bộ đồ mâu thuẫn.
-- **`MixPage.tsx`**: 4 selectbox nhân vật chỉ hiện khi ý tưởng có nhân vật; hint của Trang phục
-  đổi thành "Đang bị Bộ cosplay ghi đè" khi đang chọn một bộ cosplay.
-- **Axis `color` mở rộng 30 → 41 option**: `split-2-random` … `split-5-random`,
-  `palette-3-random`, `palette-4-random`, `gradient-random`, `marbled-multi-random`,
-  `accent-random`, `true-to-source` (Màu gốc theo nguyên tác), `true-to-life` (Màu thật ngoài đời).
-- **`IdeaBreakdown.tsx`**: ô Nhân vật giờ hiện ở MỌI mức sáng tạo (trước chỉ từ mức 3),
-  thêm option `— Không có —` để bỏ nhân vật; `useIdeaMixer.selectCharacter('')` set về null.
-- **`CLAUDE.md`**: đồng bộ Data Model + 2 mục mới "Phối nhiều màu" và "Chiều nhân vật".
+### 1. Tách `printability` khỏi `creativity` (2 núm độc lập)
+
+- **Vấn đề gốc**: `buildPrompt` cũ bỏ hẳn ràng buộc in được từ mức Lai ghép trở lên
+  (`creativity >= 3` → thay `GROUNDED_CLAUSE` bằng `CREATIVE_CLAUSE`). Tức đúng lúc ý tưởng
+  phức tạp nhất, dễ sinh cấu trúc bất khả thi nhất, thì guardrail biến mất.
+- **`src/lib/buildPrompt.ts`**: `buildPrompt(mix, { printability })`, mặc định bật.
+  `GROUNDED_CLAUSE` (1 câu) thay bằng `printabilityClauses()` — 5 câu, áp dụng ở MỌI mức
+  sáng tạo. `CREATIVE_CLAUSE` giờ chỉ *thêm vào* ở mức >= 3 chứ không *thay thế* nữa.
+- **`minFeatureMm()`** = 2 × `DEFAULT_NOZZLE_MM` = 0.8mm — tính từ nozzle, KHÔNG phải số đoán.
+  **`minFeaturePercent()`** quy đổi theo `size.longestEdgeMm` (ảnh không mang đơn vị mm).
+  Dùng % chứ không dùng phân số vì "one 188th" vừa khó đọc vừa khó cho model bám vào.
+- **Refactor giữ nguyên output**: tách `buildSubjectPhrase()` / `buildStyleClause()` và export
+  `STUDIO_BACKDROP` để prompt Gemini và prompt Flow dùng chung chủ thể + phông.
+- **`src/components/PrintabilityToggle.tsx`** (mới): núm bật/tắt, đặt cạnh Mức sáng tạo.
+
+### 2. Checklist hậu kỳ cho khâu ảnh → STL
+
+- **`src/lib/buildMeshChecklist.ts`** + **`src/components/MeshChecklistPanel.tsx`** (mới).
+  5 mục bắt buộc: repair non-manifold, **đặt lại tỉ lệ** (mesh dựng từ ảnh không mang đơn vị
+  thật — lỗi hay gặp nhất), đo bề dày, xoay đế, preview overhang. 2 mục có điều kiện: giảm
+  tam giác (khi layer <= 0.12mm), khoét lỗ thoát (nếu rỗng kín).
+- Chỉ nêu dấu hiệu QUAN SÁT ĐƯỢC, không đưa ngưỡng số không có nguồn.
+
+### 3. Prompt ẢNH NHIỀU GÓC cho Google Flow
+
+- **Quyết định của user**: cần prompt ẢNH cho Flow, KHÔNG phải prompt video — dùng video ở
+  Flow tốn credit. Bản prompt video (công thức Veo) đã viết rồi và **đã gỡ bỏ hoàn toàn**.
+- **Đã verify từ tài liệu chính thức**: Flow sinh ảnh mặc định bằng **Nano Banana Pro** —
+  <https://support.google.com/flow/answer/16729550>. Cùng họ model với prompt Gemini, nên
+  theo đúng một bộ quy tắc: câu văn tự nhiên, mô tả khẳng định, không cú pháp tham số.
+- **Vì sao vẫn cần prompt riêng thay vì copy nguyên prompt Gemini**: tool image→3D dựng mesh
+  sát hơn hẳn khi có NHIỀU GÓC NHÌN của cùng vật thể, và nhiều góc là cách duy nhất thấy mặt
+  sau. Prompt này yêu cầu 4 góc nằm trong MỘT ảnh → được lợi ích đó mà trả giá ảnh, không
+  phải giá video.
+- **`src/lib/buildFlowPrompt.ts`**, 2 biến thể qua `source`:
+  - `'text'` — gõ thẳng vào Flow, model tự dựng cả vật thể lẫn 4 góc
+  - `'image'` — sinh ảnh ở Gemini trước, đưa ảnh đó vào Flow rồi yêu cầu trải ra thành 4 góc
+    (~60 từ, không phụ thuộc mix — mọi tổ hợp ra cùng một chuỗi)
+- Bố cục nêu ĐÍCH DANH từng góc (front / left side / three-quarter / back) trong lưới 2×2 —
+  để mặc model tự quyết thì nó hay trả về 3 góc gần giống nhau, không phủ được mặt sau.
+- Ràng buộc in được dùng **chung nguyên bộ** `printabilityClauses` với prompt Gemini (không
+  rút gọn như bản video cũ) — đây cũng là ảnh, không bị bó thời lượng, và hai prompt ảnh lệch
+  ràng buộc nhau thì không còn đối chiếu được kết quả. Có test canh ngưỡng bề dày khớp nhau.
+- **`src/components/FlowSourceToggle.tsx`** (mới), **`PromptPanel`** nhận thêm
+  `title` / `hint` / `controls` để render được nhiều panel prompt.
 
 ## Trạng thái hiện tại
 
 - `npx tsc --noEmit` → No errors found
-- `npx eslint .` → No issues found
-- `npm test` → 121 passed (7 file)
-- **Chưa chạy `npm run dev` kiểm tra UI thật** — thay đổi UI chưa được recheck bằng browser.
-- Toàn bộ thay đổi còn ở working tree, chưa commit (branch `main`).
+- `npx eslint src` → exit 0
+- `npm test` → **160 passed** (10 file), thêm 31 test mới
+- `npx prettier --check src` → All matched files use Prettier code style
+- `npm run build` → OK
+- **Đã recheck UI bằng browser** (`npm run dev` + Chrome), 2 lượt: 2 panel prompt render đúng,
+  toggle Ràng buộc in được đổi cả 2 prompt, toggle Từ text / Từ ảnh Gemini đổi đúng, checklist
+  hậu kỳ render đúng, nút Mix không lỗi, console sạch (0 error/warning). Lượt 2 xem ở cửa sổ
+  hẹp ~500px, layout stack đúng, không tràn ngang.
+- Toàn bộ thay đổi còn ở working tree, **chưa commit** (branch `main`).
 
 ## Việc tiếp theo
 
-1. Recheck UI bằng browser: 3 selectbox nhân vật ẩn/hiện đúng chưa, panel "Ý tưởng này ghép từ"
-   ở mức An toàn hiển thị ổn không.
-2. Quyết định có thêm danh mục "Nhân vật & figurine" (~30 sản phẩm) không — hiện chỉ 8/510
-   sản phẩm là nhân vật nên Mix ngẫu nhiên ở mức An toàn ra nhân vật chỉ ~1.6%.
-3. Quyết định có xóa 4 option màu cũ trùng chức năng không: `two-tone`, `marbled-mix`,
-   `gradient-sunset`, `gradient-ocean`.
-4. Cân nhắc tỉ lệ: axis `costume` có 33 option mà chỉ 1 là "— Không có —", nên Mix ngẫu nhiên
-   ra bộ cosplay ~97% → axis `outfit` gần như chỉ dùng khi user tự chọn. Nếu vướng thì gộp
-   `outfit` vào `costume` hoặc thêm vài option "đồ thường ngày" vào `costume`.
-5. Cảnh báo AMS khi chọn option nhiều màu — `resolvePrintSettings` hiện chưa có.
-   CẦN verify số khay AMS + máy nào hỗ trợ từ tài liệu Bambu chính thức trước khi viết.
+1. **Test prompt thực tế** — chưa verify được trong session này:
+   - Prompt ảnh trên Gemini (key do user nhập trong UI, lưu localStorage)
+   - Prompt ảnh nhiều góc trên flow.google (cần tài khoản Flow)
+   - So sánh 2 biến thể Flow (`text` vs `image`) rồi bỏ cái cho kết quả kém hơn
+   - Kiểm xem Nano Banana Pro có thực sự giữ được 4 góc nhất quán trong 1 ảnh không — nếu
+     không thì cân nhắc tách thành 2 ảnh 2 góc, hoặc quay lại dùng ảnh đơn
+2. **Cập nhật CLAUDE.md** — đang lệch với code:
+   - Quyết định #7 ghi "Tool tạo ảnh đích: Gemini" nhưng app đã xuất thêm prompt ảnh nhiều góc
+     cho Flow (Nano Banana Pro)
+   - Bảng "Quyết định đã chốt" chưa có dòng nào về núm `printability` và về 2 luồng Flow
+   - Mục "Ghi chú — còn phải làm" vẫn ghi "Chốt tool tạo ảnh đích" (đã chốt rồi)
+3. **`mechanisms.json` dòng 18 và 24 dùng `without`** — vi phạm quy tắc "mô tả khẳng định",
+   áp dụng cho CẢ hai prompt vì đều là họ Nano Banana. Test cũ không bắt được vì fixture ở mức 1
+   không có mechanism; test mới đã thu hẹp để chỉ kiểm phần khung do app sinh, thay vì tự sửa data.
+4. **Mục 3 của kế hoạch chống lỗi in — chưa làm**: thêm `printRisk` + `printableAlternative`
+   cho option trong `attributes.json`. Các option chống lại chính mục tiêu in:
+   - Kết cấu vi mô dưới ngưỡng nozzle: `fur-like`, `woven`, `crackle`, `glitter-fleck`, `knurled`
+   - Bề mặt bóng/trong (nghi làm tool image→3D đọc sai hình khối — CHƯA VERIFY, cần test thật):
+     `glossy`, `iridescent`, `frosted`, `brushed-metal`, color `translucent-amber`
+   - Cấu trúc mảnh: style `wireframe`, `skeletal`, `crystalline`
+   Hướng đã bàn: KHÔNG xóa option, mà thay bằng biến thể in được khi bật chế độ in được
+   (`fur-like` → "fur suggested by deep carved grooves").
+5. Các việc tồn từ session trước: thêm danh mục "Nhân vật & figurine"; xóa 4 option màu trùng
+   chức năng (`two-tone`, `marbled-mix`, `gradient-sunset`, `gradient-ocean`); tỉ lệ axis
+   `costume` (33 option mà chỉ 1 là "Không có" → Mix ra cosplay ~97%); cảnh báo AMS
+   (CẦN verify số khay AMS từ tài liệu Bambu trước khi viết).
 6. Commit (đang ở branch `main` — tạo branch mới trước khi commit).
 
 ## Ghi chú quan trọng
 
-- Quyết định đã chốt trong session: 3 chiều nhân vật **chỉ áp dụng cho sản phẩm có
-  `isCharacter: true`** (hoặc mix đang bật lớp nhân vật), KHÔNG áp dụng cho mọi sản phẩm.
-- Quyết định đã chốt: phối nhiều màu **nằm ngay trong axis `color`**, KHÔNG tách axis riêng
-  (từng làm rồi và đã gỡ) — một mô hình chỉ có một phương án màu.
-- Quyết định đã chốt: option nhiều màu **chỉ nêu SỐ màu**, để Gemini tự chọn màu cụ thể,
-  không random từng màu từ danh sách.
-- `true-to-source` / `true-to-life` chỉ phát huy khi chủ thể đủ cụ thể — thường phải gõ tên
-  nhân vật vào ô text tự do trong panel "Ý tưởng này ghép từ".
-- Vẫn giữ nguyên ràng buộc của project: KHÔNG đoán thông số in, giá trị chưa verify để `null`.
+- **Bài học 2**: sau khi ghi đè NGUYÊN một file lib, Vite dev server giữ transform cũ và trả
+  200 kèm 0 byte cho module đó → trang trắng, console báo `does not provide an export named ...`.
+  `npm run build` và `tsc` vẫn sạch. Cách xử lý: restart dev server, reload thường không đủ.
+- **Bài học 1**: `npx prettier --write` chạy giữa chừng đã gộp một `useMemo`
+  nhiều dòng thành một dòng, khiến phép thay thế chuỗi sau đó trượt im lặng —
+  `buildFlowPrompt` không bao giờ nhận `source: flowSource`. **tsc và 163 test đều PASS**
+  vì `source` là optional và test gọi thẳng hàm chứ không qua hook. Chỉ recheck bằng browser
+  mới lộ ra (toggle đổi trạng thái nhưng prompt không đổi). → Với thay đổi UI, đừng coi
+  test + tsc xanh là đủ.
+- Quyết định đã chốt trong session: **`creativity` và `printability` là hai núm độc lập**.
+  Ý tưởng táo bạo tới đâu là một chuyện, mô hình có in được hay không là chuyện khác.
+  KHÔNG gộp lại như trước.
+- Quyết định đã chốt: **Flow dùng để sinh ẢNH, không sinh video** — video ở Flow tốn credit.
+  Bản prompt video theo công thức Veo đã viết và đã gỡ bỏ hoàn toàn; đừng dựng lại.
+  (Tài liệu Veo vẫn hữu ích nếu sau này cần: công thức
+  `[Cinematography] + [Subject] + [Action] + [Context] + [Style & Ambiance]`, Cinematography
+  đứng ĐẦU và 4 slot đầu nằm CHUNG một câu, và Veo — khác Imagen — KHUYẾN NGHỊ nêu thẳng thứ
+  muốn loại bỏ.)
+- Quyết định đã chốt: biến thể Flow `'image'` **bỏ hẳn** chủ thể, phong cách và ràng buộc
+  hình học — ảnh đính kèm đã khoá cả ba, nhắc lại chỉ tốn chỗ và mở đường cho model vẽ chệch đi.
+- Quyết định đã chốt (session trước, vẫn giữ): 4 chiều nhân vật chỉ áp dụng cho sản phẩm
+  `isCharacter: true`; phối nhiều màu nằm trong axis `color` KHÔNG tách axis riêng; option
+  nhiều màu chỉ nêu SỐ màu để Gemini tự chọn.
+- Vẫn giữ nguyên ràng buộc gốc của project: **KHÔNG đoán thông số in**, giá trị chưa verify
+  để `null` + hiển thị "chưa có dữ liệu".

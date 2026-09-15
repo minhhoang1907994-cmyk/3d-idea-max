@@ -1,11 +1,19 @@
-import { useState } from 'react';
+import { useState, type ReactNode } from 'react';
 import styles from './PromptPanel.module.css';
 
-type Props = { prompt: string };
+type Props = {
+  prompt: string;
+  /** Tiêu đề panel — app xuất nhiều prompt cho nhiều tool đích khác nhau */
+  title: string;
+  /** Giải thích ngắn: prompt này dán vào đâu, dùng làm gì */
+  hint?: string;
+  /** Vùng điều khiển riêng của panel, chèn giữa tiêu đề và nội dung prompt */
+  controls?: ReactNode;
+};
 
 type CopyState = 'idle' | 'copied' | 'failed';
 
-export function PromptPanel({ prompt }: Props) {
+export function PromptPanel({ prompt, title, hint, controls }: Props) {
   const [copyState, setCopyState] = useState<CopyState>('idle');
 
   async function handleCopy() {
@@ -23,7 +31,10 @@ export function PromptPanel({ prompt }: Props) {
   return (
     <section className={styles.panel}>
       <header className={styles.header}>
-        <h2 className={styles.title}>Prompt cho Gemini</h2>
+        <div>
+          <h2 className={styles.title}>{title}</h2>
+          {hint ? <p className={styles.hint}>{hint}</p> : null}
+        </div>
         <button
           type="button"
           className={styles.copyButton}
@@ -34,6 +45,8 @@ export function PromptPanel({ prompt }: Props) {
           {copyState === 'copied' ? 'Đã copy' : 'Copy'}
         </button>
       </header>
+
+      {controls}
 
       <p className={styles.prompt}>{prompt}</p>
 
