@@ -36,7 +36,7 @@ function firstOption(axisId: AttributeAxisId): AttributeOption {
 }
 
 /** Lấy option "mặc định" thật trong dữ liệu, không dựng option giả. */
-function defaultOption(axisId: 'pose' | 'expression'): AttributeOption {
+function defaultOption(axisId: 'pose' | 'expression' | 'base'): AttributeOption {
   const axis = ATTRIBUTE_AXES.find((item) => item.id === axisId);
   const option = axis?.options.find((item) => item.id === DEFAULT_TRAIT_OPTION_ID);
   if (!option) throw new Error(`attributes.json thiếu option "mặc định" của axis "${axisId}"`);
@@ -56,6 +56,7 @@ const mix: MixResult = {
     expression: firstOption('expression'),
     outfit: firstOption('outfit'),
     costume: firstOption('costume'),
+    base: firstOption('base'),
   },
   size: SIZE_OPTIONS[1]!,
   detail: DETAIL_OPTIONS[1]!,
@@ -455,8 +456,49 @@ describe('buildPrompt — bộ cosplay', () => {
   });
 });
 
+describe('buildPrompt — đế trưng bày', () => {
+  const baseAxis = ATTRIBUTE_AXES.find((axis) => axis.id === 'base');
+  const options = baseAxis?.options ?? [];
+
+  if (options.length < 2) {
+    throw new Error('fixture sai: attributes.json thiếu axis "base" hoặc chưa đủ 2 option');
+  }
+
+  it('ghép đế vào prompt khi sản phẩm là nhân vật', () => {
+    expect(buildPrompt(heroMix)).toContain(heroMix.attributes.base.promptText);
+  });
+
+  it('bỏ đế khi sản phẩm không phải nhân vật — hộp bút không cần bệ trưng bày', () => {
+    expect(buildPrompt(plainMix)).not.toContain(plainMix.attributes.base.promptText);
+  });
+
+  it('chọn Mặc định thì không mô tả đế, để Gemini tự quyết', () => {
+    const base = defaultOption('base');
+    const prompt = buildPrompt({ ...heroMix, attributes: { ...heroMix.attributes, base } });
+    expect(prompt).not.toContain(base.promptText);
+    // các chiều nhân vật còn lại vẫn nguyên
+    expect(prompt).toContain(heroMix.attributes.pose.promptText);
+  });
+
+  it('đế đứng sau trang phục trong câu', () => {
+    const prompt = buildPrompt(heroMix);
+    expect(prompt.indexOf(heroMix.attributes.outfit.promptText)).toBeLessThan(
+      prompt.indexOf(heroMix.attributes.base.promptText),
+    );
+  });
+
+  it('mọi option đế đều ghép được, không sinh chuỗi lỗi', () => {
+    for (const base of options) {
+      const prompt = buildPrompt({ ...heroMix, attributes: { ...heroMix.attributes, base } });
+      expect(prompt).not.toContain('undefined');
+      expect(prompt).not.toContain('  ');
+      expect(prompt.toLowerCase()).not.toMatch(/\b(no|without|avoid)\b/);
+    }
+  });
+});
+
 describe('buildPrompt — ràng buộc in được', () => {
-  it('mặc định bật, chặn đủ bốn lỗi hình học của khâu ảnh → STL', () => {
+  it('mặc định bật, chặn đủ năm lỗi hình học của khâu ảnh → STL', () => {
     const prompt = buildPrompt(mix);
     // 1. rời rạc / lơ lửng
     expect(prompt).toContain('one connected mass');
@@ -466,6 +508,12 @@ describe('buildPrompt — ràng buộc in được', () => {
     expect(prompt).toContain('45 degrees');
     // 4. chi tiết mỏng hơn đường phun
     expect(prompt).toContain(`${minFeatureMm()} mm thick`);
+    // 5. chi tiết chỉ là hoạ tiết vẽ phẳng, không phải khối thật
+    expect(prompt).toContain('raised or recessed geometry');
+  });
+
+  it('tắt thì bỏ luôn câu đòi chi tiết phải là khối thật', () => {
+    expect(buildPrompt(mix, { printability: false })).not.toContain('raised or recessed geometry');
   });
 
   it('tắt thì bỏ hết ràng buộc hình học, chỉ còn "là vật thể in 3D"', () => {

@@ -74,6 +74,26 @@ export function buildMeshChecklist(mix: MixResult, printer: Printer): MeshCheckI
     });
   }
 
+  const longestBuildEdgeMm = Math.max(
+    printer.buildVolumeMm.x,
+    printer.buildVolumeMm.y,
+    printer.buildVolumeMm.z,
+  );
+  if (mix.size.longestEdgeMm > longestBuildEdgeMm) {
+    items.push({
+      id: 'split-and-pin',
+      level: 'conditional',
+      label: `Cắt mô hình thành nhiều phần dưới ${longestBuildEdgeMm} mm, thêm chốt định vị rồi mới ghép`,
+      risk:
+        `Vật thể ~${mix.size.longestEdgeMm} mm vượt khổ in của ${printer.label}. Cắt tuỳ tiện ` +
+        'thì hai nửa không có gì giữ đúng vị trí khi dán — sai vài độ ở mối ghép là lệch hẳn ' +
+        'ở đầu kia. Cắt qua chỗ mảnh cũng làm mối ghép gãy ngay khi cầm.',
+      tool:
+        'Bambu Studio → Cut (bật Connectors, kiểu Pin/Dovetail) — chọn mặt cắt phẳng và dày, ' +
+        'hoặc Meshmixer → Edit → Plane Cut rồi tự thêm chốt',
+    });
+  }
+
   items.push({
     id: 'drain-hole',
     level: 'conditional',

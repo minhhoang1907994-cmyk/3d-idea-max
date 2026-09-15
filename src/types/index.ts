@@ -58,12 +58,12 @@ export type AttributeOption = {
  * Mỗi axis ~20-30 option.
  *
  * `style` / `surface` / `color` áp dụng cho mọi sản phẩm.
- * `pose` / `expression` / `outfit` / `costume` chỉ ghép vào prompt khi sản phẩm là nhân vật
- * (`ProductCategory.isCharacter` / `Product.isCharacter`) hoặc mix đang bật lớp nhân vật —
- * xem lib/characterTraits.ts.
+ * `pose` / `expression` / `outfit` / `costume` / `base` chỉ ghép vào prompt khi sản phẩm là
+ * nhân vật (`ProductCategory.isCharacter` / `Product.isCharacter`) hoặc mix đang bật lớp
+ * nhân vật — xem lib/characterTraits.ts.
  */
 export type AttributeAxisId =
-  'style' | 'surface' | 'color' | 'pose' | 'expression' | 'outfit' | 'costume';
+  'style' | 'surface' | 'color' | 'pose' | 'expression' | 'outfit' | 'costume' | 'base';
 
 export type AttributeAxis = {
   id: AttributeAxisId;

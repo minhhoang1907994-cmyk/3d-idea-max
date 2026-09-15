@@ -66,7 +66,8 @@ export function minFeaturePercent(
  * Mỗi câu chặn một lỗi cụ thể của khâu ảnh → STL → slicer:
  * 1. vật thể rời rạc / lơ lửng  2. chi tiết chìa ra không có gì đỡ
  * 3. overhang quá dốc phải cắm support  4. chi tiết mỏng hơn đường phun
- * 5. vật thể bị cắt cụt ngoài khung, tool dựng mesh phải bịa phần thiếu
+ * 5. chi tiết chỉ là hoạ tiết vẽ phẳng lên mặt, tool dựng mesh trả về khối trơn
+ * 6. vật thể bị cắt cụt ngoài khung, tool dựng mesh phải bịa phần thiếu
  *
  * Viết KHẲNG ĐỊNH, không dùng "no/without/avoid" — Google nêu rõ nên mô tả cảnh mong
  * muốn thay vì phủ định thứ không muốn.
@@ -78,6 +79,7 @@ export function printabilityClauses(mix: MixResult): string[] {
     'Limbs, tails and accessories stay tucked against the body so every part rests on something beneath it',
     'Overhanging surfaces tilt at most 45 degrees away from vertical, letting the shape hold itself up',
     `Every feature is at least ${minFeatureMm()} mm thick at this scale, roughly ${percent}% of the object's width, sturdy rather than spindly`,
+    'Surface details are carved into the form as real raised or recessed geometry with measurable depth, sculpted volume rather than a flat pattern painted on',
     'The whole object sits inside the frame, evenly lit so its silhouette reads clearly',
   ];
 }

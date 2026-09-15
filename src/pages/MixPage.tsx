@@ -26,6 +26,7 @@ const AXIS_HINTS: Partial<Record<AttributeAxisId, string>> = {
   expression: 'Chỉ áp dụng cho sản phẩm nhân vật — chọn "Mặc định" để Gemini tự quyết',
   outfit: 'Chỉ áp dụng cho sản phẩm nhân vật',
   costume: 'Trọn bộ theo chủ đề — chọn bộ nào là ghi đè Trang phục',
+  base: 'Đế liền khối với mô hình — chọn "Mặc định" để Gemini tự quyết',
 };
 
 export function MixPage({ data }: Props) {

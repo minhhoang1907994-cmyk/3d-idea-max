@@ -47,6 +47,7 @@ function makeMix(overrides: { filament: Filament; size?: SizeOption }): MixResul
       expression: firstOption('expression'),
       outfit: firstOption('outfit'),
       costume: firstOption('costume'),
+      base: firstOption('base'),
     },
     size: overrides.size ?? SIZE_OPTIONS[1]!,
     detail: DETAIL_OPTIONS[1]!,

@@ -1,13 +1,22 @@
 import type { AttributeAxisId, MixResult } from '../types';
 
 /**
- * Ba axis chỉ có nghĩa với sản phẩm dạng nhân vật: một bình hoa không có thế đứng,
+ * Các axis chỉ có nghĩa với sản phẩm dạng nhân vật: một bình hoa không có thế đứng,
  * không có biểu cảm và không mặc áo. Ghép chúng vào prompt cho mọi sản phẩm sẽ sinh ra
  * câu vô nghĩa kiểu "a vase wearing a hoodie with a grumpy expression".
  *
+ * `base` (đế trưng bày) cũng nằm ở đây: nó chỉ đáng mô tả khi chủ thể có thế đứng — với
+ * hộp bút hay khay đựng thì bản thân đáy sản phẩm đã là mặt tiếp bàn, thêm đế là thừa.
+ *
  * Thứ tự trong mảng cũng là thứ tự ghép vào câu prompt.
  */
-export const CHARACTER_TRAIT_AXIS_IDS = ['pose', 'expression', 'outfit', 'costume'] as const;
+export const CHARACTER_TRAIT_AXIS_IDS = [
+  'pose',
+  'expression',
+  'outfit',
+  'costume',
+  'base',
+] as const;
 
 /**
  * Option "không mặc bộ cosplay nào" trong axis `costume`.
@@ -19,7 +28,7 @@ export const CHARACTER_TRAIT_AXIS_IDS = ['pose', 'expression', 'outfit', 'costum
 export const NO_COSTUME_ID = 'none';
 
 /**
- * Option "để model tự quyết" của axis `pose` và `expression`.
+ * Option "để model tự quyết" của axis `pose`, `expression` và `base`.
  *
  * Cùng cơ chế với [NO_COSTUME_ID]: là option thật trong danh sách (Mix random vẫn chọn
  * được), nhưng promptText của nó KHÔNG bao giờ vào prompt — chọn nó nghĩa là không mô tả
@@ -63,6 +72,9 @@ export function isCharacterSubject(mix: MixResult): boolean {
  * Bộ cosplay là TRỌN BỘ trang phục nên nó ghi đè axis `outfit` — mô tả cùng lúc "mặc áo
  * giáp samurai" và "mặc áo hoodie" sẽ cho Gemini hai bộ đồ mâu thuẫn.
  * Axis có thể đã bị xóa bên trang Quản lý dữ liệu nên chỗ nào cũng phải chịu được `undefined`.
+ *
+ * Đế đứng cuối vì nó là thứ chủ thể đặt lên, tả sau khi chủ thể đã đủ hình hài thì câu
+ * đọc thuận hơn là chèn giữa thế đứng và trang phục.
  */
 export function characterTraitTexts(mix: MixResult): string[] {
   const { outfit, costume } = mix.attributes;
@@ -70,9 +82,12 @@ export function characterTraitTexts(mix: MixResult): string[] {
   const costumeText = costume && costume.id !== NO_COSTUME_ID ? costume.promptText : undefined;
   const clothing = costumeText ?? outfit?.promptText;
 
-  return [traitText(mix, 'pose'), traitText(mix, 'expression'), clothing].filter(
-    (text): text is string => typeof text === 'string' && text !== '',
-  );
+  return [
+    traitText(mix, 'pose'),
+    traitText(mix, 'expression'),
+    clothing,
+    traitText(mix, 'base'),
+  ].filter((text): text is string => typeof text === 'string' && text !== '');
 }
 
 /**

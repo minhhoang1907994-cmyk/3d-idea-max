@@ -46,6 +46,32 @@ describe('buildMeshChecklist', () => {
     expect(has(draft)).toBe(false);
   });
 
+  it('chỉ nhắc chia part khi kích thước vượt khổ in của máy đang chọn', () => {
+    const longestBuildEdgeMm = Math.max(
+      printer.buildVolumeMm.x,
+      printer.buildVolumeMm.y,
+      printer.buildVolumeMm.z,
+    );
+    const fits = SIZE_OPTIONS.filter((size) => size.longestEdgeMm <= longestBuildEdgeMm);
+    const oversize = SIZE_OPTIONS.filter((size) => size.longestEdgeMm > longestBuildEdgeMm);
+    expect(fits.length).toBeGreaterThan(0);
+    expect(oversize.length).toBeGreaterThan(0);
+
+    const has = (size: (typeof SIZE_OPTIONS)[number]) =>
+      buildMeshChecklist({ ...baseMix, size }, printer).some((item) => item.id === 'split-and-pin');
+    for (const size of fits) expect(has(size)).toBe(false);
+    for (const size of oversize) expect(has(size)).toBe(true);
+  });
+
+  it('mục chia part nêu đúng khổ in của máy, để user biết cắt dưới bao nhiêu', () => {
+    const size = SIZE_OPTIONS[SIZE_OPTIONS.length - 1]!;
+    const item = buildMeshChecklist({ ...baseMix, size }, printer).find(
+      (entry) => entry.id === 'split-and-pin',
+    );
+    expect(item?.label).toContain(String(printer.buildVolumeMm.x));
+    expect(item?.risk).toContain(printer.label);
+  });
+
   it('mọi mục đều có việc cần làm, rủi ro và công cụ — không để trống', () => {
     for (const level of [1, 2, 3, 4] as const) {
       for (const item of buildMeshChecklist(

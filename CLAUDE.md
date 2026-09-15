@@ -79,12 +79,13 @@ export type Product = {
   id: string; // kebab-case, duy nhất trong phạm vi category
   label: string;
   promptText: string; // tiếng Anh, BẮT BUỘC
-  isCharacter?: boolean; // sản phẩm lẻ là nhân vật — mở khoá pose/expression/outfit/costume
+  isCharacter?: boolean; // sản phẩm lẻ là nhân vật — mở khoá pose/expression/outfit/costume/base
 };
 
 // ---- Các chiều thuộc tính (mỗi chiều 1 selectbox) ----
 export type AttributeAxis = {
   id: string; // 'style' | 'surface' | 'color' | 'pose' | 'expression' | 'outfit' | 'costume'
+  //          |  + 'base' (đế trưng bày), cùng nhóm nhân vật
   //          |  + các axis kỹ thuật: 'size' | 'detail' | 'strength'
   label: string;
   options: AttributeOption[]; // ~20-30 option
@@ -145,8 +146,8 @@ chủ thể đủ cụ thể để Gemini nhận ra — rõ nhất là khi gõ t
 
 ### Chiều nhân vật — chỉ áp dụng cho sản phẩm có mặt/tay chân
 
-Bốn axis `pose` (Thế đứng), `expression` (Biểu cảm), `outfit` (Trang phục), `costume`
-(Bộ cosplay) làm biến thể
+Năm axis `pose` (Thế đứng), `expression` (Biểu cảm), `outfit` (Trang phục), `costume`
+(Bộ cosplay), `base` (Đế trưng bày) làm biến thể
 nhẹ cho mức sáng tạo An toàn: cùng một tượng thú, đổi thế đứng / biểu cảm / áo quần là
 ra ý tưởng mới, không cần lai ghép gì.
 
@@ -162,15 +163,20 @@ Chúng chỉ có nghĩa khi chủ thể là nhân vật, nên `buildPrompt` và 
 vật (`character` / text tự do). Với bình hoa hay hộp bút
 thì bỏ hẳn, tránh sinh câu vô nghĩa kiểu "a vase wearing a hoodie with a grumpy expression".
 
-Hai axis `pose` và `expression` có thêm option **`default`** ("— Mặc định —"): cùng cơ chế
+Ba axis `pose`, `expression` và `base` có thêm option **`default`** ("— Mặc định —"): cùng cơ chế
 với `NO_COSTUME_ID` — là option thật để Mix random chọn được, nhưng promptText KHÔNG bao giờ
 vào prompt, nghĩa là không mô tả gì cả và để Gemini tự chọn thứ hợp với chủ thể.
 Xem `DEFAULT_TRAIT_OPTION_ID`.
 
-Riêng hai axis này còn cho **gõ text tự do** thay cho lựa chọn trong danh sách
+Riêng `pose` và `expression` còn cho **gõ text tự do** thay cho lựa chọn trong danh sách
 (`MixResult.attributeOverrides`, xem `FREE_TEXT_TRAIT_AXIS_IDS`). Text tự do thắng mọi option
 kể cả `default`, chỉ sống trong phiên, KHÔNG ghi vào file dữ liệu — giống
 `secondaryOverride` / `characterOverride`.
+
+Axis `base` (Đế trưng bày) mô tả bệ mà tượng đứng lên. Nó KHÔNG phải một chi tiết rời:
+câu ràng buộc "one connected mass" trong `printabilityClauses` đã bắt đế liền khối với mô
+hình, nên promptText của các option chỉ tả hình dạng đế, không lặp lại chuyện liền khối.
+Đế chỉ mở khoá cùng nhóm nhân vật vì đáy hộp bút hay khay đựng vốn đã là mặt tiếp bàn.
 
 Nguồn sự thật: `src/lib/characterTraits.ts`.
 

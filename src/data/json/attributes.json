@@ -1110,5 +1110,61 @@
         "promptText": "with a few fitting accessories such as a hat, sunglasses, a scarf or a small shoulder bag"
       }
     ]
+  },
+  {
+    "id": "base",
+    "label": "Đế trưng bày",
+    "options": [
+      {
+        "id": "default",
+        "label": "— Mặc định —",
+        "promptText": "on a base of its own choosing"
+      },
+      {
+        "id": "flat-underside",
+        "label": "Không đế — đáy phẳng",
+        "promptText": "standing directly on its own flat underside, the model itself forming the footprint"
+      },
+      {
+        "id": "round-plinth",
+        "label": "Đế tròn trơn",
+        "promptText": "mounted on a plain round display plinth"
+      },
+      {
+        "id": "hexagonal",
+        "label": "Đế lục giác",
+        "promptText": "mounted on a hexagonal display plinth with bevelled edges"
+      },
+      {
+        "id": "stepped-square",
+        "label": "Bệ vuông bậc thang",
+        "promptText": "mounted on a square display plinth that steps up in two tiers"
+      },
+      {
+        "id": "rocky-outcrop",
+        "label": "Mỏm đá",
+        "promptText": "mounted on a rocky outcrop that rises from a flat footprint"
+      },
+      {
+        "id": "grass-patch",
+        "label": "Thảm cỏ",
+        "promptText": "mounted on a low patch of sculpted grass over a flat footprint"
+      },
+      {
+        "id": "cracked-ground",
+        "label": "Nền đất nứt",
+        "promptText": "mounted on a slab of cracked ground with a flat underside"
+      },
+      {
+        "id": "wooden-slab",
+        "label": "Tấm gỗ",
+        "promptText": "mounted on a thick wooden slab with visible grain"
+      },
+      {
+        "id": "name-plate",
+        "label": "Đế có bảng tên",
+        "promptText": "mounted on a round plinth carrying a raised blank name plate on its front rim"
+      }
+    ]
   }
 ]
