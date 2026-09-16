@@ -29,6 +29,19 @@ const OUT_PATH = path.join(process.cwd(), 'src/data/machinePresets.ts');
 const TARGETS = [{ printerId: 'kobra-x', vendor: 'Anycubic', match: /@Anycubic Kobra X( |$)/ }];
 
 /**
+ * Khoá filament có trong SETTING_MAP. Lấy từ preset filament CHÍNH HÃNG của đúng máy đó —
+ * cùng loại nhựa nhưng máy khác thì hãng vẫn đặt số khác (hotend, luồng gió khác nhau).
+ */
+const FILAMENT_KEYS = [
+  'filament_type',
+  'nozzle_temperature',
+  'nozzle_temperature_initial_layer',
+  'hot_plate_temp',
+  'filament_max_volumetric_speed',
+  'filament_flow_ratio',
+];
+
+/**
  * Khoá process có trong SETTING_MAP (src/data/settingMap.ts).
  * Không lấy khoá filament (phụ thuộc cuộn nhựa) và khoá máy (gcode, giới hạn firmware).
  */
@@ -110,6 +123,7 @@ const nozzleFromName = (name) => {
 const tierFromName = (name) => /^\d+\.\d+mm (.+?) @/.exec(name)?.[1] ?? '';
 
 const rows = [];
+const filamentRows = [];
 for (const target of TARGETS) {
   const vendorJson = await fetchJson(`${RAW}/../profiles/${target.vendor}.json`);
   const byName = new Map(vendorJson.process_list.map((item) => [item.name, item.sub_path]));
@@ -139,7 +153,44 @@ for (const target of TARGETS) {
       sourceUrl: `${BLOB}/${target.vendor}/${encodePath(byName.get(name))}`,
     });
   }
-  console.log(`${target.printerId}: ${names.length} preset`);
+
+  // ---- Preset filament của đúng máy đó ----
+  const filamentByName = new Map(
+    vendorJson.filament_list.map((item) => [item.name, item.sub_path]),
+  );
+  const filamentNames = vendorJson.filament_list
+    .map((item) => item.name)
+    .filter((name) => target.match.test(name))
+    .sort();
+
+  const filamentLoaded = new Map();
+  for (const name of filamentNames) {
+    await loadChain(target.vendor, name, filamentByName, filamentLoaded);
+  }
+
+  for (const name of filamentNames) {
+    const flat = flatten(name, filamentLoaded);
+    const values = {};
+    for (const key of FILAMENT_KEYS) {
+      if (flat[key] !== undefined) values[key] = normalize(flat[key]);
+    }
+    if (!values.filament_type) {
+      console.warn(`bỏ qua filament "${name}": không suy ra được loại nhựa`);
+      continue;
+    }
+    const filamentType = values.filament_type;
+    delete values.filament_type;
+    filamentRows.push({
+      printerId: target.printerId,
+      name,
+      filamentType,
+      nozzleMm: nozzleFromName(name),
+      values,
+      sourceUrl: `${BLOB}/${target.vendor}/${encodePath(filamentByName.get(name))}`,
+    });
+  }
+
+  console.log(`${target.printerId}: ${names.length} process + ${filamentNames.length} filament`);
 }
 
 const body = rows
@@ -156,9 +207,22 @@ const body = rows
   )
   .join('\n');
 
+const filamentBody = filamentRows
+  .map(
+    (row) => `  {
+    printerId: '${row.printerId}',
+    name: ${JSON.stringify(row.name)},
+    filamentType: ${JSON.stringify(row.filamentType)},
+    nozzleMm: ${row.nozzleMm},
+    sourceUrl: ${JSON.stringify(row.sourceUrl)},
+    values: ${JSON.stringify(row.values)},
+  },`,
+  )
+  .join('\n');
+
 fs.writeFileSync(
   OUT_PATH,
-  `import type { MachineProcessPreset } from '../types';
+  `import type { MachineFilamentPreset, MachineProcessPreset } from '../types';
 
 /**
  * Preset process CHÍNH HÃNG của từng máy, trích từ bộ profile hệ thống của OrcaSlicer
@@ -179,6 +243,18 @@ export const MACHINE_PROCESS_PRESETS: MachineProcessPreset[] = [
 ${body}
 ];
 
+/**
+ * Preset FILAMENT chính hãng của từng máy — nguồn duy nhất cho nhiệt độ, flow ratio và
+ * giới hạn lưu lượng ở cột "Giá trị quy đổi".
+ *
+ * Cùng loại nhựa nhưng máy khác nhau thì hãng vẫn đặt số khác (hotend và luồng gió khác),
+ * nên KHÔNG dùng preset của máy này cho máy kia. Đây là số của cuộn nhựa HÃNG bán kèm —
+ * cuộn của hãng khác phải theo nhãn trên cuộn đó.
+ */
+export const MACHINE_FILAMENT_PRESETS: MachineFilamentPreset[] = [
+${filamentBody}
+];
+
 /** Máy đang có preset chính hãng trong app — dropdown "máy đích" lấy từ đây. */
 export const MACHINE_IDS_WITH_PRESETS: string[] = [
   ...new Set(MACHINE_PROCESS_PRESETS.map((preset) => preset.printerId)),
@@ -186,4 +262,4 @@ export const MACHINE_IDS_WITH_PRESETS: string[] = [
 `,
 );
 
-console.log(`đã ghi ${rows.length} preset → ${OUT_PATH}`);
+console.log(`đã ghi ${rows.length} process + ${filamentRows.length} filament → ${OUT_PATH}`);

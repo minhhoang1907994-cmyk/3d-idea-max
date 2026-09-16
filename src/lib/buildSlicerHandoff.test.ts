@@ -156,8 +156,23 @@ describe('buildMappingText', () => {
     // Nhóm hình học giữ nguyên, nhóm máy lấy số của Kobra X
     expect(text).toContain('3 (giữ nguyên)');
     expect(text).toContain('⚠️ 300 (khác file — sửa theo 0.20mm Standard @Anycubic Kobra X)');
-    // Nhóm filament không bao giờ có số
-    expect(text).toContain('chưa có dữ liệu — Phụ thuộc cuộn filament');
+    // File không ghi rõ loại nhựa nên không dò được preset filament — nói rõ thay vì đoán
+    expect(text).toContain('chưa có dữ liệu — File không ghi rõ một loại nhựa duy nhất');
+  });
+
+  it('file có ghi loại nhựa thì nhóm filament lấy số của máy đích', () => {
+    const withFilamentType = inspectProjectFile('x.3mf', [
+      file('3D/3dmodel.model', '<model />'),
+      file(
+        'Metadata/project_settings.config',
+        JSON.stringify({ filament_type: ['PLA'], nozzle_temperature: ['220'] }),
+      ),
+    ]);
+    const conversion = convertToTargetMachine(withFilamentType, 'kobra-x');
+
+    expect(buildMappingText(withFilamentType, snapmaker, conversion)).toContain(
+      '⚠️ 205 (khác file — sửa theo Anycubic PLA @Anycubic Kobra X 0.4 nozzle)',
+    );
   });
 
   it('ô máy đích để trùng số thì nói rõ là trùng, không bắt user sửa vô ích', () => {

@@ -8,7 +8,7 @@ import {
   buildProcessPreset,
   geometryFileName,
 } from '../lib/buildSlicerHandoff';
-import { convertToTargetMachine } from '../lib/convertToTargetMachine';
+import { convertToTargetMachine, filamentPresetsForPrinter } from '../lib/convertToTargetMachine';
 import { inspectProjectFile } from '../lib/inspectProjectFile';
 import { readZipEntries, writeStoredZip } from '../lib/zipArchive';
 import type { ArchiveFile, ConvertedValue, ProjectInspection, SlicerTarget } from '../types';
@@ -86,6 +86,8 @@ function downloadBlob(blob: Blob, fileName: string): void {
 export function SlicerConvertPage() {
   const [targetId, setTargetId] = useState(DEFAULT_SLICER_TARGET_ID);
   const [targetPrinterId, setTargetPrinterId] = useState(DEFAULT_TARGET_PRINTER_ID);
+  /** Rỗng = để app tự dò theo loại nhựa ghi trong file */
+  const [filamentPresetName, setFilamentPresetName] = useState('');
   const [status, setStatus] = useState<Status>({ kind: 'idle' });
   const [includeMachineTier, setIncludeMachineTier] = useState(false);
   const [onlyChanged, setOnlyChanged] = useState(false);
@@ -102,8 +104,16 @@ export function SlicerConvertPage() {
   // Quy đổi lại mỗi khi đổi file hoặc đổi máy đích — không phụ thuộc slicer, vì thông số
   // là của máy, còn slicer chỉ quyết định cách nạp preset vào
   const conversion = useMemo(
-    () => (inspection ? convertToTargetMachine(inspection, targetPrinterId) : null),
-    [inspection, targetPrinterId],
+    () =>
+      inspection
+        ? convertToTargetMachine(inspection, targetPrinterId, filamentPresetName || undefined)
+        : null,
+    [inspection, targetPrinterId, filamentPresetName],
+  );
+
+  const filamentOptions = useMemo(
+    () => filamentPresetsForPrinter(targetPrinterId),
+    [targetPrinterId],
   );
 
   /** Ô mà máy đích ghi số khác file, hoặc không có cơ sở để đưa số — đều cần người quyết. */
@@ -229,6 +239,26 @@ export function SlicerConvertPage() {
             </span>
           </label>
         </div>
+
+        <label className={styles.field}>
+          <span className={styles.fieldLabel}>Filament sẽ nạp trên máy đích</span>
+          <select
+            className={styles.select}
+            value={filamentPresetName}
+            onChange={(event) => setFilamentPresetName(event.target.value)}
+          >
+            <option value="">— Tự dò theo loại nhựa ghi trong file —</option>
+            {filamentOptions.map((preset) => (
+              <option key={preset.name} value={preset.name}>
+                {preset.name}
+              </option>
+            ))}
+          </select>
+          <span className={styles.fieldHint}>
+            Nhiệt độ và lưu lượng lấy từ preset filament chính hãng của máy đích. Đây là số cho cuộn
+            nhựa hãng bán kèm — dùng cuộn hãng khác thì phải theo nhãn trên cuộn đó.
+          </span>
+        </label>
 
         <p className={styles.targetNote}>
           {target.forkedFrom ? `Fork từ ${target.forkedFrom}. ` : ''}
@@ -475,8 +505,25 @@ export function SlicerConvertPage() {
                   </a>
                 </p>
               ) : null}
+              {conversion?.filamentPreset ? (
+                <p className={styles.cardNote}>
+                  Nhiệt độ / lưu lượng theo preset filament{' '}
+                  <strong>{conversion.filamentPreset.name}</strong>{' '}
+                  <a
+                    className={styles.link}
+                    href={conversion.filamentPreset.sourceUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    Nguồn ↗
+                  </a>
+                </p>
+              ) : null}
               {conversion?.presetNote ? (
                 <p className={styles.warning}>{conversion.presetNote}</p>
+              ) : null}
+              {conversion?.filamentNote ? (
+                <p className={styles.warning}>{conversion.filamentNote}</p>
               ) : null}
 
               <table className={styles.table}>

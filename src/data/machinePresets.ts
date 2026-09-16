@@ -1,4 +1,4 @@
-import type { MachineProcessPreset } from '../types';
+import type { MachineFilamentPreset, MachineProcessPreset } from '../types';
 
 /**
  * Preset process CHÍNH HÃNG của từng máy, trích từ bộ profile hệ thống của OrcaSlicer
@@ -419,6 +419,212 @@ export const MACHINE_PROCESS_PRESETS: MachineProcessPreset[] = [
       initial_layer_speed: '50',
       travel_speed: '300',
       default_acceleration: '6000',
+    },
+  },
+];
+
+/**
+ * Preset FILAMENT chính hãng của từng máy — nguồn duy nhất cho nhiệt độ, flow ratio và
+ * giới hạn lưu lượng ở cột "Giá trị quy đổi".
+ *
+ * Cùng loại nhựa nhưng máy khác nhau thì hãng vẫn đặt số khác (hotend và luồng gió khác),
+ * nên KHÔNG dùng preset của máy này cho máy kia. Đây là số của cuộn nhựa HÃNG bán kèm —
+ * cuộn của hãng khác phải theo nhãn trên cuộn đó.
+ */
+export const MACHINE_FILAMENT_PRESETS: MachineFilamentPreset[] = [
+  {
+    printerId: 'kobra-x',
+    name: 'Anycubic ABS @Anycubic Kobra X 0.4 nozzle',
+    filamentType: 'ABS',
+    nozzleMm: 0.4,
+    sourceUrl:
+      'https://github.com/SoftFever/OrcaSlicer/blob/main/resources/profiles/Anycubic/filament/Anycubic%20ABS%20%40Anycubic%20Kobra%20X%200.4%20nozzle.json',
+    values: {
+      nozzle_temperature: '205',
+      nozzle_temperature_initial_layer: '215',
+      hot_plate_temp: '100',
+      filament_max_volumetric_speed: '10',
+      filament_flow_ratio: '0.92',
+    },
+  },
+  {
+    printerId: 'kobra-x',
+    name: 'Anycubic ASA @Anycubic Kobra X 0.4 nozzle',
+    filamentType: 'ASA',
+    nozzleMm: 0.4,
+    sourceUrl:
+      'https://github.com/SoftFever/OrcaSlicer/blob/main/resources/profiles/Anycubic/filament/Anycubic%20ASA%20%40Anycubic%20Kobra%20X%200.4%20nozzle.json',
+    values: {
+      nozzle_temperature: '205',
+      nozzle_temperature_initial_layer: '215',
+      hot_plate_temp: '100',
+      filament_max_volumetric_speed: '8',
+      filament_flow_ratio: '0.94',
+    },
+  },
+  {
+    printerId: 'kobra-x',
+    name: 'Anycubic PETG @Anycubic Kobra X 0.4 nozzle',
+    filamentType: 'PETG',
+    nozzleMm: 0.4,
+    sourceUrl:
+      'https://github.com/SoftFever/OrcaSlicer/blob/main/resources/profiles/Anycubic/filament/Anycubic%20PETG%20%40Anycubic%20Kobra%20X%200.4%20nozzle.json',
+    values: {
+      nozzle_temperature: '230',
+      nozzle_temperature_initial_layer: '230',
+      hot_plate_temp: '75',
+      filament_max_volumetric_speed: '8',
+      filament_flow_ratio: '0.96',
+    },
+  },
+  {
+    printerId: 'kobra-x',
+    name: 'Anycubic PLA @Anycubic Kobra X 0.4 nozzle',
+    filamentType: 'PLA',
+    nozzleMm: 0.4,
+    sourceUrl:
+      'https://github.com/SoftFever/OrcaSlicer/blob/main/resources/profiles/Anycubic/filament/Anycubic%20PLA%20%40Anycubic%20Kobra%20X%200.4%20nozzle.json',
+    values: {
+      nozzle_temperature: '205',
+      nozzle_temperature_initial_layer: '215',
+      hot_plate_temp: '60',
+      filament_max_volumetric_speed: '13',
+      filament_flow_ratio: '0.96',
+    },
+  },
+  {
+    printerId: 'kobra-x',
+    name: 'Anycubic PLA Glow @Anycubic Kobra X 0.4 nozzle',
+    filamentType: 'PLA',
+    nozzleMm: 0.4,
+    sourceUrl:
+      'https://github.com/SoftFever/OrcaSlicer/blob/main/resources/profiles/Anycubic/filament/Anycubic%20PLA%20Glow%20%40Anycubic%20Kobra%20X%200.4%20nozzle.json',
+    values: {
+      nozzle_temperature: '210',
+      nozzle_temperature_initial_layer: '220',
+      hot_plate_temp: '60',
+      filament_max_volumetric_speed: '12',
+      filament_flow_ratio: '0.96',
+    },
+  },
+  {
+    printerId: 'kobra-x',
+    name: 'Anycubic PLA High Speed @Anycubic Kobra X 0.4 nozzle',
+    filamentType: 'PLA',
+    nozzleMm: 0.4,
+    sourceUrl:
+      'https://github.com/SoftFever/OrcaSlicer/blob/main/resources/profiles/Anycubic/filament/Anycubic%20PLA%20High%20Speed%20%40Anycubic%20Kobra%20X%200.4%20nozzle.json',
+    values: {
+      nozzle_temperature: '205',
+      nozzle_temperature_initial_layer: '210',
+      hot_plate_temp: '60',
+      filament_max_volumetric_speed: '18',
+      filament_flow_ratio: '0.95',
+    },
+  },
+  {
+    printerId: 'kobra-x',
+    name: 'Anycubic PLA Matte @Anycubic Kobra X 0.4 nozzle',
+    filamentType: 'PLA',
+    nozzleMm: 0.4,
+    sourceUrl:
+      'https://github.com/SoftFever/OrcaSlicer/blob/main/resources/profiles/Anycubic/filament/Anycubic%20PLA%20Matte%20%40Anycubic%20Kobra%20X%200.4%20nozzle.json',
+    values: {
+      nozzle_temperature: '210',
+      nozzle_temperature_initial_layer: '220',
+      hot_plate_temp: '60',
+      filament_max_volumetric_speed: '12',
+      filament_flow_ratio: '0.96',
+    },
+  },
+  {
+    printerId: 'kobra-x',
+    name: 'Anycubic PLA Silk @Anycubic Kobra X 0.4 nozzle',
+    filamentType: 'PLA',
+    nozzleMm: 0.4,
+    sourceUrl:
+      'https://github.com/SoftFever/OrcaSlicer/blob/main/resources/profiles/Anycubic/filament/Anycubic%20PLA%20Silk%20%40Anycubic%20Kobra%20X%200.4%20nozzle.json',
+    values: {
+      nozzle_temperature: '220',
+      nozzle_temperature_initial_layer: '230',
+      hot_plate_temp: '65',
+      filament_max_volumetric_speed: '12',
+      filament_flow_ratio: '0.95',
+    },
+  },
+  {
+    printerId: 'kobra-x',
+    name: 'Anycubic PLA+ @Anycubic Kobra X 0.4 nozzle',
+    filamentType: 'PLA',
+    nozzleMm: 0.4,
+    sourceUrl:
+      'https://github.com/SoftFever/OrcaSlicer/blob/main/resources/profiles/Anycubic/filament/Anycubic%20PLA%2B%20%40Anycubic%20Kobra%20X%200.4%20nozzle.json',
+    values: {
+      nozzle_temperature: '205',
+      nozzle_temperature_initial_layer: '215',
+      hot_plate_temp: '60',
+      filament_max_volumetric_speed: '18',
+      filament_flow_ratio: '0.98',
+    },
+  },
+  {
+    printerId: 'kobra-x',
+    name: 'Anycubic PVA @Anycubic Kobra X 0.4 nozzle',
+    filamentType: 'PVA',
+    nozzleMm: 0.4,
+    sourceUrl:
+      'https://github.com/SoftFever/OrcaSlicer/blob/main/resources/profiles/Anycubic/filament/Anycubic%20PVA%20%40Anycubic%20Kobra%20X%200.4%20nozzle.json',
+    values: {
+      nozzle_temperature: '205',
+      nozzle_temperature_initial_layer: '215',
+      hot_plate_temp: '60',
+      filament_max_volumetric_speed: '5',
+      filament_flow_ratio: '0.98',
+    },
+  },
+  {
+    printerId: 'kobra-x',
+    name: 'Anycubic TPU 95A @Anycubic Kobra X 0.4 nozzle',
+    filamentType: 'TPU',
+    nozzleMm: 0.4,
+    sourceUrl:
+      'https://github.com/SoftFever/OrcaSlicer/blob/main/resources/profiles/Anycubic/filament/Anycubic%20TPU%2095A%20%40Anycubic%20Kobra%20X%200.4%20nozzle.json',
+    values: {
+      nozzle_temperature: '205',
+      nozzle_temperature_initial_layer: '215',
+      hot_plate_temp: '60',
+      filament_max_volumetric_speed: '3.2',
+      filament_flow_ratio: '1',
+    },
+  },
+  {
+    printerId: 'kobra-x',
+    name: 'Anycubic TPU for ACE @Anycubic Kobra X 0.4 nozzle',
+    filamentType: 'TPU',
+    nozzleMm: 0.4,
+    sourceUrl:
+      'https://github.com/SoftFever/OrcaSlicer/blob/main/resources/profiles/Anycubic/filament/Anycubic%20TPU%20for%20ACE%20%40Anycubic%20Kobra%20X%200.4%20nozzle.json',
+    values: {
+      nozzle_temperature: '205',
+      nozzle_temperature_initial_layer: '215',
+      hot_plate_temp: '60',
+      filament_max_volumetric_speed: '8',
+      filament_flow_ratio: '0.98',
+    },
+  },
+  {
+    printerId: 'kobra-x',
+    name: 'Generic PETG @Anycubic Kobra X 0.4 nozzle',
+    filamentType: 'PETG',
+    nozzleMm: 0.4,
+    sourceUrl:
+      'https://github.com/SoftFever/OrcaSlicer/blob/main/resources/profiles/Anycubic/filament/Generic%20PETG%20%40Anycubic%20Kobra%20X%200.4%20nozzle.json',
+    values: {
+      nozzle_temperature: '230',
+      nozzle_temperature_initial_layer: '230',
+      hot_plate_temp: '75',
+      filament_max_volumetric_speed: '8',
+      filament_flow_ratio: '0.96',
     },
   },
 ];

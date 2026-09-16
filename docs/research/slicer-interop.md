@@ -6,7 +6,7 @@ Mọi tên khoá (key) và nhãn UI trong hai file đó PHẢI khớp bảng dư
 
 ## ⚠️ Quy tắc bắt buộc khi dùng file này
 
-Giống hai file research còn lại: ô `CHƯB VERIFY` phải giữ nguyên trạng thái đó trong code
+Giống hai file research còn lại: ô `CHƯA VERIFY` phải giữ nguyên trạng thái đó trong code
 (hiển thị "chưa có dữ liệu" / "phải tự kiểm"), KHÔNG được đoán. Ở đây rủi ro nằm ở chỗ
 **gán sai một khoá thông số = bản in thật bị sai**, không chỉ là UI lệch.
 
@@ -39,7 +39,7 @@ Nguồn cấu trúc file: [OrcaSlicer — 3MF Project Format](https://deepwiki.c
 | OrcaSlicer           | cộng đồng  | Bambu Studio   | [simplyprint](https://simplyprint.io/articles/orcaslicer-forks-compared)                                         |
 | Snapmaker Orca       | Snapmaker  | OrcaSlicer     | [snapmaker.com](https://www.snapmaker.com/snapmaker-orca), [GitHub](https://github.com/Snapmaker/OrcaSlicer)     |
 | Creality Print (≥5)  | Creality   | OrcaSlicer     | [GitHub](https://github.com/CrealityOfficial/CrealityPrint), [printago](https://printago.io/blog/creality-print) |
-| Bnycubic Slicer Next | Bnycubic   | OrcaSlicer     | [wiki Anycubic](https://wiki.anycubic.com/en/software-and-app)                                                   |
+| Anycubic Slicer Next | Anycubic   | OrcaSlicer     | [wiki Anycubic](https://wiki.anycubic.com/en/software-and-app)                                                   |
 | ElegooSlicer         | Elegoo     | OrcaSlicer     | [simplyprint](https://simplyprint.io/articles/orcaslicer-forks-compared)                                         |
 | Orca-FlashForge      | FlashForge | OrcaSlicer     | [simplyprint](https://simplyprint.io/articles/orcaslicer-forks-compared)                                         |
 | Sovol-OrcaSlicer     | Sovol      | OrcaSlicer     | [simplyprint](https://simplyprint.io/articles/orcaslicer-forks-compared)                                         |
@@ -156,15 +156,22 @@ Lý do: đây là đặc tính máy Bambu. Bê sang máy khác thì gcode khởi
 Trang Đổi slicer có cột **Giá trị quy đổi** trả lời câu "sang máy X thì điền số nào".
 Không có công thức quy đổi nào ở đây — chỉ ba trạng thái:
 
-| Trạng thái      | Áp dụng cho                              | Số lấy từ đâu                                            |
-| --------------- | ---------------------------------------- | -------------------------------------------------------- |
-| Giữ nguyên      | Tầng A (hình học)                        | Chính số trong file — đổi máy không làm nó sai           |
-| Theo preset     | Tầng B, khoá thuộc preset process        | Preset CHÍNH HÃNG của máy đích (mục 7)                   |
-| Chưa có dữ liệu | Khoá filament, hoặc không có preset khớp | Không có nguồn → hiển thị lý do, TUYỆT ĐỐI không đoán số |
+| Trạng thái      | Áp dụng cho                       | Số lấy từ đâu                                            |
+| --------------- | --------------------------------- | -------------------------------------------------------- |
+| Giữ nguyên      | Tầng A (hình học)                 | Chính số trong file — đổi máy không làm nó sai           |
+| Theo preset     | Tầng B, khoá thuộc preset process | Preset CHÍNH HÃNG của máy đích (mục 7)                   |
+| Chưa có dữ liệu | Không dò được preset khớp         | Không có nguồn → hiển thị lý do, TUYỆT ĐỐI không đoán số |
 
-Khoá filament (nhiệt độ nozzle/bed, flow ratio, max volumetric speed) **luôn** là "chưa có
-dữ liệu": nó phụ thuộc cuộn nhựa đang nạp, không phải máy. Không có cách nào suy ra từ
-máy đích.
+Khoá filament (nhiệt độ nozzle/bed, flow ratio, max volumetric speed) lấy từ **preset
+filament chính hãng của đúng máy đích**, không phải từ preset process. Máy đích chọn theo
+`filament_type` ghi trong file, user đổi tay được. Ví dụ: file ghi PLA 220 °C (nhựa Bambu),
+`Anycubic PLA @Anycubic Kobra X 0.4 nozzle` để 205 °C / lớp đầu 215 °C / bàn 60 °C /
+flow ratio 0.96 / max volumetric 13 mm³/s.
+
+⚠️ Đây là số của **cuộn nhựa hãng máy bán kèm**. Dùng cuộn hãng khác thì phải theo nhãn trên
+cuộn đó — UI ghi rõ câu này ngay dưới ô chọn filament. App vẫn để "chưa có dữ liệu" khi:
+loại nhựa đó máy đích không có preset (ví dụ PC trên Kobra X), hoặc file liệt kê nhiều loại
+nhựa cùng lúc (in nhiều màu) nên không suy ra được một loại duy nhất.
 
 Ví dụ thật, preset 0.20mm Standard, nozzle 0.4:
 
@@ -195,7 +202,9 @@ giữa hàng chục ô trùng, người dùng tưởng cột quy đổi vô dụ
 của OrcaSlicer, `resources/profiles/<Hãng>/process/*.json`, đã làm phẳng theo chuỗi
 `inherits` và chỉ giữ khoá có trong `SETTING_MAP`.
 
-Máy đang có: **Anycubic Kobra X** (9 preset).
+Máy đang có: **Anycubic Kobra X** — 9 preset process + 13 preset filament
+(`resources/profiles/Anycubic/filament/*.json`: PLA, PLA+, PLA Matte, PLA Silk, PLA Glow,
+PLA High Speed, PETG, Generic PETG, ABS, ASA, TPU 95A, TPU for ACE, PVA).
 
 Chỉ nhúng preset của máy **đích**. Máy nguồn (Bambu) không cần: số của nó đã nằm sẵn trong
 file `.3mf` user tải lên, nhúng thêm chỉ làm nặng bundle. Bộ preset A1 từng được nhúng trong
@@ -225,11 +234,12 @@ Repo Anycubic Slicer Next (nhánh `main`) hiện chưa có profile Kobra X nào 
 
 ## 8. Điểm CHƯA VERIFY
 
-| Nội dung                                                                                                    | Trạng thái                                                                                    |
-| ----------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- |
-| Tương đương Cura của `filament_max_volumetric_speed`, `filament_flow_ratio`                                 | CHƯA VERIFY — UI ghi "phải tự đặt", không đoán                                                |
-| Tương đương Cura của `raft_layers`                                                                          | KHÔNG CÓ 1-1 — Cura cấu hình raft bằng cả nhóm ô `raft_*`                                     |
-| Trùng tên khoá `support_type`: Orca = normal/tree, Cura = buildplate/everywhere (label "Support Placement") | Đã verify từ `fdmprinter.def.json`, app ánh xạ Orca `support_type` → Cura `support_structure` |
-| Tên preset Kobra X trong chính Anycubic Slicer Next                                                         | CHƯA VERIFY — repo Anycubic chưa có profile Kobra X, xem mục 7                                |
-| Hành vi chính xác của từng fork khi mở 3mf có preset máy không tồn tại                                      | CHƯA VERIFY — tài liệu OrcaSlicer chỉ nêu "use defaults with warning"                         |
-| Preset máy của Snapmaker/Creality có ánh xạ 1-1 sang máy Bambu nào không                                    | KHÔNG CÓ — không tồn tại ánh xạ chính hãng, nên app không gợi ý                               |
+| Nội dung                                                                                                    | Trạng thái                                                                                                                                                                               |
+| ----------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Tương đương Cura của `filament_max_volumetric_speed`, `filament_flow_ratio`                                 | CHƯA VERIFY — UI ghi "phải tự đặt", không đoán                                                                                                                                           |
+| Tương đương Cura của `raft_layers`                                                                          | KHÔNG CÓ 1-1 — Cura cấu hình raft bằng cả nhóm ô `raft_*`                                                                                                                                |
+| Trùng tên khoá `support_type`: Orca = normal/tree, Cura = buildplate/everywhere (label "Support Placement") | Đã verify từ `fdmprinter.def.json`, app ánh xạ Orca `support_type` → Cura `support_structure`                                                                                            |
+| Tên preset Kobra X trong chính Anycubic Slicer Next                                                         | CHƯA VERIFY — repo Anycubic chưa có profile Kobra X, xem mục 7                                                                                                                           |
+| Hành vi chính xác của từng fork khi mở 3mf có preset máy không tồn tại                                      | CHƯA VERIFY — tài liệu OrcaSlicer chỉ nêu "use defaults with warning"                                                                                                                    |
+| Preset máy của Snapmaker/Creality có ánh xạ 1-1 sang máy Bambu nào không                                    | KHÔNG CÓ — không tồn tại ánh xạ chính hãng, nên app không gợi ý                                                                                                                          |
+| Thông số in trên wiki Anycubic Kobra X                                                                      | KHÔNG ĐỌC ĐƯỢC — trang render bằng JS (fetch chỉ ra tiêu đề); nội dung là hướng dẫn lắp đặt / xử lý sự cố, không phải bảng thông số. Dùng preset filament chính hãng thay thế, xem mục 6 |

@@ -27,6 +27,7 @@ function project(settings: Record<string, unknown> = {}) {
     travel_speed: ['700'],
     default_acceleration: ['6000'],
     nozzle_temperature: ['220'],
+    hot_plate_temp: ['55'],
     ...settings,
   };
   const files: ArchiveFile[] = [
@@ -118,11 +119,43 @@ describe('convertToTargetMachine', () => {
     expect(result.preset?.name).toBe('0.20mm Standard @Anycubic Kobra X');
   });
 
-  it('nhóm filament luôn là chưa có dữ liệu — không đoán theo máy', () => {
-    const result = convertToTargetMachine(project(), 'kobra-x');
+  it('nhóm filament lấy số từ preset filament chính hãng của máy đích', () => {
+    const result = convertToTargetMachine(project({ filament_type: ['PLA'] }), 'kobra-x');
 
+    expect(result.filamentPreset?.name).toBe('Anycubic PLA @Anycubic Kobra X 0.4 nozzle');
+    // File ghi 220 °C (nhựa Bambu), Anycubic để 205 °C cho PLA của họ
+    expect(result.byKey['nozzle_temperature']).toMatchObject({
+      kind: 'target',
+      value: '205',
+      changed: true,
+    });
+    expect(result.byKey['hot_plate_temp']).toMatchObject({ kind: 'target', value: '60' });
+  });
+
+  it('chọn tay preset filament thì thắng phần tự dò theo loại nhựa', () => {
+    const result = convertToTargetMachine(
+      project({ filament_type: ['PLA'] }),
+      'kobra-x',
+      'Anycubic PETG @Anycubic Kobra X 0.4 nozzle',
+    );
+
+    expect(result.filamentPreset?.filamentType).toBe('PETG');
+    expect(result.byKey['nozzle_temperature']).toMatchObject({ kind: 'target', value: '230' });
+  });
+
+  it('máy đích không có preset cho loại nhựa đó thì báo rõ, không mượn số loại khác', () => {
+    const result = convertToTargetMachine(project({ filament_type: ['PC'] }), 'kobra-x');
+
+    expect(result.filamentPreset).toBeNull();
+    expect(result.filamentNote).toContain('PC');
     expect(result.byKey['nozzle_temperature']).toMatchObject({ kind: 'unavailable' });
-    expect(result.byKey['nozzle_temperature']?.kind === 'unavailable').toBe(true);
+  });
+
+  it('file nhiều loại nhựa thì không tự đoán, bắt user chọn tay', () => {
+    const result = convertToTargetMachine(project({ filament_type: ['PLA', 'PETG'] }), 'kobra-x');
+
+    expect(result.filamentPreset).toBeNull();
+    expect(result.filamentNote).toContain('chọn tay');
   });
 
   it('máy đích không có preset ở layer height đó thì nêu rõ các mức nó có', () => {

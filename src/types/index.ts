@@ -439,6 +439,27 @@ export type MachineProcessPreset = {
 };
 
 /**
+ * Preset filament chính hãng của một máy — nguồn cho nhiệt độ, flow ratio, giới hạn lưu
+ * lượng ở cột "Giá trị quy đổi".
+ *
+ * Số ở đây là của cuộn nhựa do HÃNG MÁY bán kèm. Dùng cuộn hãng khác thì phải theo nhãn
+ * cuộn đó — app nêu rõ điều này trong UI thay vì để user tưởng là số phổ quát.
+ */
+export type MachineFilamentPreset = {
+  /** Khớp `id` trong src/data/printers.ts */
+  printerId: string;
+  /** Tên preset đúng như trong slicer, ví dụ "Anycubic PLA @Anycubic Kobra X 0.4 nozzle" */
+  name: string;
+  /** Loại nhựa theo `filament_type` của profile, ví dụ "PLA" / "PETG" / "TPU" */
+  filamentType: string;
+  nozzleMm: number;
+  /** Chỉ chứa khoá filament có trong SETTING_MAP */
+  values: Record<string, string>;
+  /** BẮT BUỘC — link tới đúng file profile trong repo OrcaSlicer */
+  sourceUrl: string;
+};
+
+/**
  * Kết quả quy đổi một thông số sang máy đích.
  * 'keep'        — giá trị do hình học quyết định, giữ nguyên số trong file
  * 'target'      — lấy số từ preset chính hãng của máy đích
@@ -449,7 +470,8 @@ export type ConvertedValue =
   | {
       kind: 'target';
       value: string;
-      preset: MachineProcessPreset;
+      /** Preset đã lấy số — process hoặc filament, tuỳ ô */
+      preset: MachineProcessPreset | MachineFilamentPreset;
       /**
        * Số của máy đích KHÁC số trong file — tức là ô user thật sự phải sửa tay.
        * Hai hãng đặt trùng số là chuyện thường (profile fork của nhau), nên nếu không
