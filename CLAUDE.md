@@ -7,6 +7,10 @@ selectbox → sinh ra 2 thứ:
 2. **Bộ thông số in Bambu Studio** (Quality / Strength / Speed / Filament) phù hợp
    với sản phẩm và máy in đã chọn
 
+Ngoài luồng Mix còn ba trang phụ: Phân tích ảnh (Gemini đọc ảnh → prompt), Quản lý dữ liệu,
+và **Đổi slicer** — tách file `.3mf` tải từ MakerWorld thành phần hình học dùng chung + bảng
+thông số ánh xạ sang slicer khác (xem `docs/research/slicer-interop.md`).
+
 ## Tech Stack
 
 - Language: TypeScript 5.x
@@ -301,6 +305,8 @@ npx tsc --noEmit     # type check
 
 - `docs/research/bambu-print-parameters.md` — bảng thông số Bambu + trạng thái verify
 - `docs/research/anycubic-print-parameters.md` — bảng thông số Anycubic + Anycubic Slicer Next
+- `docs/research/slicer-interop.md` — cấu trúc file 3mf, phả hệ slicer, bảng ánh xạ thông số
+  Orca ↔ Cura (nguồn sự thật cho trang "Đổi slicer")
 
 ## Ghi chú — còn phải làm
 

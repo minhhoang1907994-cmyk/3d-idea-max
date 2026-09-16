@@ -5,6 +5,7 @@ import { useIdeaData } from './hooks/useIdeaData';
 import { DataManagerPage } from './pages/DataManagerPage';
 import { ImageAnalyzePage } from './pages/ImageAnalyzePage';
 import { MixPage } from './pages/MixPage';
+import { SlicerConvertPage } from './pages/SlicerConvertPage';
 
 export default function App() {
   const [page, setPage] = useState<PageId>('mix');
@@ -17,6 +18,7 @@ export default function App() {
       <div className={styles.main}>
         {page === 'mix' ? <MixPage data={dataStore.data} /> : null}
         {page === 'image' ? <ImageAnalyzePage /> : null}
+        {page === 'convert' ? <SlicerConvertPage /> : null}
         {page === 'data' ? <DataManagerPage dataStore={dataStore} /> : null}
       </div>
     </div>

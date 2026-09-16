@@ -1,0 +1,367 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+  max-width: 980px;
+  padding: 1.75rem 1.5rem 3rem;
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.title {
+  margin: 0;
+  font-size: 1.45rem;
+}
+
+.subtitle {
+  margin: 0;
+  max-width: 72ch;
+  font-size: 0.88rem;
+  line-height: 1.55;
+  color: var(--text-muted);
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 1.1rem 1.2rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+}
+
+.cardTitle {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.cardNote {
+  margin: 0;
+  font-size: 0.78rem;
+  line-height: 1.5;
+  color: var(--text-faint);
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  min-width: 0;
+}
+
+.fieldRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.8rem;
+}
+
+.fieldLabel {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+.fieldHint {
+  font-size: 0.72rem;
+  line-height: 1.45;
+  color: var(--text-faint);
+}
+
+.select {
+  width: 100%;
+  padding: 0.5rem 0.6rem;
+  font: inherit;
+  font-size: 0.88rem;
+  color: var(--text);
+  background: var(--surface-sunken);
+  border: 1px solid var(--border);
+  border-radius: 7px;
+}
+
+.select:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+
+.targetNote {
+  margin: 0;
+  font-size: 0.8rem;
+  line-height: 1.55;
+  color: var(--text-muted);
+}
+
+.link {
+  color: var(--accent);
+  white-space: nowrap;
+}
+
+.dropzone {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.7rem;
+  padding: 1.4rem;
+  background: var(--surface);
+  border: 2px dashed var(--border-strong);
+  border-radius: 12px;
+  text-align: center;
+}
+
+.fileInput {
+  display: none;
+}
+
+.dropHint {
+  margin: 0;
+  font-size: 0.88rem;
+  color: var(--text-muted);
+  word-break: break-all;
+}
+
+.privacyNote {
+  margin: 0;
+  font-size: 0.74rem;
+  color: var(--text-faint);
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.primaryButton,
+.secondaryButton {
+  padding: 0.55rem 1.1rem;
+  font: inherit;
+  font-size: 0.86rem;
+  font-weight: 600;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.primaryButton {
+  color: var(--accent-text);
+  background: var(--accent);
+  border: none;
+}
+
+.secondaryButton {
+  color: var(--text);
+  background: var(--surface-sunken);
+  border: 1px solid var(--border);
+}
+
+.secondaryButton:hover {
+  border-color: var(--accent);
+}
+
+.checkbox {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  font-size: 0.78rem;
+  line-height: 1.5;
+  color: var(--text-muted);
+}
+
+.summary {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 0.6rem;
+  margin: 0;
+}
+
+.summaryRow {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  min-width: 0;
+  padding: 0.55rem 0.7rem;
+  background: var(--surface-sunken);
+  border-radius: 8px;
+}
+
+.summaryKey {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--text-faint);
+}
+
+.summaryValue {
+  margin: 0;
+  font-size: 0.84rem;
+  word-break: break-word;
+}
+
+.warningList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.warning,
+.info {
+  padding: 0.6rem 0.75rem;
+  font-size: 0.8rem;
+  line-height: 1.55;
+  border-radius: 7px;
+}
+
+.warning {
+  color: var(--warning-text);
+  background: var(--warning-bg);
+  border-left: 3px solid var(--warning);
+}
+
+.info {
+  color: var(--text-muted);
+  background: var(--surface-sunken);
+  border-left: 3px solid var(--border-strong);
+}
+
+.error {
+  margin: 0;
+  padding: 0.7rem 0.85rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  line-height: 1.5;
+  color: var(--warning-text);
+  background: var(--warning-bg);
+  border-left: 3px solid var(--warning);
+  border-radius: 8px;
+}
+
+.steps {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  margin: 0;
+  padding-left: 1.1rem;
+  font-size: 0.84rem;
+  line-height: 1.6;
+  color: var(--text-muted);
+}
+
+.code {
+  padding: 0.1rem 0.35rem;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.8rem;
+  color: var(--text);
+  background: var(--surface-sunken);
+  border-radius: 5px;
+}
+
+.details {
+  font-size: 0.82rem;
+}
+
+.detailsSummary {
+  color: var(--text-muted);
+  cursor: pointer;
+}
+
+.table {
+  width: 100%;
+  margin-top: 0.6rem;
+  font-size: 0.8rem;
+  border-collapse: collapse;
+}
+
+.table th,
+.table td {
+  padding: 0.45rem 0.55rem;
+  text-align: left;
+  vertical-align: top;
+  border-bottom: 1px solid var(--border);
+}
+
+.table th {
+  font-size: 0.72rem;
+  color: var(--text-faint);
+  white-space: nowrap;
+}
+
+.tableHeader {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.changeSummary {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.changeCount {
+  font-size: 1rem;
+  color: var(--warning-text);
+}
+
+/* Chỉ tô dòng thật sự phải sửa — tô cả nhóm phụ thuộc máy thì không còn ý nghĩa cảnh báo */
+.rowChanged {
+  background: var(--warning-bg);
+}
+
+.changedValue {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--warning-text);
+  word-break: break-all;
+}
+
+.settingLabel {
+  display: block;
+  font-weight: 600;
+}
+
+.settingGroup {
+  display: block;
+  font-size: 0.72rem;
+  color: var(--text-faint);
+}
+
+.mono {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.78rem;
+  word-break: break-all;
+}
+
+.note {
+  display: block;
+  margin-top: 0.2rem;
+  font-size: 0.72rem;
+  line-height: 1.45;
+  color: var(--text-faint);
+}
+
+.missing {
+  font-weight: 600;
+  color: var(--warning-text);
+}
+
+@media (max-width: 760px) {
+  .page {
+    padding: 1.25rem 1rem 2.5rem;
+  }
+
+  .fieldRow {
+    grid-template-columns: 1fr;
+  }
+
+  .table {
+    display: block;
+    overflow-x: auto;
+  }
+}

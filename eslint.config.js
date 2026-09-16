@@ -51,8 +51,8 @@ export default tseslint.config(
   },
 
   {
-    // File config chạy bằng Node, không thuộc tsconfig của src
-    files: ['*.config.{js,ts}'],
+    // File config và script build chạy bằng Node, không thuộc tsconfig của src
+    files: ['*.config.{js,ts}', 'scripts/**/*.{js,mjs}'],
     languageOptions: { globals: globals.node },
     extends: [tseslint.configs.disableTypeChecked],
   },
