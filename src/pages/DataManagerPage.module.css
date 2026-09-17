@@ -211,6 +211,39 @@
   }
 }
 
+@media (max-width: 760px) {
+  .page {
+    padding: 1.25rem 1rem 2.5rem;
+  }
+
+  .title {
+    font-size: 1.3rem;
+  }
+
+  .actions {
+    width: 100%;
+  }
+
+  .actions .primaryButton,
+  .actions .secondaryButton {
+    flex: 1 1 8rem;
+  }
+
+  .content {
+    padding: 0.9rem 0.95rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .page {
+    padding: 1rem 0.75rem 2.25rem;
+  }
+
+  .title {
+    font-size: 1.18rem;
+  }
+}
+
 /* Gạch chân chuyển sắc cam → xanh, lấy từ hai màu chính của logo */
 .title::after {
   content: '';

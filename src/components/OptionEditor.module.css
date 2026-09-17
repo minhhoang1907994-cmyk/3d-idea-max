@@ -200,4 +200,15 @@
   .addRow {
     grid-template-columns: 1fr;
   }
+
+  /* .tableWrapper đã cuộn ngang; khoá bề rộng tối thiểu để 4 cột không bị bóp
+     thành vài ký tự mỗi ô */
+  .table {
+    min-width: 32rem;
+  }
+
+  .header {
+    flex-wrap: wrap;
+    gap: 0.35rem;
+  }
 }

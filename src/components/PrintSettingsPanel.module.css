@@ -166,7 +166,7 @@
 
 .groups {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 1fr));
   gap: 0.9rem;
 }
 
@@ -268,4 +268,46 @@
   font-size: 0.74rem;
   line-height: 1.5;
   color: var(--text-faint);
+}
+
+@media (max-width: 760px) {
+  .panel {
+    padding: 0.9rem 0.95rem;
+  }
+
+  .tabs {
+    gap: 0.2rem;
+  }
+
+  .tab {
+    padding: 0.35rem 0.6rem;
+    font-size: 0.8rem;
+  }
+
+  .groups {
+    gap: 0.7rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .group {
+    padding: 0.65rem 0.7rem;
+  }
+
+  /* Nhãn tham số dài (Sparse Infill Density) + giá trị nowrap không cùng lọt một hàng
+     dưới 480px — xếp dọc để giá trị không bị đẩy tràn ra ngoài thẻ */
+  .row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.1rem;
+  }
+
+  .value,
+  .missingValue {
+    text-align: left;
+  }
+
+  .filamentInfo {
+    gap: 0.4rem 0.75rem;
+  }
 }

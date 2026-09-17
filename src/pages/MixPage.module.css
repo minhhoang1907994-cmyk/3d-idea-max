@@ -54,7 +54,7 @@
 
 .controls {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(200px, 100%), 1fr));
   gap: 0.9rem 1rem;
   padding: 1.1rem 1.2rem;
   margin-bottom: 1.25rem;
@@ -73,7 +73,7 @@
 /* Hai núm điều khiển độc lập: ý tưởng táo bạo tới đâu, và có ràng buộc hình học hay không */
 .knobs {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 1fr));
   gap: 0.6rem;
 }
 
@@ -86,4 +86,49 @@
   margin-top: 0.5rem;
   background: linear-gradient(90deg, var(--accent-bright), var(--accent-blue-bright));
   border-radius: 999px;
+}
+
+@media (max-width: 760px) {
+  .page {
+    padding: 1.25rem 1rem 2.5rem;
+  }
+
+  .pageHeader {
+    gap: 0.75rem;
+    margin-bottom: 1.1rem;
+  }
+
+  .pageTitle {
+    font-size: 1.35rem;
+  }
+
+  /* Nút Mix là hành động chính của trang — trên điện thoại cho chiếm trọn hàng
+     thay vì nằm nép bên phải tiêu đề */
+  .mixButton {
+    width: 100%;
+    padding: 0.8rem 1rem;
+  }
+
+  .controls {
+    padding: 0.9rem;
+    gap: 0.8rem;
+  }
+
+  .results {
+    gap: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .page {
+    padding: 1rem 0.75rem 2.25rem;
+  }
+
+  .pageTitle {
+    font-size: 1.2rem;
+  }
+
+  .pageSubtitle {
+    font-size: 0.85rem;
+  }
 }

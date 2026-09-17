@@ -111,6 +111,14 @@
     padding: 0.7rem 0.8rem;
     border-right: none;
     border-bottom: 1px solid var(--border);
+    /* Là grid item của .shell nên mặc định min-width: auto — không có dòng này thì
+       thanh menu phình theo bề rộng 5 mục và overflow-x của .list vô hiệu */
+    min-width: 0;
+  }
+
+  .brand {
+    flex: none;
+    padding: 0;
   }
 
   .brandLogo {
@@ -118,12 +126,54 @@
     border-radius: 10px;
   }
 
+  /* Năm mục không bao giờ đủ chỗ trên một hàng điện thoại. Cho trượt ngang thay vì
+     ép co lại — nhãn bị cắt chữ thì không còn phân biệt được mục nào với mục nào. */
   .list {
     flex-direction: row;
     flex: 1;
+    min-width: 0;
+    gap: 0.35rem;
+    overflow-x: auto;
+    scrollbar-width: thin;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .list > li {
+    flex: none;
+  }
+
+  .item {
+    align-items: center;
+    padding: 0.5rem 0.7rem;
+    white-space: nowrap;
   }
 
   .itemDescription {
     display: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .menu {
+    gap: 0.5rem;
+    padding: 0.55rem 0.6rem;
+  }
+
+  .brandLogo {
+    width: 40px;
+    border-radius: 8px;
+  }
+
+  .item {
+    gap: 0.4rem;
+    padding: 0.45rem 0.6rem;
+  }
+
+  .icon {
+    font-size: 0.95rem;
+  }
+
+  .itemLabel {
+    font-size: 0.82rem;
   }
 }

@@ -75,3 +75,19 @@
   border-radius: 8px;
   resize: vertical;
 }
+
+@media (max-width: 760px) {
+  .panel {
+    padding: 0.9rem 0.95rem;
+  }
+
+  .header {
+    flex-wrap: wrap;
+    gap: 0.6rem;
+  }
+
+  .prompt {
+    padding: 0.75rem;
+    font-size: 0.82rem;
+  }
+}

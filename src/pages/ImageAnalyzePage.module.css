@@ -220,6 +220,69 @@
   .configRow {
     grid-template-columns: 1fr;
   }
+
+  .page {
+    padding: 1.25rem 1rem 2.5rem;
+  }
+
+  .title {
+    font-size: 1.3rem;
+  }
+
+  .config {
+    padding: 0.85rem 0.9rem;
+  }
+
+  .dropzone {
+    padding: 1rem;
+  }
+
+  .dropHint {
+    padding: 1.25rem 0;
+  }
+
+  .preview {
+    max-height: 240px;
+  }
+
+  .result {
+    padding: 0.9rem 0.95rem;
+  }
+
+  .prompt {
+    padding: 0.75rem;
+    font-size: 0.82rem;
+  }
+
+  .actions .primaryButton,
+  .actions .secondaryButton {
+    flex: 1 1 8rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .page {
+    padding: 1rem 0.75rem 2.25rem;
+  }
+
+  .title {
+    font-size: 1.18rem;
+  }
+
+  /* Ô nhập API key + nút hiện/ẩn không cùng lọt một hàng — cho nút xuống dòng,
+     nếu không ô nhập bị bóp còn vài ký tự */
+  .keyRow {
+    flex-wrap: wrap;
+  }
+
+  .keyRow .input {
+    flex: 1 1 100%;
+  }
+
+  .resultHeader {
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
 }
 
 /* Gạch chân chuyển sắc cam → xanh, lấy từ hai màu chính của logo */

@@ -75,3 +75,13 @@
   font-style: italic;
   color: var(--text-muted);
 }
+
+@media (max-width: 760px) {
+  .panel {
+    padding: 0.85rem 0.9rem;
+  }
+
+  .chips {
+    gap: 0.4rem;
+  }
+}

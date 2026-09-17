@@ -74,3 +74,13 @@
   line-height: 1.4;
   color: var(--text-faint);
 }
+
+@media (max-width: 760px) {
+  .panel {
+    padding: 0.9rem 0.95rem;
+  }
+
+  .list {
+    padding-left: 1rem;
+  }
+}

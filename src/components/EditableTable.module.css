@@ -12,10 +12,10 @@
   box-shadow: var(--shadow-card);
 }
 
+/* min-width do EditableTable.tsx tính theo chính các cột của bảng và đặt inline */
 .table {
   display: flex;
   flex-direction: column;
-  min-width: 46rem;
 }
 
 .headRow,

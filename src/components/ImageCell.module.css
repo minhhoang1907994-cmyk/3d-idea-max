@@ -1,4 +1,7 @@
 .cell {
+  /* .fileInput bên dưới là absolute; không có mốc này thì nó bám vào initial containing
+     block, thoát khỏi vùng cắt của .scroller và kéo giãn cả trang theo chiều ngang */
+  position: relative;
   display: flex;
   flex-direction: column;
   gap: 0.3rem;

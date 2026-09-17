@@ -12,6 +12,18 @@ import styles from './EditableTable.module.css';
  */
 export type ColumnKind = 'text' | 'amount' | 'date' | 'month' | 'link' | 'image' | 'tag';
 
+/** Bề rộng cột "Thao tác" — cột duy nhất không do trang gọi khai báo */
+const ACTION_COLUMN_WIDTH = '5.5rem';
+/*
+ * Sàn cho cột co giãn. 7rem là mức cân bằng: bảng rộng nhất hiện có (Chi, 8 cột) ra sàn
+ * 67rem ~ 1072px, vẫn vừa vùng nội dung của màn 1366px nên desktop không phát sinh cuộn
+ * ngang mới; hẹp hơn 7rem thì ô nhập trên điện thoại không còn đọc được nội dung.
+ */
+const FLEX_COLUMN_MIN_REM = 7;
+/** Khớp với `gap` của .headRow/.row và `padding` hai bên trong EditableTable.module.css */
+const COLUMN_GAP_REM = 0.5;
+const ROW_PADDING_REM = 1.5;
+
 export type EditableColumn<T> = {
   key: Extract<keyof T, string>;
   label: string;
@@ -183,12 +195,26 @@ export function EditableTable<T extends { id: string }>({
     );
   }
 
-  const gridTemplate = `${columns.map((column) => column.width ?? 'minmax(0, 1fr)').join(' ')} 5.5rem`;
+  const widths = [
+    ...columns.map((column) => column.width ?? 'minmax(0, 1fr)'),
+    ACTION_COLUMN_WIDTH,
+  ];
+  const gridTemplate = widths.join(' ');
+  // Track kiểu minmax(0, Nfr) co được về 0, nên trên màn hẹp các cột chữ bị nén còn vài
+  // pixel thay vì đẩy .scroller cuộn ngang. Sàn dưới đây tính từ chính các cột đang có —
+  // một con số cố định thì hoặc thừa với bảng 3 cột, hoặc thiếu với bảng 7 cột.
+  const tableMinWidthRem =
+    widths.reduce((sum, width) => {
+      const fixed = /^([\d.]+)rem$/.exec(width.trim());
+      return sum + (fixed ? Number(fixed[1]) : FLEX_COLUMN_MIN_REM);
+    }, 0) +
+    widths.length * COLUMN_GAP_REM +
+    ROW_PADDING_REM;
 
   return (
     <div className={styles.wrapper}>
       <div className={styles.scroller}>
-        <div className={styles.table} role="table">
+        <div className={styles.table} role="table" style={{ minWidth: `${tableMinWidthRem}rem` }}>
           <div className={styles.headRow} role="row" style={{ gridTemplateColumns: gridTemplate }}>
             {columns.map((column) => (
               <span key={column.key} className={styles.headCell} role="columnheader">

@@ -360,26 +360,28 @@ export function SlicerConvertPage() {
               <summary className={styles.detailsSummary}>
                 Chi tiết {inspection.entries.length} file bên trong
               </summary>
-              <table className={styles.table}>
-                <thead>
-                  <tr>
-                    <th>Đường dẫn</th>
-                    <th>Vai trò</th>
-                    <th>Kích thước</th>
-                    <th>Xuất ra</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {inspection.entries.map((entry) => (
-                    <tr key={entry.path}>
-                      <td className={styles.mono}>{entry.path}</td>
-                      <td>{ROLE_LABELS[entry.role] ?? entry.role}</td>
-                      <td>{formatSize(entry.sizeBytes)}</td>
-                      <td>{entry.kept ? 'giữ' : 'bỏ'}</td>
+              <div className={styles.tableScroller}>
+                <table className={styles.table}>
+                  <thead>
+                    <tr>
+                      <th>Đường dẫn</th>
+                      <th>Vai trò</th>
+                      <th>Kích thước</th>
+                      <th>Xuất ra</th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
+                  </thead>
+                  <tbody>
+                    {inspection.entries.map((entry) => (
+                      <tr key={entry.path}>
+                        <td className={styles.mono}>{entry.path}</td>
+                        <td>{ROLE_LABELS[entry.role] ?? entry.role}</td>
+                        <td>{formatSize(entry.sizeBytes)}</td>
+                        <td>{entry.kept ? 'giữ' : 'bỏ'}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
             </details>
           </section>
 
@@ -526,43 +528,47 @@ export function SlicerConvertPage() {
                 <p className={styles.warning}>{conversion.filamentNote}</p>
               ) : null}
 
-              <table className={styles.table}>
-                <thead>
-                  <tr>
-                    <th>Ô trong Bambu Studio / Orca</th>
-                    <th>Giá trị trong file</th>
-                    <th>Giá trị quy đổi → {targetPrinterLabel}</th>
-                    <th>{target.family === 'cura' ? 'Ô trong Cura' : 'Tên khoá'}</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {visibleSettings.map(({ mapping, value }) => (
-                    <tr
-                      key={mapping.orcaKey}
-                      className={isChanged(mapping.orcaKey) ? styles.rowChanged : undefined}
-                    >
-                      <td>
-                        <span className={styles.settingLabel}>{mapping.label}</span>
-                        <span className={styles.settingGroup}>{mapping.group}</span>
-                      </td>
-                      <td className={styles.mono}>{value}</td>
-                      <td>{renderConverted(conversion?.byKey[mapping.orcaKey])}</td>
-                      <td>
-                        {target.family === 'cura' ? (
-                          (mapping.curaLabel ?? (
-                            <span className={styles.missing}>
-                              không có ô tương đương — phải tự đặt
-                            </span>
-                          ))
-                        ) : (
-                          <span className={styles.mono}>{mapping.orcaKey}</span>
-                        )}
-                        {mapping.note ? <span className={styles.note}>{mapping.note}</span> : null}
-                      </td>
+              <div className={styles.tableScroller}>
+                <table className={styles.table}>
+                  <thead>
+                    <tr>
+                      <th>Ô trong Bambu Studio / Orca</th>
+                      <th>Giá trị trong file</th>
+                      <th>Giá trị quy đổi → {targetPrinterLabel}</th>
+                      <th>{target.family === 'cura' ? 'Ô trong Cura' : 'Tên khoá'}</th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
+                  </thead>
+                  <tbody>
+                    {visibleSettings.map(({ mapping, value }) => (
+                      <tr
+                        key={mapping.orcaKey}
+                        className={isChanged(mapping.orcaKey) ? styles.rowChanged : undefined}
+                      >
+                        <td>
+                          <span className={styles.settingLabel}>{mapping.label}</span>
+                          <span className={styles.settingGroup}>{mapping.group}</span>
+                        </td>
+                        <td className={styles.mono}>{value}</td>
+                        <td>{renderConverted(conversion?.byKey[mapping.orcaKey])}</td>
+                        <td>
+                          {target.family === 'cura' ? (
+                            (mapping.curaLabel ?? (
+                              <span className={styles.missing}>
+                                không có ô tương đương — phải tự đặt
+                              </span>
+                            ))
+                          ) : (
+                            <span className={styles.mono}>{mapping.orcaKey}</span>
+                          )}
+                          {mapping.note ? (
+                            <span className={styles.note}>{mapping.note}</span>
+                          ) : null}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
             </section>
           ) : null}
         </>

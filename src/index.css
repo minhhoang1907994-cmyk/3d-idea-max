@@ -73,3 +73,17 @@ body {
   outline: 2px solid var(--accent-blue);
   outline-offset: 2px;
 }
+
+/*
+ * background-attachment: fixed buộc trình duyệt vẽ lại nền mỗi khung hình khi cuộn —
+ * trên điện thoại giật thấy rõ. Lưới mặt bàn in cuộn theo trang cũng không khác mấy.
+ */
+@media (max-width: 760px) {
+  body {
+    background-attachment: scroll;
+  }
+
+  :root {
+    --plate-step: 20px;
+  }
+}
