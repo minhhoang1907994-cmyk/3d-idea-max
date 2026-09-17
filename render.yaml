@@ -10,6 +10,11 @@ services:
     name: 3d-idea-max
     buildCommand: npm ci && npm run build
     staticPublishPath: ./dist
+    envVars:
+      # Địa chỉ Neon Data API. Đặt giá trị trong Render Dashboard > Environment
+      # (sync: false = Render không lấy từ file này). Xem docs/neon-setup.md.
+      - key: VITE_NEON_DATA_API_URL
+        sync: false
     # Điều hướng giữa 2 trang làm bằng state, không đổi URL, nên không cần
     # rewrite rule cho SPA. Nếu sau này thêm react-router thì mở khối dưới ra:
     # routes:

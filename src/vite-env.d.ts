@@ -1,6 +1,18 @@
 /// <reference types="vite/client" />
 
 /**
+ * Biến môi trường lúc build. Khai báo tường minh thay vì dựa vào index signature
+ * `any` của vite/client, để đọc ra kiểu string thật.
+ */
+interface ImportMetaEnv {
+  readonly VITE_NEON_DATA_API_URL?: string;
+}
+
+interface ImportMeta {
+  readonly env: ImportMetaEnv;
+}
+
+/**
  * File System Access API chưa có trong lib DOM mặc định của TypeScript.
  * Chỉ khai báo phần app thực sự dùng, không khai báo thừa.
  * Spec: https://developer.mozilla.org/en-US/docs/Web/API/Window/showDirectoryPicker

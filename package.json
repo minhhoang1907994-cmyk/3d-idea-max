@@ -7,6 +7,8 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "preview": "vite preview",
+    "neon:seed": "node scripts/neonSync.mjs push",
+    "neon:pull": "node scripts/neonSync.mjs pull",
     "test": "vitest run",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
