@@ -3,6 +3,68 @@
 ## Session gần nhất
 
 - Ngày: 2026-09-17
+- Tóm tắt: Làm **responsive cho cả 5 page** xuống mốc 360px. Phần lớn là CSS, nhưng recheck
+  bằng Chrome lôi ra 3 lỗi tràn ngang thật đã tồn tại từ trước, không phải chỉ thiếu breakpoint.
+
+## Đã thực hiện
+
+### 1. Ba lỗi tràn ngang thật (quan trọng hơn phần breakpoint)
+
+- **`SideMenu.module.css` — `.menu` thiếu `min-width: 0`.** Nó là grid item của `.shell`, mà
+  grid item mặc định `min-width: auto` nên phình theo bề rộng 5 mục menu; `overflow-x: auto`
+  đặt trên `.list` vì thế vô hiệu. Đo được `documentElement.scrollWidth` 783 trên viewport 485.
+- **`ImageCell.module.css` — `.fileInput` là `position: absolute` mà `.cell` không positioned.**
+  Containing block rơi về initial containing block nên input ẩn thoát khỏi vùng cắt của
+  `.scroller` (EditableTable) và kéo giãn cả trang: `scrollWidth` 644 / viewport 485, cuộn ngang
+  được 159px trong khi `body.scrollWidth` vẫn báo 485. Sửa bằng `position: relative` trên `.cell`.
+  Bài học đo đạc: `overflow: hidden` đặt thử lên `.scroller` KHÔNG chặn được — đó là dấu hiệu
+  nhận ra thủ phạm là phần tử absolute thoát containing block, không phải nội dung tràn thường.
+- **`EditableTable.tsx` — `min-width: 46rem` cố định không đủ cho bảng Chi (8 cột).** Cột cố
+  định (7 + 9.5 + 9.5 + 9 + 5.5rem) + gap + padding đúng bằng 736px = 46rem, nên 3 cột
+  `minmax(0, Nfr)` bị chia 0 và header co còn 2–3px. Thay bằng sàn tính từ chính các cột của
+  bảng: `FLEX_COLUMN_MIN_REM = 7`, cộng gap và padding. Sàn giờ đặt inline trên `.table`, đã
+  bỏ `min-width` khỏi `EditableTable.module.css`.
+
+### 2. Vì sao `FLEX_COLUMN_MIN_REM = 7` chứ không phải 9
+
+Đã đo cả hai. 9rem cho bảng Chi sàn 1168px → màn 1366 (vùng nội dung 1086px) phát sinh cuộn
+ngang mới ở desktop, tức hồi quy. 7rem ra sàn 1072px, vừa lọt 1366. Đã verify bằng iframe:
+1440 và 1366 bảng chiếm đủ khung không cuộn; 1009 và 753 thì cuộn trong `.scroller`, trang
+không tràn.
+
+### 3. Breakpoint đã thêm
+
+- 760px cho toàn bộ 5 page: giảm padding/font, nút hành động chính full-width, thanh menu và
+  hàng tab của Sổ công ty cuộn ngang thay vì xuống dòng, toolbar xếp dọc.
+- 480px: bảng thông số in xếp dọc nhãn/giá trị, ô API key ở Phân tích ảnh xuống dòng, logo 40px.
+- Mọi `repeat(auto-fit, minmax(Npx, 1fr))` đổi thành `minmax(min(Npx, 100%), 1fr)` — dạng cũ
+  tràn khi container hẹp hơn chính giá trị min.
+- `index.css`: dưới 760px bỏ `background-attachment: fixed` (giật khi cuộn trên điện thoại).
+- `SlicerConvertPage.tsx`: bọc 2 `<table>` trong `.tableScroller`, bỏ hack `display: block`
+  đặt thẳng lên `<table>`.
+
+## Trạng thái hiện tại
+
+- `npx tsc --noEmit` → No errors · `npx eslint .` → No issues · `prettier --check` → sạch
+- `npm test` → **308 passed / 0 failed** (19 file) · `npm run build` → OK (chỉ còn cảnh báo
+  chunk > 500 kB vốn có từ trước)
+- Recheck bằng Chrome: cả 5 page ở viewport 360px có `scrollWidth === clientWidth`, 0 phần tử
+  bị cắt chữ ngoài các vùng cuộn có chủ đích
+- Thay đổi còn ở working tree, **chưa commit** (branch `main` — cần tạo branch trước)
+
+## Việc tiếp theo (responsive)
+
+1. Chưa xem bằng mắt ở 360px — cửa sổ Chrome trên máy này không thu nhỏ dưới ~300px CSS nên
+   screenshot bị cắt; toàn bộ kết luận đến từ đo DOM trong iframe 375px. Nếu muốn chắc về
+   thẩm mỹ (khoảng cách, tràn dòng) thì mở DevTools device toolbar xem tay.
+2. Chưa kiểm tra ở chiều ngang điện thoại (landscape, ~640–760px) và tablet 768–860px — hai
+   mốc này rơi đúng ranh giới giữa các breakpoint, đáng soi lại.
+3. `EditableTable` hiện luôn cuộn ngang trên điện thoại. Nếu thấy khó dùng thì hướng khác là
+   chuyển mỗi dòng thành thẻ (card) dưới 480px — thay đổi lớn hơn, chưa làm.
+
+## Session trước — 2026-09-17 (upload ảnh Backblaze B2)
+
+- Ngày: 2026-09-17
 - Tóm tắt: Thêm chức năng **tải ảnh lên Backblaze B2** cho cột "Hình ảnh" ở tab Tổng chi của
   Sổ công ty. Trước đó cột này chỉ là ô text dán link, không upload được.
 

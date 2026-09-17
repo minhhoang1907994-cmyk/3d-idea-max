@@ -103,77 +103,151 @@
   background: var(--accent-text);
 }
 
+/* ---- Dạng điện thoại: menu thu vào ngăn kéo, mở bằng nút ba gạch ---- */
+
+/* Thanh trên và lớp phủ chỉ tồn tại ở khổ hẹp; khổ rộng thì menu vốn đã luôn hiện */
+.topbar,
+.overlay {
+  display: none;
+}
+
 @media (max-width: 760px) {
-  .menu {
-    flex-direction: row;
+  .topbar {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    display: flex;
     align-items: center;
-    gap: 0.75rem;
-    padding: 0.7rem 0.8rem;
-    border-right: none;
+    gap: 0.6rem;
+    padding: 0.5rem 0.7rem;
+    background: rgba(255, 255, 255, 0.96);
     border-bottom: 1px solid var(--border);
-    /* Là grid item của .shell nên mặc định min-width: auto — không có dòng này thì
-       thanh menu phình theo bề rộng 5 mục và overflow-x của .list vô hiệu */
-    min-width: 0;
+    backdrop-filter: blur(6px);
   }
 
-  .brand {
+  .toggle {
+    position: relative;
     flex: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.4rem;
+    height: 2.4rem;
     padding: 0;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 9px;
+    cursor: pointer;
+  }
+
+  .toggle:hover {
+    border-color: var(--border-strong);
+  }
+
+  .toggleBars {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    width: 1.15rem;
+  }
+
+  .bar {
+    height: 2px;
+    background: var(--text);
+    border-radius: 2px;
+  }
+
+  /* Menu đóng thì chấm "chưa lưu" của từng mục bị giấu theo — dồn về nút ba gạch, nếu
+     không người dùng đóng tab mà không biết còn thay đổi chưa đẩy lên Neon */
+  .toggleDot {
+    position: absolute;
+    top: -4px;
+    right: -4px;
+    width: 10px;
+    height: 10px;
+    background: var(--warning);
+    border: 2px solid var(--surface);
+    border-radius: 50%;
+  }
+
+  .topbarLogo {
+    flex: none;
+    width: 34px;
+    height: auto;
+    border-radius: 8px;
+  }
+
+  /* Menu ẩn nên đây là chỗ duy nhất còn nói được đang xem trang nào */
+  .currentPage {
+    min-width: 0;
+    font-size: 0.92rem;
+    font-weight: 700;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .overlay {
+    display: block;
+    position: fixed;
+    inset: 0;
+    z-index: 20;
+    padding: 0;
+    background: rgba(22, 39, 60, 0.45);
+    border: none;
+    cursor: pointer;
+  }
+
+  /* Đóng bằng visibility chứ không chỉ transform: trượt ra ngoài màn hình thôi thì Tab
+     vẫn lọt vào được các mục đang khuất */
+  .menu {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 30;
+    width: min(17rem, 80vw);
+    gap: 1rem;
+    padding: 1.1rem 0.85rem;
+    overflow-y: auto;
+    background: var(--surface);
+    border-right: 1px solid var(--border);
+    box-shadow: 0 12px 36px rgba(22, 39, 60, 0.28);
+    visibility: hidden;
+    transform: translateX(-100%);
+    transition:
+      transform 0.22s ease,
+      visibility 0s linear 0.22s;
+  }
+
+  .menuOpen {
+    visibility: visible;
+    transform: none;
+    transition:
+      transform 0.22s ease,
+      visibility 0s;
   }
 
   .brandLogo {
-    width: 54px;
-    border-radius: 10px;
-  }
-
-  /* Năm mục không bao giờ đủ chỗ trên một hàng điện thoại. Cho trượt ngang thay vì
-     ép co lại — nhãn bị cắt chữ thì không còn phân biệt được mục nào với mục nào. */
-  .list {
-    flex-direction: row;
-    flex: 1;
-    min-width: 0;
-    gap: 0.35rem;
-    overflow-x: auto;
-    scrollbar-width: thin;
-    -webkit-overflow-scrolling: touch;
-  }
-
-  .list > li {
-    flex: none;
-  }
-
-  .item {
-    align-items: center;
-    padding: 0.5rem 0.7rem;
-    white-space: nowrap;
-  }
-
-  .itemDescription {
-    display: none;
+    width: 104px;
+    border-radius: 12px;
   }
 }
 
 @media (max-width: 480px) {
-  .menu {
+  .topbar {
     gap: 0.5rem;
-    padding: 0.55rem 0.6rem;
-  }
-
-  .brandLogo {
-    width: 40px;
-    border-radius: 8px;
-  }
-
-  .item {
-    gap: 0.4rem;
     padding: 0.45rem 0.6rem;
   }
 
-  .icon {
-    font-size: 0.95rem;
+  .brandLogo {
+    width: 88px;
   }
+}
 
-  .itemLabel {
-    font-size: 0.82rem;
+@media (prefers-reduced-motion: reduce) {
+  .menu,
+  .menuOpen {
+    transition: none;
   }
 }
