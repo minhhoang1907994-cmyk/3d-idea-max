@@ -1,11 +1,13 @@
 import { useState, type ReactNode } from 'react';
 import { formatAmountForEdit, formatVnd, isHttpLink, parseAmountInput } from '../lib/companyLedger';
+import { ImageCell } from './ImageCell';
 import styles from './EditableTable.module.css';
 
 /**
  * Kiểu dữ liệu của một cột — quyết định cách hiển thị và cách đọc giá trị người dùng gõ.
  *
- * `amount` là số tiền (number | null), các kiểu còn lại đều là chuỗi.
+ * `amount` là số tiền (number | null), các kiểu còn lại đều là chuỗi. `image` không
+ * render <input> ở đây mà giao cho <ImageCell> — xem file đó.
  */
 export type ColumnKind = 'text' | 'amount' | 'date' | 'month' | 'link' | 'image';
 
@@ -124,6 +126,19 @@ export function EditableTable<T extends { id: string }>({
     }
 
     const value = (rawValue ?? '') as string;
+
+    // Ô ảnh tự lo phần tải file lên Backblaze nên không dùng chung <input> bên dưới
+    if (kind === 'image') {
+      return (
+        <ImageCell
+          value={value}
+          month={((row as { month?: string }).month ?? '').trim()}
+          label={column.label}
+          onChange={(next) => onChange(row.id, { [column.key]: next } as Partial<T>)}
+        />
+      );
+    }
+
     const listId = kind === 'text' && column.suggestions ? `${column.key}-suggestions` : undefined;
 
     return (
@@ -144,13 +159,10 @@ export function EditableTable<T extends { id: string }>({
             ))}
           </datalist>
         ) : null}
-        {(kind === 'link' || kind === 'image') && isHttpLink(value) ? (
+        {kind === 'link' && isHttpLink(value) ? (
           <a className={styles.openLink} href={value} target="_blank" rel="noreferrer noopener">
             Mở ↗
           </a>
-        ) : null}
-        {kind === 'image' && isHttpLink(value) ? (
-          <img className={styles.thumbnail} src={value} alt="" loading="lazy" />
         ) : null}
       </div>
     );

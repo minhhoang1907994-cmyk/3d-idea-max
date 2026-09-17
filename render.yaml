@@ -16,6 +16,18 @@ services:
       # Render không lấy từ file này. Xem docs/neon-setup.md.
       - key: VITE_NEON_DATABASE_URL
         sync: false
+      # Backblaze B2 — nơi lưu ảnh của Sổ công ty. Cũng đặt giá trị trong Dashboard.
+      # Bốn biến này nằm trong bundle nên key PHẢI giới hạn đúng bucket đang dùng;
+      # thiếu chúng thì ô "Hình ảnh" quay về dạng dán link. Xem docs/backblaze-setup.md.
+      # Nhớ thêm origin của site này vào CORS rule của bucket, nếu không upload sẽ hỏng.
+      - key: VITE_B2_KEY_ID
+        sync: false
+      - key: VITE_B2_APPLICATION_KEY
+        sync: false
+      - key: VITE_B2_BUCKET
+        sync: false
+      - key: VITE_B2_ENDPOINT
+        sync: false
     # Điều hướng giữa 2 trang làm bằng state, không đổi URL, nên không cần
     # rewrite rule cho SPA. Nếu sau này thêm react-router thì mở khối dưới ra:
     # routes:

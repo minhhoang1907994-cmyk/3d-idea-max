@@ -107,14 +107,6 @@
   color: var(--accent);
 }
 
-.thumbnail {
-  width: 100%;
-  max-width: 6rem;
-  height: auto;
-  border: 1px solid var(--border);
-  border-radius: 6px;
-}
-
 .empty {
   margin: 0;
   padding: 1.25rem 0.75rem;

@@ -3,6 +3,63 @@
 ## Session gần nhất
 
 - Ngày: 2026-09-17
+- Tóm tắt: Đổi nhận diện app sang **H2T Cobra** — thêm logo, đổi tên trang, làm lại bảng màu
+  giao diện theo màu logo (cam + xanh dương) trên nền sáng.
+
+## Đã thực hiện
+
+### 1. Logo
+
+- `public/` (thư mục mới): `logo.png` 432×483 (113 KB) và `favicon.png` 64×64.
+- Nguồn: `~/Downloads/Gemini_Generated_Image_wwau6mwwau6mwwau.png` — ảnh gốc 1408×768 là logo
+  đặt giữa phông bàn làm việc. Đã cắt vùng `(428, 58, 1004, 702)` để lấy riêng emblem, rồi
+  `quantize(200 màu)` giảm 356 KB → 113 KB.
+- **Không tách được nền của logo.** Đã thử flood-fill từ viền: nét viền xanh navy đậm của logo
+  (~~`rgb(22,27,31)`) gần trùng màu phông bê tông ở cạnh dưới (~~`rgb(23,26,31)`) → fill lọt vào
+  trong vòng tròn, ăn mất ruột logo. Kết luận: **giữ nguyên nền tối của logo**, trình bày bằng
+  `border-radius` + `box-shadow` như một tấm nhãn. Đừng thử tách nền lại bằng cách dựa vào màu.
+- `SideMenu.tsx`: bỏ khối chữ `3D` / `Idea Max`, thay bằng `<img src="/logo.png">` rộng 132px
+  (mobile 54px).
+
+### 2. Đổi tên trang
+
+- `index.html`: title → `H2T Cobra — 3D Printing Solutions`, thêm `<link rel="icon">`,
+  `theme-color`, meta description.
+- **Cố ý KHÔNG đổi**: `package.json` name, `render.yaml` service name (sẽ lệch tên service trên
+  Render), và `STORAGE_KEY_API` / `STORAGE_KEY_MODEL` trong `src/lib/geminiVision.ts` (đổi là
+  mất API key user đã lưu ở localStorage).
+
+### 3. Giao diện sáng theo màu logo
+
+Toàn app vốn đã dùng chung 12 biến CSS trong `src/index.css`, nên đổi token là lan hết —
+không component nào hard-code màu.
+
+- Bảng màu mới: `--accent: #c8540c` (cam đậm), `--accent-bright: #f4783b` (cam rực),
+  `--accent-blue: #1266b4`, `--accent-blue-bright: #3ea0ef`, nền `--surface-sunken: #eaf1fa`.
+- **Vì sao accent là cam đậm chứ không phải cam rực của logo**: `--accent` gánh chữ trắng trên
+  nút/badge. `#c8540c` cho tương phản 4.69:1 (đạt WCAG AA); cam rực `#f4783b` chỉ ~3:1 nên để
+  riêng cho gradient trang trí, không có chữ đè lên.
+- Nền trang: 2 vầng sáng cam/xanh + lưới 26px mô phỏng mặt bàn in (build plate).
+- Token mới `--shadow-card`, áp tự động cho 14 khối thẻ nền trắng ở 5 trang + 5 component
+  (script tìm block có cả `background: var(--surface)` và `border-radius: 10/12px`).
+- Nút Mix: gradient cam + shadow. Tiêu đề mỗi trang có gạch chân chuyển sắc cam→xanh.
+  Mục menu đang mở: pill gradient cam.
+- **Đã bỏ hẳn `@media (prefers-color-scheme: dark)`** trong `src/index.css` — yêu cầu là giao
+  diện tươi sáng, giữ block đó thì máy để dark mode vẫn ra nền tối. Muốn lấy lại thì khôi phục
+  block đó từ lịch sử git.
+
+## Trạng thái hiện tại
+
+- `npx tsc --noEmit` → No errors · `npm run lint` → No issues · `prettier --check` → sạch
+- `npm test` → **287 passed / 0 failed** (17 file) · `npm run build` → OK
+- **CHƯA recheck UI bằng browser** — user chọn tự kiểm tra thủ công. Cần xem: sidebar/logo trên
+  desktop và mobile (<760px), độ đọc chữ trắng trên nền gradient cam.
+- Thay đổi còn ở working tree, **chưa commit** (branch `main` — cần tạo branch trước).
+  `public/` là thư mục mới, chưa được `git add`.
+
+## Session trước — 2026-09-17 (Neon Postgres)
+
+- Ngày: 2026-09-17
 - Tóm tắt: Chuyển dữ liệu ý tưởng từ file JSON trong repo sang lưu online trên Neon Postgres.
   Kế hoạch ban đầu dùng Neon Data API (REST) **thất bại**, phải đổi sang kết nối SQL qua HTTP
   bằng một role Postgres hạn chế quyền.

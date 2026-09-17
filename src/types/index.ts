@@ -557,7 +557,10 @@ export type ExpenseEntry = {
   amount: number | null;
   /** 'YYYY-MM-DD' hoặc rỗng khi chưa rõ ngày */
   date: string;
-  /** URL ảnh minh hoạ — rỗng khi không có */
+  /**
+   * Ảnh minh hoạ: object key trên Backblaze B2 (xem src/lib/b2Storage.ts), rỗng khi
+   * không có. Dòng cũ có thể đang giữ URL http dán tay — vẫn hiển thị được.
+   */
   imageUrl: string;
 };
 

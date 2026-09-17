@@ -1,0 +1,87 @@
+.cell {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  min-width: 0;
+}
+
+.input {
+  width: 100%;
+  padding: 0.4rem 0.5rem;
+  font: inherit;
+  font-size: 0.84rem;
+  color: var(--text);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+}
+
+.input:focus {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+
+.preview {
+  align-self: flex-start;
+  line-height: 0;
+}
+
+.thumbnail {
+  width: 100%;
+  max-width: 6rem;
+  height: auto;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+  align-items: center;
+}
+
+.uploadButton,
+.clearButton {
+  padding: 0.3rem 0.55rem;
+  font: inherit;
+  font-size: 0.74rem;
+  color: var(--text);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.uploadButton:hover,
+.clearButton:hover {
+  border-color: var(--accent);
+}
+
+/* Input file thật bị ẩn nhưng vẫn nhận focus bàn phím — <label> ở trên là nút nhìn thấy */
+.fileInput {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.fileInput:focus-visible + .uploadButton {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+
+.hint {
+  font-size: 0.7rem;
+  color: var(--text-faint);
+}
+
+.error {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--warning);
+}
