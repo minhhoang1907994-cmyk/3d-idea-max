@@ -2,6 +2,87 @@
 
 ## Session gần nhất
 
+- Ngày: 2026-09-17
+- Tóm tắt: Chuyển dữ liệu ý tưởng từ file JSON trong repo sang lưu online trên Neon Postgres.
+  Kế hoạch ban đầu dùng Neon Data API (REST) **thất bại**, phải đổi sang kết nối SQL qua HTTP
+  bằng một role Postgres hạn chế quyền.
+
+## Đã thực hiện
+
+### 1. Lớp lưu trữ trên Neon
+
+- `db/migrations/001_idea_documents.sql`: bảng `idea_documents` (7 dòng jsonb, mỗi dòng là một
+  file trong `src/data/json/`), bảng `idea_document_history` giữ 20 bản ghi đè gần nhất, trigger
+  `SECURITY DEFINER` tăng `version` + ghi lịch sử ở phía server.
+- `db/migrations/002_app_editor_role.sql`: role `app_editor` + RLS policy. Chỉ
+  `select/insert/update` trên `idea_documents`, KHÔNG có delete, không đụng bảng khác.
+- `src/lib/neonStore.ts` (+ test): chạy SQL qua HTTP bằng `@neondatabase/serverless` 1.1.0
+  (**dependency mới**, đã hỏi user trước). Khoá lạc quan: `update ... where name = $2 and
+version = $3`, không khớp thì ném `NeonConflictError`.
+- `src/lib/ideaDocuments.ts` (+ test): ghép document từ Neon lên bundle, tách ngược để đẩy lên.
+- `src/hooks/useIdeaData.ts`: Neon là nguồn chính, JSON bundle là fallback khi không gọi được.
+  Thêm `saveToNeon` / `reload`; đường ghi file qua File System Access API vẫn giữ làm sao lưu.
+- `scripts/neonSync.mjs`: `npm run neon:seed` (đẩy JSON lên) / `npm run neon:pull` (kéo về repo).
+- `src/pages/DataManagerPage.tsx`: nút "Lưu lên Neon", "Tải lại từ Neon", badge nguồn dữ liệu,
+  banner cảnh báo ai cũng sửa được.
+
+### 2. Vì sao KHÔNG dùng Neon Data API — đừng thử lại mà không đọc phần này
+
+Data API trả `HTTP 400 "missing authentication credentials: required authorization bearer token
+in JWT format"` cho **mọi** request không kèm JWT, kể cả với bảng không tồn tại (tức bị chặn ở
+proxy, trước khi chạm database). Đã thử và đều KHÔNG ăn:
+
+- Đặt `db_anon_role = anonymous` qua Console (toast báo thành công) và qua `PATCH
+/api/v2/projects/{id}/branches/{branch}/data-api/neondb` (HTTP 201) — GET xác nhận giá trị đã lưu
+- Refresh schema cache
+- Tìm JWKS provider để gỡ: `GET /api/v2/projects/{id}/jwks` trả `{"jwks":[]}` — không có gì để gỡ
+- Disable rồi Enable lại Data API (URL endpoint giữ nguyên)
+
+Bằng chứng then chốt: gửi JWT **đúng cú pháp nhưng không ký** thì lỗi đổi thành `"missing key
+id"` → proxy vẫn validate token theo một JWKS ngầm dù không provider nào đăng ký, và không dùng
+tới `db_anon_role`. Kết luận: hành vi phía Neon, không phải cấu hình sai. Toàn bộ bảng kiểm
+chứng nằm ở `docs/neon-setup.md`.
+
+Hai cái bẫy UI gặp trong lúc dò:
+
+- Trường **Anonymous role** nằm ở Settings → Postgres → nút "Configure Data API" → toggle
+  **"Show advanced"**, KHÔNG phải mục Settings ở sidebar như tài liệu Neon mô tả
+- Console **không hiển thị lại** giá trị Anonymous role đã lưu (ô trông như trống dù API báo có)
+
+### 3. Mô hình quyền — quyết định của chủ project
+
+User chọn **"ai mở được web cũng sửa được"**, không đăng nhập. Connection string nằm trong bundle
+công khai, nên rủi ro được chặn bằng phạm vi quyền của role chứ không bằng việc giấu credential:
+
+- `app_editor` không xoá được dòng, không đọc được `idea_document_history`, không chạm được
+  schema `auth`/`neon_auth`, không tạo được bảng
+- RLS khoá `name` trong đúng 7 giá trị hợp lệ
+- Bản JSON trong repo là bản gốc cuối cùng; `npm run neon:seed` là nút reset
+
+**Role PHẢI tạo bằng SQL.** Role tạo qua Neon Console/CLI/API được cấp luôn `neon_superuser`
+(<https://neon.com/docs/manage/roles>) — mất sạch ý nghĩa của việc hạn chế quyền.
+
+Neon còn từ chối mật khẩu yếu ở tầng control plane (`insecure password...`), và mật khẩu nên
+tránh `@ : / ? # & %` vì phải URL-encode trong connection string.
+
+## Trạng thái hiện tại
+
+- `npx tsc --noEmit` → No errors found · `npx eslint .` → exit 0 · `prettier --check` → sạch
+- `npm test` → **254 passed / 0 failed** · `npm run build` → OK
+  (bundle 348 kB → **492 kB**, gzip 111 → 158 kB, do driver Neon)
+- **Đã verify trên database thật** (8/8 pass): đọc 7 document; ghi với version đúng thì version
+  tăng; ghi với version cũ bị từ chối; không xoá được; không đọc được bảng lịch sử; RLS chặn
+  `name` lạ; không đọc được `neon_auth`
+- **Đã recheck UI bằng Chrome**: badge hiện "Nguồn: Neon (online)"; thêm một mục test → Lưu lên
+  Neon → **tải lại trang vẫn còn** (đúng là đọc từ Neon); xoá mục test + lưu lại; xác nhận bằng
+  SQL là đã sạch, `toys-and-figures` về đúng 30 sản phẩm
+- Dữ liệu trên Neon đã seed đủ 7 document
+- Thay đổi còn ở working tree, **chưa commit** (branch `main` — cần tạo branch trước)
+- **Chưa cập nhật biến môi trường trên Render**: phải đổi `VITE_NEON_DATA_API_URL` (cũ) thành
+  `VITE_NEON_DATABASE_URL` rồi deploy lại
+
+## Session trước — 2026-09-15 (Anycubic Kobra X + tab slicer)
+
 - Ngày: 2026-09-15
 - Tóm tắt: Thêm máy Anycubic Kobra X và tách bảng thông số in theo từng phần mềm cắt lớp
   (Bambu Studio / Anycubic Slicer Next).
@@ -119,23 +200,31 @@
 
 ## Việc tiếp theo
 
-0. **Recheck UI hàng tab slicer** (user tự làm): `npm run dev` → chọn máy "Anycubic Kobra X",
+0. **Neon — việc còn dang dở**:
+   - Cập nhật biến môi trường trên Render (`VITE_NEON_DATABASE_URL`) rồi deploy lại
+   - Cân nhắc đổi mật khẩu `app_editor` bằng `alter role app_editor password '...'` nếu nó từng
+     bị dán ra ngoài `.env` (chuỗi này vốn public trong bundle nên không khẩn cấp)
+   - Nếu muốn theo tới cùng: gửi Neon support bảng kiểm chứng trong `docs/neon-setup.md` để hỏi
+     vì sao `db_anon_role` không có tác dụng. Nếu họ sửa được thì quay về Data API khá gọn —
+     chỉ cần viết lại `src/lib/neonStore.ts` theo PostgREST, phần còn lại của app không đổi
+   - Muốn siết chặt hơn (giấu hẳn credential, lọc được CORS): dựng backend proxy trên Render
+1. **Recheck UI hàng tab slicer** (user tự làm): `npm run dev` → chọn máy "Anycubic Kobra X",
    bấm qua lại 2 tab Bambu Studio / Anycubic Slicer Next, xác nhận tiêu đề + dòng preset đổi đúng.
-1. **Test prompt thực tế** — chưa verify được trong session này:
+2. **Test prompt thực tế** — chưa verify được trong session này:
    - Prompt ảnh trên Gemini (key do user nhập trong UI, lưu localStorage)
    - Prompt ảnh nhiều góc trên flow.google (cần tài khoản Flow)
    - So sánh 2 biến thể Flow (`text` vs `image`) rồi bỏ cái cho kết quả kém hơn
    - Kiểm xem Nano Banana Pro có thực sự giữ được 4 góc nhất quán trong 1 ảnh không — nếu
      không thì cân nhắc tách thành 2 ảnh 2 góc, hoặc quay lại dùng ảnh đơn
-2. **Cập nhật CLAUDE.md** — đang lệch với code:
+3. **Cập nhật CLAUDE.md** — đang lệch với code:
    - Quyết định #7 ghi "Tool tạo ảnh đích: Gemini" nhưng app đã xuất thêm prompt ảnh nhiều góc
      cho Flow (Nano Banana Pro)
    - Bảng "Quyết định đã chốt" chưa có dòng nào về núm `printability` và về 2 luồng Flow
    - Mục "Ghi chú — còn phải làm" vẫn ghi "Chốt tool tạo ảnh đích" (đã chốt rồi)
-3. **`mechanisms.json` dòng 18 và 24 dùng `without`** — vi phạm quy tắc "mô tả khẳng định",
+4. **`mechanisms.json` dòng 18 và 24 dùng `without`** — vi phạm quy tắc "mô tả khẳng định",
    áp dụng cho CẢ hai prompt vì đều là họ Nano Banana. Test cũ không bắt được vì fixture ở mức 1
    không có mechanism; test mới đã thu hẹp để chỉ kiểm phần khung do app sinh, thay vì tự sửa data.
-4. **Mục 3 của kế hoạch chống lỗi in — chưa làm**: thêm `printRisk` + `printableAlternative`
+5. **Mục 3 của kế hoạch chống lỗi in — chưa làm**: thêm `printRisk` + `printableAlternative`
    cho option trong `attributes.json`. Các option chống lại chính mục tiêu in:
    - Kết cấu vi mô dưới ngưỡng nozzle: `fur-like`, `woven`, `crackle`, `glitter-fleck`, `knurled`
    - Bề mặt bóng/trong (nghi làm tool image→3D đọc sai hình khối — CHƯA VERIFY, cần test thật):
@@ -143,12 +232,12 @@
    - Cấu trúc mảnh: style `wireframe`, `skeletal`, `crystalline`
      Hướng đã bàn: KHÔNG xóa option, mà thay bằng biến thể in được khi bật chế độ in được
      (`fur-like` → "fur suggested by deep carved grooves").
-5. Các việc tồn từ session trước: thêm danh mục "Nhân vật & figurine"; xóa 4 option màu trùng
+6. Các việc tồn từ session trước: thêm danh mục "Nhân vật & figurine"; xóa 4 option màu trùng
    chức năng (`two-tone`, `marbled-mix`, `gradient-sunset`, `gradient-ocean`); tỉ lệ axis
    `costume` (33 option mà chỉ 1 là "Không có" → Mix ra cosplay ~97%); cảnh báo AMS
    (CẦN verify số khay AMS từ tài liệu Bambu trước khi viết).
-6. Commit (đang ở branch `main` — tạo branch mới trước khi commit).
-7. **Verify nốt phần Anycubic còn thiếu** (xem `docs/research/anycubic-print-parameters.md` mục 7):
+7. Commit (đang ở branch `main` — tạo branch mới trước khi commit).
+8. **Verify nốt phần Anycubic còn thiếu** (xem `docs/research/anycubic-print-parameters.md` mục 7):
    - wiki Kobra X trả HTTP 403 khi fetch → nhiệt độ tối đa (300/100 °C) mới lấy từ trích dẫn
      kết quả tìm kiếm, CHƯA fetch trực tiếp; loại thép nozzle mặc định vẫn CHƯA VERIFY
    - quy ước đặt tên preset của Anycubic Slicer Next → hiện để `presetName: null`

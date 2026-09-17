@@ -2,8 +2,12 @@
  * Đồng bộ dữ liệu ý tưởng giữa `src/data/json/` và Neon.
  *
  * Chạy:
- *   node scripts/neonSync.mjs push   — đẩy 7 file JSON lên Neon (dùng lần đầu để tạo dữ liệu)
- *   node scripts/neonSync.mjs pull   — kéo dữ liệu trên Neon về file JSON (sao lưu / đưa vào repo)
+ *   node scripts/neonSync.mjs push            — đẩy MỌI file JSON lên Neon (lần đầu để tạo dữ liệu)
+ *   node scripts/neonSync.mjs push <tên...>   — chỉ đẩy đúng những document được nêu tên
+ *   node scripts/neonSync.mjs pull            — kéo dữ liệu trên Neon về file JSON (sao lưu / đưa vào repo)
+ *
+ * Nêu tên khi chỉ muốn đẩy một phần: `push` ghi đè bản trên Neon, nên đẩy cả 11 document
+ * chỉ để tạo mới 4 document của Sổ công ty là xoá mất phần người khác vừa sửa online.
  *
  * Chuỗi kết nối đọc từ biến môi trường VITE_NEON_DATABASE_URL, hoặc từ file .env ở
  * gốc repo. Script chạy bằng chính role `app_editor` như app, nên quyền của nó đúng
@@ -20,7 +24,11 @@ import { neon } from '@neondatabase/serverless';
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const JSON_DIR = path.join(ROOT, 'src', 'data', 'json');
 
-/** Tên document trên Neon → tên file JSON. Khớp DATA_FILES trong src/data/bundledData.ts */
+/**
+ * Tên document trên Neon → tên file JSON.
+ * Khớp DATA_FILES trong src/data/bundledData.ts và COMPANY_DATA_FILES trong
+ * src/data/companyData.ts.
+ */
 const DOCUMENTS = {
   categories: 'categories.json',
   attributes: 'attributes.json',
@@ -29,6 +37,10 @@ const DOCUMENTS = {
   characters: 'characters.json',
   personalizations: 'personalizations.json',
   fusionFormulas: 'fusionFormulas.json',
+  companyExpenses: 'companyExpenses.json',
+  companyIncomes: 'companyIncomes.json',
+  companyNotes: 'companyNotes.json',
+  companyProducts: 'companyProducts.json',
 };
 
 function readEnvFile() {
@@ -62,9 +74,18 @@ function resolveDatabaseUrl() {
   return fromEnv.trim();
 }
 
-async function push(sql) {
+async function push(sql, onlyNames) {
+  const entries = Object.entries(DOCUMENTS).filter(
+    ([name]) => onlyNames.length === 0 || onlyNames.includes(name),
+  );
+  if (entries.length === 0) {
+    throw new Error(
+      `Không có document nào khớp tên đã nêu. Tên hợp lệ: ${Object.keys(DOCUMENTS).join(', ')}`,
+    );
+  }
+
   let count = 0;
-  for (const [name, fileName] of Object.entries(DOCUMENTS)) {
+  for (const [name, fileName] of entries) {
     const filePath = path.join(JSON_DIR, fileName);
     if (!fs.existsSync(filePath)) {
       throw new Error(`Không tìm thấy ${filePath}`);
@@ -110,6 +131,7 @@ async function pull(sql) {
 }
 
 const command = process.argv[2];
+const onlyNames = process.argv.slice(3);
 if (command !== 'push' && command !== 'pull') {
   console.error('Dùng: node scripts/neonSync.mjs push|pull');
   process.exit(1);
@@ -118,7 +140,7 @@ if (command !== 'push' && command !== 'pull') {
 try {
   const sql = neon(resolveDatabaseUrl());
   if (command === 'push') {
-    await push(sql);
+    await push(sql, onlyNames);
   } else {
     await pull(sql);
   }

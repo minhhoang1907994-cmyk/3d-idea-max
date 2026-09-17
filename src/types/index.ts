@@ -533,3 +533,57 @@ export type ProjectInspection = {
   unmappedKeyCount: number;
   warnings: PrintWarning[];
 };
+
+// ---------------------------------------------------------------------------
+// Sổ công ty (trang Sổ công ty) — thu, chi, note tư liệu, sản phẩm đã in
+//
+// Bốn nhóm này tương ứng 4 sheet của file Excel mà nhóm đang dùng tay. Chúng KHÔNG
+// dính gì tới luồng Mix: không vào prompt, không ảnh hưởng thông số in, nên `label`
+// và nội dung để nguyên tiếng Việt như người nhập gõ — không có `promptText`.
+// ---------------------------------------------------------------------------
+
+/** Một khoản chi. `amount` là số tiền THỰC TRẢ của dòng đó, không phải đơn giá. */
+export type ExpenseEntry = {
+  /** BẤT BIẾN — sinh lúc thêm dòng, không đổi về sau */
+  id: string;
+  /** 'YYYY-MM' — dùng để lọc theo tháng; luôn có kể cả khi chưa biết ngày cụ thể */
+  month: string;
+  name: string;
+  /** Link nơi mua (cột "Mô tả" trong Excel) — rỗng khi không có */
+  link: string;
+  /** Giữ dạng chuỗi vì trong sổ có cả "6" lẫn "1 tháng" */
+  quantity: string;
+  /** null = chưa biết giá, hiển thị "chưa có" và KHÔNG cộng vào tổng */
+  amount: number | null;
+  /** 'YYYY-MM-DD' hoặc rỗng khi chưa rõ ngày */
+  date: string;
+  /** URL ảnh minh hoạ — rỗng khi không có */
+  imageUrl: string;
+};
+
+/** Một khoản thu (vốn góp, tiền bán hàng...). */
+export type IncomeEntry = {
+  id: string;
+  month: string;
+  source: string;
+  note: string;
+  amount: number | null;
+};
+
+/** Một link tư liệu: trick in, video mẫu, tool. */
+export type CompanyNote = {
+  id: string;
+  /** Tool / Mẫu / Trick — để trống được, gõ tự do */
+  type: string;
+  link: string;
+  description: string;
+};
+
+/** Một sản phẩm đã/đang in. */
+export type CompanyProduct = {
+  id: string;
+  name: string;
+  quantity: string;
+  /** Link file mẫu hoặc mô tả — hiển thị thành link khi bắt đầu bằng http */
+  description: string;
+};

@@ -17,7 +17,7 @@
 
 import { neon } from '@neondatabase/serverless';
 
-/** Tên 7 document trên Neon — khớp khoá của DATA_FILES trong data/bundledData.ts */
+/** Tên 7 document ý tưởng trên Neon — khớp khoá của DATA_FILES trong data/bundledData.ts */
 export const DOCUMENT_NAMES = [
   'categories',
   'attributes',
@@ -30,8 +30,29 @@ export const DOCUMENT_NAMES = [
 
 export type DocumentName = (typeof DOCUMENT_NAMES)[number];
 
+/**
+ * Tên 4 document của Sổ công ty — khớp khoá của COMPANY_DATA_FILES trong
+ * data/companyData.ts. Nằm chung bảng `idea_documents` vì cùng một mô hình lưu trữ
+ * (mỗi document là một file JSON) và cùng một cơ chế khoá lạc quan; tách bảng riêng
+ * sẽ phải nhân đôi trigger lịch sử và policy RLS mà không đổi được gì.
+ *
+ * ⚠️ Thêm tên mới ở đây PHẢI kèm migration nới danh sách `name` trong policy RLS,
+ * nếu không Neon từ chối ghi — xem db/migrations/003_company_documents.sql.
+ */
+export const COMPANY_DOCUMENT_NAMES = [
+  'companyExpenses',
+  'companyIncomes',
+  'companyNotes',
+  'companyProducts',
+] as const;
+
+export type CompanyDocumentName = (typeof COMPANY_DOCUMENT_NAMES)[number];
+
+/** Mọi tên document app đọc/ghi được. */
+export type AnyDocumentName = DocumentName | CompanyDocumentName;
+
 export type StoredDocument = {
-  name: DocumentName;
+  name: AnyDocumentName;
   content: unknown;
   /** Trigger phía server tăng mỗi lần ghi — dùng để phát hiện ghi đè lẫn nhau */
   version: number;
@@ -87,15 +108,25 @@ export function getQueryFunction(): QueryFunction | null {
 
 function toStoredDocument(row: Record<string, unknown>): StoredDocument {
   return {
-    name: row.name as DocumentName,
+    name: row.name as AnyDocumentName,
     content: row.content,
     version: Number(row.version),
   };
 }
 
-/** Tải cả 7 document trong một câu lệnh. */
-export async function fetchDocuments(query: QueryFunction): Promise<StoredDocument[]> {
-  const rows = await query('select name, content, version from idea_documents', []);
+/**
+ * Tải document trong một câu lệnh. Không truyền `names` thì lấy hết;
+ * truyền vào thì chỉ lấy đúng những document đó (trang nào tải phần của trang đó).
+ */
+export async function fetchDocuments(
+  query: QueryFunction,
+  names?: readonly AnyDocumentName[],
+): Promise<StoredDocument[]> {
+  const rows = names
+    ? await query('select name, content, version from idea_documents where name = any($1)', [
+        [...names],
+      ])
+    : await query('select name, content, version from idea_documents', []);
   if (!Array.isArray(rows)) {
     throw new Error('Neon trả về dữ liệu không đúng định dạng — mong đợi một mảng document.');
   }
@@ -111,7 +142,7 @@ export async function fetchDocuments(query: QueryFunction): Promise<StoredDocume
  */
 export async function saveDocument(
   query: QueryFunction,
-  name: DocumentName,
+  name: AnyDocumentName,
   content: unknown,
   expectedVersion: number,
 ): Promise<number> {

@@ -1,0 +1,23 @@
+[
+  {
+    "id": "inc-001",
+    "month": "2026-09",
+    "source": "Hoàng - vốn ban đầu",
+    "note": "",
+    "amount": 3000000
+  },
+  {
+    "id": "inc-002",
+    "month": "2026-09",
+    "source": "Thụy - vốn ban đầu",
+    "note": "",
+    "amount": 3000000
+  },
+  {
+    "id": "inc-003",
+    "month": "2026-09",
+    "source": "Thắng - vốn ban đầu",
+    "note": "Nợ 2tr hẹn 15/10/2026 trả",
+    "amount": 3000000
+  }
+]

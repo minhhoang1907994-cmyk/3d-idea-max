@@ -121,14 +121,28 @@ VITE_NEON_DATABASE_URL=postgresql://app_editor:<mật khẩu>@ep-xxxx-pooler.c-4
 Trên Render: Dashboard → service `3d-idea-max` → **Environment** → thêm biến cùng tên, rồi
 deploy lại. Biến `VITE_*` được nhúng lúc build, nên đổi giá trị phải build lại mới ăn.
 
+### 2b. Mở quyền cho Sổ công ty (bắt buộc nếu dùng trang Sổ công ty)
+
+Dán [`db/migrations/003_company_documents.sql`](../db/migrations/003_company_documents.sql)
+vào SQL Editor → Run. File này nới danh sách `name` trong policy RLS cho 4 document của
+trang Sổ công ty (`companyExpenses`, `companyIncomes`, `companyNotes`, `companyProducts`).
+
+Chưa chạy thì Neon từ chối ghi với lỗi
+`new row violates row-level security policy for table idea_documents`.
+
 ### 5. Đẩy dữ liệu gốc lên
 
 ```bash
-npm run neon:seed
+npm run neon:seed          # 7 document ý tưởng
+npm run neon:seed:company  # 4 document của Sổ công ty
 ```
 
-Đọc 7 file trong `src/data/json/` và upsert lên Neon. Chạy lại bất cứ lúc nào để **ghi đè**
+Đọc file trong `src/data/json/` và upsert lên Neon. Chạy lại bất cứ lúc nào để **ghi đè**
 bản trên Neon bằng bản trong repo — đây cũng là cách khôi phục khi có người phá dữ liệu.
+
+⚠️ `push` ghi đè, nên khi chỉ cần tạo mới một phần thì nêu tên document thay vì đẩy tất cả:
+`node scripts/neonSync.mjs push companyNotes`. Muốn giữ bản đang có trên Neon thì
+`npm run neon:pull` trước.
 
 ### 6. Kiểm tra
 
@@ -140,10 +154,11 @@ phải còn.
 
 | Việc                                | Cách làm                                                                    |
 | ----------------------------------- | --------------------------------------------------------------------------- |
-| Sửa dữ liệu                         | Trang Quản lý dữ liệu → **Lưu lên Neon**                                    |
+| Sửa dữ liệu ý tưởng                 | Trang Quản lý dữ liệu → **Lưu lên Neon**                                    |
+| Sửa thu / chi / note / sản phẩm     | Trang Sổ công ty → **Lưu lên Neon**                                         |
 | Lấy bản mới nhất người khác đã sửa  | **Tải lại từ Neon**                                                         |
 | Đưa dữ liệu trên Neon về repo       | `npm run neon:pull` → `git diff` → commit                                   |
-| Khôi phục sau khi ai đó phá dữ liệu | `npm run neon:seed` (về bản trong git)                                      |
+| Khôi phục sau khi ai đó phá dữ liệu | `npm run neon:seed` / `npm run neon:seed:company` (về bản trong git)        |
 | Xem bản bị ghi đè                   | SQL Editor: `select * from idea_document_history order by replaced_at desc` |
 
 Nên `npm run neon:pull` + commit định kỳ: repo là bản gốc cuối cùng, Neon chỉ giữ 20 bản gần nhất.
