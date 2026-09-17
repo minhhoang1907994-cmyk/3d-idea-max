@@ -33,6 +33,7 @@
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: 12px;
+  box-shadow: var(--shadow-card);
 }
 
 .cardTitle {
@@ -110,6 +111,7 @@
   border: 2px dashed var(--border-strong);
   border-radius: 12px;
   text-align: center;
+  box-shadow: var(--shadow-card);
 }
 
 .fileInput {
@@ -364,4 +366,15 @@
     display: block;
     overflow-x: auto;
   }
+}
+
+/* Gạch chân chuyển sắc cam → xanh, lấy từ hai màu chính của logo */
+.title::after {
+  content: '';
+  display: block;
+  width: 58px;
+  height: 4px;
+  margin-top: 0.5rem;
+  background: linear-gradient(90deg, var(--accent-bright), var(--accent-blue-bright));
+  border-radius: 999px;
 }

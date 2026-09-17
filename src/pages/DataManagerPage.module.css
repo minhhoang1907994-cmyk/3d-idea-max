@@ -127,6 +127,7 @@
   border-radius: 10px;
   max-height: calc(100vh - 3rem);
   overflow-y: auto;
+  box-shadow: var(--shadow-card);
 }
 
 .groupHeading {
@@ -196,6 +197,7 @@
   border: 1px solid var(--border);
   border-radius: 10px;
   min-width: 0;
+  box-shadow: var(--shadow-card);
 }
 
 @media (max-width: 860px) {
@@ -207,4 +209,15 @@
     position: static;
     max-height: 260px;
   }
+}
+
+/* Gạch chân chuyển sắc cam → xanh, lấy từ hai màu chính của logo */
+.title::after {
+  content: '';
+  display: block;
+  width: 58px;
+  height: 4px;
+  margin-top: 0.5rem;
+  background: linear-gradient(90deg, var(--accent-bright), var(--accent-blue-bright));
+  border-radius: 999px;
 }

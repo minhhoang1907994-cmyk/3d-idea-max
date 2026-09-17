@@ -36,8 +36,13 @@ export function SideMenu({ current, onNavigate, dirtyPages }: Props) {
   return (
     <nav className={styles.menu} aria-label="Điều hướng chính">
       <div className={styles.brand}>
-        <span className={styles.brandMark}>3D</span>
-        <span className={styles.brandName}>Idea Max</span>
+        <img
+          className={styles.brandLogo}
+          src="/logo.png"
+          alt="H2T Cobra — 3D Printing Solutions"
+          width={432}
+          height={483}
+        />
       </div>
 
       <ul className={styles.list}>

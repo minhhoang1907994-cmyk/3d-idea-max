@@ -1,35 +1,37 @@
+/*
+ * Bảng màu lấy từ logo H2T Cobra: cam (thân rắn / chữ COBRA) + xanh dương (vòng tròn,
+ * chữ H2T) trên nền sáng. Toàn bộ app dùng lại các biến này, nên đổi màu ở đây là đổi
+ * cả giao diện — không component nào tự hard-code màu.
+ *
+ * --accent là màu cam đậm chứ không phải cam rực của logo: nó gánh chữ trắng trên nút
+ * và badge, cần tỉ lệ tương phản >= 4.5:1. Cam rực để riêng ở --accent-bright, chỉ dùng
+ * cho gradient và chi tiết trang trí (không có chữ đè lên).
+ */
 :root {
   --surface: #ffffff;
-  --surface-sunken: #f4f5f7;
-  --border: #e2e5ea;
-  --border-strong: #c6cbd4;
-  --text: #1c1f24;
-  --text-muted: #5b6270;
-  --text-faint: #8b93a1;
-  --accent: #2f6df6;
+  --surface-sunken: #eaf1fa;
+  --border: #dbe4f0;
+  --border-strong: #b4c4d9;
+  --text: #16273c;
+  --text-muted: #566b85;
+  --text-faint: #8898ad;
+  --accent: #c8540c;
+  --accent-bright: #f4783b;
+  --accent-blue: #1266b4;
+  --accent-blue-bright: #3ea0ef;
   --accent-text: #ffffff;
   --warning: #b8730a;
-  --warning-bg: #fdf4e3;
+  --warning-bg: #fff5e2;
   --warning-text: #6b4405;
 
-  color-scheme: light dark;
-}
+  /* Bóng đổ dùng chung cho mọi khối thẻ nền trắng */
+  --shadow-card: 0 1px 2px rgba(22, 39, 60, 0.04), 0 10px 24px rgba(22, 39, 60, 0.07);
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --surface: #1b1e24;
-    --surface-sunken: #14171c;
-    --border: #2c313a;
-    --border-strong: #3d434e;
-    --text: #e8eaee;
-    --text-muted: #a2aab8;
-    --text-faint: #79818f;
-    --accent: #5b8cff;
-    --accent-text: #0d1017;
-    --warning: #e0a13c;
-    --warning-bg: #2c2417;
-    --warning-text: #f0d3a0;
-  }
+  /* Lưới nền mô phỏng mặt bàn in (build plate) */
+  --plate-line: rgba(22, 39, 60, 0.055);
+  --plate-step: 26px;
+
+  color-scheme: light;
 }
 
 * {
@@ -45,5 +47,27 @@ body {
     Roboto,
     sans-serif;
   color: var(--text);
-  background: var(--surface-sunken);
+  background-color: var(--surface-sunken);
+  background-image:
+    radial-gradient(1000px 560px at 8% -10%, rgba(244, 120, 59, 0.18), transparent 62%),
+    radial-gradient(900px 520px at 95% 0%, rgba(62, 160, 239, 0.2), transparent 64%),
+    linear-gradient(var(--plate-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--plate-line) 1px, transparent 1px);
+  background-size:
+    auto,
+    auto,
+    var(--plate-step) var(--plate-step),
+    var(--plate-step) var(--plate-step);
+  background-attachment: fixed;
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  color: var(--accent-text);
+  background: var(--accent-blue);
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent-blue);
+  outline-offset: 2px;
 }

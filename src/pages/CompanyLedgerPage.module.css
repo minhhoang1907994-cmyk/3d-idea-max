@@ -196,6 +196,7 @@
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: 10px;
+  box-shadow: var(--shadow-card);
 }
 
 .summaryLabel {
@@ -227,4 +228,15 @@
   .page {
     padding: 1.25rem 1rem 2.5rem;
   }
+}
+
+/* Gạch chân chuyển sắc cam → xanh, lấy từ hai màu chính của logo */
+.title::after {
+  content: '';
+  display: block;
+  width: 58px;
+  height: 4px;
+  margin-top: 0.5rem;
+  background: linear-gradient(90deg, var(--accent-bright), var(--accent-blue-bright));
+  border-radius: 999px;
 }
