@@ -8,8 +8,8 @@
 
 import type { IdeaData } from '../data/bundledData';
 import { cloneData } from '../data/bundledData';
-import type { DocumentName, StoredDocument } from './neonDataApi';
-import { DOCUMENT_NAMES } from './neonDataApi';
+import type { DocumentName, StoredDocument } from './neonStore';
+import { DOCUMENT_NAMES } from './neonStore';
 
 /** Trường trong IdeaData ứng với từng document. */
 const FIELD_BY_DOCUMENT: Record<DocumentName, keyof IdeaData> = {

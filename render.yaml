@@ -11,9 +11,10 @@ services:
     buildCommand: npm ci && npm run build
     staticPublishPath: ./dist
     envVars:
-      # Địa chỉ Neon Data API. Đặt giá trị trong Render Dashboard > Environment
-      # (sync: false = Render không lấy từ file này). Xem docs/neon-setup.md.
-      - key: VITE_NEON_DATA_API_URL
+      # Chuỗi kết nối Neon của role app_editor (KHÔNG dùng neondb_owner).
+      # Đặt giá trị trong Render Dashboard > Environment — sync: false nghĩa là
+      # Render không lấy từ file này. Xem docs/neon-setup.md.
+      - key: VITE_NEON_DATABASE_URL
         sync: false
     # Điều hướng giữa 2 trang làm bằng state, không đổi URL, nên không cần
     # rewrite rule cho SPA. Nếu sau này thêm react-router thì mở khối dưới ra:

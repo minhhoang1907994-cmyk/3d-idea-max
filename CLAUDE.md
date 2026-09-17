@@ -15,25 +15,25 @@ thông số ánh xạ sang slicer khác (xem `docs/research/slicer-interop.md`).
 
 - Language: TypeScript 5.x
 - Framework: React 18 + Vite 5
-- Database: Neon Postgres (Singapore) — dữ liệu ý tưởng lưu online, gọi qua Neon Data API;
-  bản JSON trong repo là fallback khi không gọi được. Xem `docs/neon-setup.md`
-- Backend: không có server riêng — app gọi thẳng Data API qua HTTPS, logic chạy client-side
+- Database: Neon Postgres (Singapore) — dữ liệu ý tưởng lưu online, chạy SQL qua HTTP bằng
+  `@neondatabase/serverless`; bản JSON trong repo là fallback. Xem `docs/neon-setup.md`
+- Backend: không có server riêng — app nối thẳng Neon qua HTTPS, logic chạy client-side
 - Styling: CSS Modules (built-in Vite, không thêm dependency)
 - Infrastructure: static hosting (build ra `dist/`)
 - Architecture: SPA client-side, component-based
 
 ## Quyết định đã chốt (không đổi nếu không có lý do rõ ràng)
 
-| #   | Quyết định                                                 | Ghi chú                                                                                                                                               |
-| --- | ---------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 1   | **Mix random TOÀN BỘ selectbox**, ghi đè lựa chọn hiện tại | Không có cơ chế lock/giữ field                                                                                                                        |
-| 2   | Danh mục → sản phẩm là **cascading**                       | Random danh mục trước, rồi random sản phẩm thuộc danh mục đó → luôn ra đúng 1 sản phẩm                                                                |
-| 3   | **Tách 2 selectbox vật liệu**                              | `filament` (in được, sinh thông số) và `surface` (thẩm mỹ, chỉ vào prompt ảnh)                                                                        |
-| 4   | Hỗ trợ 5 máy: **A1, A1 mini, P1S, X1C, Anycubic Kobra X**  | Thông số + giới hạn khổ in đổi theo máy                                                                                                               |
-| 5   | Thông số in lấy từ **tài liệu chính thức của hãng máy**    | Nguồn sự thật: `docs/research/bambu-print-parameters.md`, `docs/research/anycubic-print-parameters.md`                                                |
-| 6   | Quy mô dữ liệu: **15 danh mục × 30 sản phẩm**              | Dễ nâng lên sau, không phải sửa cấu trúc                                                                                                              |
-| 7   | Tool tạo ảnh đích: **Gemini**                              | Prompt dạng câu văn tự nhiên, không keyword list, không cú pháp tham số                                                                               |
-| 8   | Dữ liệu ý tưởng lưu trên **Neon**, ai cũng sửa được        | Không đăng nhập — request chạy dưới role `anonymous`. Bù lại: không cấp DELETE, có bảng lịch sử, JSON trong repo là bản gốc. Xem `docs/neon-setup.md` |
+| #   | Quyết định                                                 | Ghi chú                                                                                                                                                                                                                                                                             |
+| --- | ---------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1   | **Mix random TOÀN BỘ selectbox**, ghi đè lựa chọn hiện tại | Không có cơ chế lock/giữ field                                                                                                                                                                                                                                                      |
+| 2   | Danh mục → sản phẩm là **cascading**                       | Random danh mục trước, rồi random sản phẩm thuộc danh mục đó → luôn ra đúng 1 sản phẩm                                                                                                                                                                                              |
+| 3   | **Tách 2 selectbox vật liệu**                              | `filament` (in được, sinh thông số) và `surface` (thẩm mỹ, chỉ vào prompt ảnh)                                                                                                                                                                                                      |
+| 4   | Hỗ trợ 5 máy: **A1, A1 mini, P1S, X1C, Anycubic Kobra X**  | Thông số + giới hạn khổ in đổi theo máy                                                                                                                                                                                                                                             |
+| 5   | Thông số in lấy từ **tài liệu chính thức của hãng máy**    | Nguồn sự thật: `docs/research/bambu-print-parameters.md`, `docs/research/anycubic-print-parameters.md`                                                                                                                                                                              |
+| 6   | Quy mô dữ liệu: **15 danh mục × 30 sản phẩm**              | Dễ nâng lên sau, không phải sửa cấu trúc                                                                                                                                                                                                                                            |
+| 7   | Tool tạo ảnh đích: **Gemini**                              | Prompt dạng câu văn tự nhiên, không keyword list, không cú pháp tham số                                                                                                                                                                                                             |
+| 8   | Dữ liệu ý tưởng lưu trên **Neon**, ai cũng sửa được        | Không đăng nhập — app nối bằng role `app_editor` (chỉ select/insert/update trên `idea_documents`), chuỗi kết nối nằm trong bundle. Bù lại: không cấp DELETE, RLS khoá `name`, có bảng lịch sử, JSON trong repo là bản gốc. Neon Data API KHÔNG dùng được — xem `docs/neon-setup.md` |
 
 ## Project Conventions
 
@@ -309,7 +309,7 @@ npx tsc --noEmit     # type check
 - `docs/research/anycubic-print-parameters.md` — bảng thông số Anycubic + Anycubic Slicer Next
 - `docs/research/slicer-interop.md` — cấu trúc file 3mf, phả hệ slicer, bảng ánh xạ thông số
   Orca ↔ Cura (nguồn sự thật cho trang "Đổi slicer")
-- `docs/neon-setup.md` — cài đặt Neon Data API, mô hình quyền, cách sao lưu/khôi phục dữ liệu
+- `docs/neon-setup.md` — cài đặt Neon, mô hình quyền, cách sao lưu/khôi phục dữ liệu
 
 ## Ghi chú — còn phải làm
 

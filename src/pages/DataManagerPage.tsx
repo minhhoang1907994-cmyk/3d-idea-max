@@ -82,9 +82,9 @@ export function DataManagerPage({ dataStore }: Props) {
 
       {!status.online ? (
         <p className={styles.banner}>
-          Bản build này chưa có địa chỉ Neon Data API (<code>VITE_NEON_DATA_API_URL</code>), nên
-          đang chạy bằng dữ liệu đóng gói sẵn — <strong>sửa gì cũng mất khi tải lại trang</strong>.
-          Cách cấu hình xem <code>docs/neon-setup.md</code>.
+          Bản build này chưa có chuỗi kết nối Neon (<code>VITE_NEON_DATABASE_URL</code>), nên đang
+          chạy bằng dữ liệu đóng gói sẵn — <strong>sửa gì cũng mất khi tải lại trang</strong>. Cách
+          cấu hình xem <code>docs/neon-setup.md</code>.
         </p>
       ) : (
         <p className={styles.banner}>

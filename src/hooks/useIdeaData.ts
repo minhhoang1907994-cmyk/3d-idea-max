@@ -13,10 +13,11 @@ import {
   DOCUMENT_NAMES,
   NeonConflictError,
   fetchDocuments,
-  getDataApiBaseUrl,
+  getDatabaseUrl,
+  getQueryFunction,
   saveDocument,
   type DocumentName,
-} from '../lib/neonDataApi';
+} from '../lib/neonStore';
 import type { AttributeAxis, ProductCategory } from '../types';
 
 /** Dữ liệu đang hiển thị lấy từ đâu. */
@@ -26,7 +27,7 @@ export type DataStatus = {
   source: DataSource;
   /** Đang tải từ Neon */
   loading: boolean;
-  /** Bản build này có địa chỉ Neon Data API không */
+  /** Bản build này có chuỗi kết nối Neon không */
   online: boolean;
   saving: boolean;
   /** Đã kết nối thư mục data trên đĩa (đường ghi file phụ) */
@@ -45,7 +46,7 @@ function describeError(error: unknown, fallback: string): string {
 /**
  * Quản lý dữ liệu ý tưởng.
  *
- * Nguồn chính là Neon (xem lib/neonDataApi.ts): mở app thì tải về, bấm Lưu thì ghi lên.
+ * Nguồn chính là Neon (xem lib/neonStore.ts): mở app thì tải về, bấm Lưu thì ghi lên.
  * Neon chưa cấu hình, đang ngủ hay mất mạng thì rơi về bộ dữ liệu đóng gói sẵn trong
  * bundle — chỉ mất phần sửa mới nhất, không trắng màn hình.
  *
@@ -57,7 +58,7 @@ export function useIdeaData() {
   const [versions, setVersions] = useState<DocumentVersions>({});
   const [dirtyDocuments, setDirtyDocuments] = useState<DocumentName[]>([]);
   const [status, setStatus] = useState<DataStatus>(() => {
-    const online = getDataApiBaseUrl() !== null;
+    const online = getDatabaseUrl() !== null;
     return {
       source: 'bundle',
       loading: online,
@@ -77,12 +78,12 @@ export function useIdeaData() {
   }, []);
 
   const loadFromNeon = useCallback(async (options?: { silent?: boolean }) => {
-    const baseUrl = getDataApiBaseUrl();
-    if (!baseUrl) return;
+    const query = getQueryFunction();
+    if (!query) return;
 
     setStatus((current) => ({ ...current, loading: true, error: null }));
     try {
-      const documents = await fetchDocuments(baseUrl);
+      const documents = await fetchDocuments(query);
       const merged = mergeDocuments(documents, BUNDLED_DATA);
 
       setData(merged.data);
@@ -118,12 +119,12 @@ export function useIdeaData() {
 
   /** Ghi các phần đã sửa lên Neon. */
   const saveToNeon = useCallback(async () => {
-    const baseUrl = getDataApiBaseUrl();
-    if (!baseUrl) {
+    const query = getQueryFunction();
+    if (!query) {
       setStatus((current) => ({
         ...current,
         error:
-          'Bản build này chưa có địa chỉ Neon Data API (VITE_NEON_DATA_API_URL) — xem docs/neon-setup.md.',
+          'Bản build này chưa có chuỗi kết nối Neon (VITE_NEON_DATABASE_URL) — xem docs/neon-setup.md.',
       }));
       return;
     }
@@ -143,7 +144,7 @@ export function useIdeaData() {
             `Phần "${name}" chưa có trên Neon. Chạy "npm run neon:seed" một lần để đẩy dữ liệu gốc lên trước.`,
           );
         }
-        const nextVersion = await saveDocument(baseUrl, name, contents[name], expectedVersion);
+        const nextVersion = await saveDocument(query, name, contents[name], expectedVersion);
         setVersions((current) => ({ ...current, [name]: nextVersion }));
         savedNames.push(name);
       }

@@ -1,13 +1,13 @@
 /**
- * Đồng bộ dữ liệu ý tưởng giữa `src/data/json/` và Neon qua Data API.
+ * Đồng bộ dữ liệu ý tưởng giữa `src/data/json/` và Neon.
  *
  * Chạy:
  *   node scripts/neonSync.mjs push   — đẩy 7 file JSON lên Neon (dùng lần đầu để tạo dữ liệu)
  *   node scripts/neonSync.mjs pull   — kéo dữ liệu trên Neon về file JSON (sao lưu / đưa vào repo)
  *
- * Địa chỉ Data API đọc từ biến môi trường VITE_NEON_DATA_API_URL, hoặc từ file .env
- * ở gốc repo. Script KHÔNG cần connection string Postgres: nó đi cùng một đường
- * HTTP như app, dưới role `anonymous`, nên quyền của nó đúng bằng quyền app có.
+ * Chuỗi kết nối đọc từ biến môi trường VITE_NEON_DATABASE_URL, hoặc từ file .env ở
+ * gốc repo. Script chạy bằng chính role `app_editor` như app, nên quyền của nó đúng
+ * bằng quyền app có — không xoá được gì.
  *
  * `push` dùng upsert: document chưa có thì tạo mới, đã có thì GHI ĐÈ bản trên Neon.
  * Muốn giữ bản trên Neon thì `pull` trước.
@@ -15,6 +15,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { neon } from '@neondatabase/serverless';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const JSON_DIR = path.join(ROOT, 'src', 'data', 'json');
@@ -51,69 +52,42 @@ function readEnvFile() {
   return result;
 }
 
-function resolveBaseUrl() {
-  const fromEnv = process.env.VITE_NEON_DATA_API_URL ?? readEnvFile().VITE_NEON_DATA_API_URL;
+function resolveDatabaseUrl() {
+  const fromEnv = process.env.VITE_NEON_DATABASE_URL ?? readEnvFile().VITE_NEON_DATABASE_URL;
   if (!fromEnv || fromEnv.trim().length === 0) {
     throw new Error(
-      'Chưa có VITE_NEON_DATA_API_URL. Tạo file .env ở gốc repo theo mẫu .env.example — xem docs/neon-setup.md.',
+      'Chưa có VITE_NEON_DATABASE_URL. Tạo file .env ở gốc repo theo mẫu .env.example — xem docs/neon-setup.md.',
     );
   }
-  return fromEnv.trim().replace(/\/+$/, '');
+  return fromEnv.trim();
 }
 
-async function readError(response) {
-  try {
-    const body = await response.json();
-    if (body && typeof body.message === 'string') {
-      return body.hint ? `${body.message} (${body.hint})` : body.message;
-    }
-  } catch {
-    // Body không phải JSON
-  }
-  return `Neon trả về lỗi ${response.status}.`;
-}
-
-async function push(baseUrl) {
-  const rows = [];
+async function push(sql) {
+  let count = 0;
   for (const [name, fileName] of Object.entries(DOCUMENTS)) {
     const filePath = path.join(JSON_DIR, fileName);
     if (!fs.existsSync(filePath)) {
       throw new Error(`Không tìm thấy ${filePath}`);
     }
-    rows.push({ name, content: JSON.parse(fs.readFileSync(filePath, 'utf8')) });
-  }
+    const content = fs.readFileSync(filePath, 'utf8');
+    // Kiểm tra JSON hợp lệ trước khi gửi, để lỗi cú pháp báo tên file rõ ràng
+    JSON.parse(content);
 
-  const response = await fetch(`${baseUrl}/idea_documents`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Accept: 'application/json',
-      // merge-duplicates = upsert theo khoá chính (name)
-      Prefer: 'resolution=merge-duplicates,return=representation',
-    },
-    body: JSON.stringify(rows),
-  });
-
-  if (!response.ok) {
-    throw new Error(await readError(response));
+    const rows = await sql.query(
+      `insert into idea_documents (name, content) values ($1, $2::jsonb)
+       on conflict (name) do update set content = excluded.content
+       returning name, version`,
+      [name, content],
+    );
+    const row = rows[0];
+    console.log(`  ${name.padEnd(18)} version ${row.version}`);
+    count += 1;
   }
-
-  const saved = await response.json();
-  for (const row of saved) {
-    console.log(`  ${row.name.padEnd(18)} version ${row.version}`);
-  }
-  console.log(`Đã đẩy ${saved.length} document lên Neon.`);
+  console.log(`Đã đẩy ${count} document lên Neon.`);
 }
 
-async function pull(baseUrl) {
-  const response = await fetch(`${baseUrl}/idea_documents?select=name,content,version`, {
-    headers: { Accept: 'application/json' },
-  });
-  if (!response.ok) {
-    throw new Error(await readError(response));
-  }
-
-  const rows = await response.json();
+async function pull(sql) {
+  const rows = await sql.query('select name, content, version from idea_documents', []);
   if (rows.length === 0) {
     throw new Error('Trên Neon chưa có document nào — chạy "npm run neon:seed" trước.');
   }
@@ -142,11 +116,11 @@ if (command !== 'push' && command !== 'pull') {
 }
 
 try {
-  const baseUrl = resolveBaseUrl();
+  const sql = neon(resolveDatabaseUrl());
   if (command === 'push') {
-    await push(baseUrl);
+    await push(sql);
   } else {
-    await pull(baseUrl);
+    await pull(sql);
   }
 } catch (error) {
   console.error(`Lỗi: ${error.message}`);

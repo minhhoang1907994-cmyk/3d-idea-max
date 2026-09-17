@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { BUNDLED_DATA } from '../data/bundledData';
 import { mergeDocuments, splitDocuments } from './ideaDocuments';
-import { DOCUMENT_NAMES, type StoredDocument } from './neonDataApi';
+import { DOCUMENT_NAMES, type StoredDocument } from './neonStore';
 
 describe('mergeDocuments', () => {
   it('thay dữ liệu đóng gói bằng nội dung tải từ Neon', () => {
