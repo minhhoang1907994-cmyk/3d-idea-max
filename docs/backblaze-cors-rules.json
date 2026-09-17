@@ -1,0 +1,9 @@
+[
+  {
+    "corsRuleName": "web-upload",
+    "allowedOrigins": ["https://threed-idea-max.onrender.com", "http://localhost:5173"],
+    "allowedOperations": ["s3_put", "s3_get", "s3_head"],
+    "allowedHeaders": ["*"],
+    "maxAgeSeconds": 3600
+  }
+]

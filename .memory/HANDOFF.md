@@ -3,6 +3,101 @@
 ## Session gần nhất
 
 - Ngày: 2026-09-17
+- Tóm tắt: Thêm chức năng **tải ảnh lên Backblaze B2** cho cột "Hình ảnh" ở tab Tổng chi của
+  Sổ công ty. Trước đó cột này chỉ là ô text dán link, không upload được.
+
+## Đã thực hiện
+
+### 1. Quyết định kiến trúc (user chốt)
+
+- **Bucket `h2t-cobra` giữ Private.** Ban đầu định chuyển Public cho URL cố định, nhưng
+  Backblaze bắt phải có payment method on file mới tạo được public bucket. Giá thì KHÔNG khác
+  nhau: B2 tính theo dung lượng (10 GB đầu free) + egress (free tới 3× dung lượng lưu/tháng),
+  không phân biệt public/private.
+- **Sổ lưu object key, KHÔNG lưu URL.** Bucket private nên URL xem ảnh phải ký và có hạn; lưu
+  URL đã ký vào Neon thì hôm sau mở ra là ảnh hỏng. URL được ký lại ngay lúc render.
+- **Key nằm trong bundle** (`VITE_B2_*`), cùng mô hình với connection string Neon — rủi ro chặn
+  bằng phạm vi quyền của key chứ không bằng việc giấu. Khác Gemini key (user tự nhập,
+  localStorage) vì cả nhóm dùng chung một kho ảnh.
+- **Đi đường S3-Compatible API, KHÔNG dùng B2 native API**: Backblaze ghi rõ CORS không áp dụng
+  cho phần lớn native API, trong đó có `b2_authorize_account`, và từ chối luôn preflight dùng
+  token của hàm đó.
+- **Tự ký SigV4 bằng `crypto.subtle`**, không thêm `aws-sdk` (quy tắc project: không thêm
+  dependency).
+
+### 2. Code
+
+- `src/lib/b2Storage.ts` (mới) + test (18 test): `uriEncode` theo đúng luật AWS (KHÔNG dùng
+  `encodeURIComponent` — nó bỏ sót `!'()*` làm lệch chữ ký), `presignObjectUrl` (SigV4 query
+  string, path-style), `uploadImage`, `buildObjectKey`, `getImageUrl` có cache.
+- `src/components/ImageCell.tsx` + `.module.css` (mới): nút Tải ảnh lên / Đổi ảnh / Bỏ ảnh,
+  thumbnail, báo lỗi. Thiếu `VITE_B2_*` thì rơi về ô dán link như cũ.
+- `src/components/EditableTable.tsx`: `kind: 'image'` giao cho `ImageCell`; bỏ nhánh render
+  `<img>`/link cũ và style `.thumbnail` không còn dùng.
+- `src/types/index.ts`: sửa chú thích `ExpenseEntry.imageUrl` — giờ là object key.
+- `.env.example`, `render.yaml`: 4 biến `VITE_B2_*`.
+- `CLAUDE.md`: quyết định #10 + ghi chú "key Backblaze nằm trong bundle" (ngược với Gemini key).
+- `docs/backblaze-setup.md`, `docs/backblaze-cors-rules.json` (mới).
+
+### 3. Gỡ CORS — mất 4 vòng, ghi lại để khỏi lặp
+
+Lỗi "Failed to fetch" khi upload. Chẩn đoán bằng preflight curl (không cần credential):
+
+```bash
+curl -i -X OPTIONS "https://s3.us-east-005.backblazeb2.com/h2t-cobra/test.jpg"   -H "Origin: <origin>" -H "Access-Control-Request-Method: PUT"   -H "Access-Control-Request-Headers: content-type"
+```
+
+- **Preset trong Console KHÔNG dùng được.** Hộp thoại "CORS Rules" chỉ có lựa chọn kiểu "Share
+  everything in this bucket with this one origin". Đo được: preflight GET không header → 200,
+  nhưng PUT → 403 và GET + header `content-type` → 403. Preset chỉ mở cho ĐỌC. Nó cũng chỉ nhận
+  **một** origin nên không đủ cho cả production lẫn localhost.
+- **Tên thao tác là `s3_put` / `s3_get` / `s3_head`**, KHÔNG phải `s3_put_object`. Tài liệu
+  Backblaze chỉ nêu ví dụ với `b2_*`; tên `s3_*` xác nhận bằng chính API — sai tên thì trả
+  `unknown allowedOperation value: <tên> (bad_request)`.
+- **Windows PowerShell 5.1 nuốt dấu `"` khi truyền tham số cho chương trình ngoài** → JSON tới
+  B2 mất hết ngoặc kép, báo `is not a valid JSON value`. Phải escape sẵn `\"` trong chuỗi
+  single-quote, hoặc chạy bằng Git Bash.
+- `b2 bucket update` cần capability `writeBuckets` + `readBucketEncryption` — application key
+  giới hạn bucket của app không có, phải authorize bằng Master Application Key.
+
+Rule đã nạp (bucket revision 6), đã verify preflight `PUT` → **200** cho cả
+`https://threed-idea-max.onrender.com` và `http://localhost:5173`.
+
+## Trạng thái hiện tại
+
+- `npx tsc --noEmit` → No errors · `npx eslint .` → No issues · `prettier --check` → sạch
+- `npm test` → **305 passed / 0 failed** (18 file) · `npm run build` → OK
+- CORS trên bucket: **đã verify bằng preflight thật**, PUT + `content-type` qua được cả 2 origin
+- **CHƯA verify một lần upload thật** — đây là phần duy nhất còn lại. Chữ ký SigV4 mới chỉ được
+  test tính chất (encode, sắp xếp, deterministic), KHÔNG có test vector chính thức của AWS (tìm
+  không ra). Lần upload thật sẽ nói ngay: `SignatureDoesNotMatch` → lỗi code ký; `Access Denied`
+  → key thiếu quyền ghi.
+- Thay đổi còn ở working tree, **chưa commit** (branch `main` — cần tạo branch trước)
+
+## Việc tiếp theo (Backblaze)
+
+1. Thử upload thật trên https://threed-idea-max.onrender.com → báo kết quả
+2. Nếu `SignatureDoesNotMatch`: soát lại `presignObjectUrl` — nghi ngờ trước hết là chỗ ký
+   `content-type` (ký rồi thì lúc PUT phải gửi đúng header đó, xem `uploadImage`)
+3. Siết quyền key: giao diện Backblaze không tách riêng `deleteFiles` khỏi "Read and Write".
+   Muốn chặt hơn thì tạo key bằng CLI:
+   `b2 key create --bucket h2t-cobra <tên> listFiles,readFiles,writeFiles`
+4. `VITE_B2_APPLICATION_KEY` đã từng lọt vào một đoạn chat (user chọn dòng đó trong `.env`).
+   Key này vốn nằm trong bundle công khai nên mức rủi ro không đổi, nhưng muốn chắc thì tạo key
+   mới rồi cập nhật `.env` + biến môi trường trên Render.
+5. Đổi domain hosting → PHẢI sửa `allowedOrigins` trong `docs/backblaze-cors-rules.json` rồi
+   nạp lại rule, nếu không upload hỏng.
+
+## Giới hạn đã biết của chức năng ảnh
+
+- **"Bỏ ảnh" chỉ xoá tham chiếu trong sổ, file vẫn nằm trên B2** — cùng lý do với Neon: app
+  không được cấp quyền xoá. Dọn file thừa phải làm tay trên Backblaze Console.
+- Ảnh > 10 MB bị chặn ở client (`MAX_IMAGE_BYTES`); app **không** nén ảnh trước khi tải lên.
+- URL xem ảnh có hạn 1 giờ, ký lại mỗi lần tải trang — copy URL gửi người khác thì hết giờ là hỏng.
+
+## Session trước — 2026-09-17 (nhận diện H2T Cobra)
+
+- Ngày: 2026-09-17
 - Tóm tắt: Đổi nhận diện app sang **H2T Cobra** — thêm logo, đổi tên trang, làm lại bảng màu
   giao diện theo màu logo (cam + xanh dương) trên nền sáng.
 

@@ -120,7 +120,14 @@ export function CompanyLedgerPage({ ledger }: Props) {
 
   const noteColumns: EditableColumn<CompanyNote>[] = useMemo(
     () => [
-      { key: 'type', label: 'Loại', width: '9rem', placeholder: 'Trick', suggestions: noteTypes },
+      {
+        key: 'type',
+        label: 'Loại',
+        kind: 'tag',
+        width: '10rem',
+        placeholder: 'Trick',
+        suggestions: noteTypes,
+      },
       {
         key: 'link',
         label: 'Link',

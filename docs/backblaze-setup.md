@@ -38,20 +38,74 @@ hiện đúng một lần**, chép ngay.
 
 ### 2. Bật CORS cho bucket
 
-Không có bước này thì trình duyệt chặn, upload báo lỗi mạng.
+Không có bước này thì trình duyệt chặn, upload báo lỗi "Failed to fetch".
 
-Backblaze Console → bucket `h2t-cobra` → **CORS Rules** → chuyển sang chế độ nhập rule
-thủ công và thêm:
+**Preset trong Console KHÔNG dùng được.** Hộp thoại "CORS Rules" chỉ có các lựa chọn dạng
+"Share everything in this bucket with this one origin" — đã thử và đo bằng preflight:
 
-| Trường            | Giá trị                                                                                                                                                                                                                |
-| ----------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| corsRuleName      | `web-upload`                                                                                                                                                                                                           |
-| allowedOrigins    | domain thật của trang web (ví dụ `https://3d-idea-max.onrender.com`) và `http://localhost:5173` để chạy `npm run dev`                                                                                                  |
-| allowedOperations | `S3 Put Object`, `S3 Get Object`, `S3 Head Object` — đúng tên như [tài liệu CORS](https://www.backblaze.com/docs/cloud-storage-cross-origin-resource-sharing-rules) liệt kê; giao diện Console hiển thị thành checkbox |
-| allowedHeaders    | `*`                                                                                                                                                                                                                    |
-| maxAgeSeconds     | `3600`                                                                                                                                                                                                                 |
+| Thử với preset một origin                   | Kết quả                             |
+| ------------------------------------------- | ----------------------------------- |
+| preflight `GET`, không xin header           | 200                                 |
+| preflight `PUT`                             | 403 — preset không mở thao tác ghi  |
+| preflight `GET` + xin header `content-type` | 403 — preset không cho header tuỳ ý |
 
-Đổi domain hosting thì phải sửa lại rule này, nếu không upload sẽ hỏng.
+Preset chỉ mở cho đọc, mà upload cần `PUT` kèm header `content-type`. Phải nạp custom
+rule bằng B2 CLI — chính hộp thoại đó cũng trỏ sang cách này.
+
+Rule để sẵn ở `docs/backblaze-cors-rules.json`:
+
+```json
+[
+  {
+    "corsRuleName": "web-upload",
+    "allowedOrigins": ["https://threed-idea-max.onrender.com", "http://localhost:5173"],
+    "allowedOperations": ["s3_put", "s3_get", "s3_head"],
+    "allowedHeaders": ["*"],
+    "maxAgeSeconds": 3600
+  }
+]
+```
+
+Custom rule còn giải quyết luôn chuyện preset chỉ nhận **một** origin — ở đây khai cả
+domain production lẫn `localhost:5173` cho lúc chạy `npm run dev`.
+
+Tên thao tác là dạng ngắn `s3_put` / `s3_get` / `s3_head` — KHÔNG phải `s3_put_object`.
+Tài liệu Backblaze chỉ nêu ví dụ với các thao tác `b2_*`, tên `s3_*` xác nhận bằng chính
+API: sai tên thì B2 trả `unknown allowedOperation value: <tên> (bad_request)`.
+
+Nạp rule ([tài liệu CLI](https://www.backblaze.com/docs/cloud-storage-enable-cors-with-the-cli)):
+
+```bash
+# Cài CLI: https://www.backblaze.com/docs/cloud-storage-command-line-tools
+b2 account authorize          # dùng Master Application Key, xem ghi chú bên dưới
+b2 bucket update --cors-rules "$(<./docs/backblaze-cors-rules.json)" h2t-cobra allPrivate
+```
+
+Trên **Windows PowerShell 5.1 thì cách đọc file không dùng được**: PowerShell nuốt dấu `"`
+khi truyền tham số cho chương trình ngoài, JSON tới nơi mất hết ngoặc kép và B2 báo
+`is not a valid JSON value`. Phải escape sẵn `\"`:
+
+```powershell
+$cors = '[{\"corsRuleName\":\"web-upload\",\"allowedOrigins\":[\"https://threed-idea-max.onrender.com\",\"http://localhost:5173\"],\"allowedOperations\":[\"s3_put\",\"s3_get\",\"s3_head\"],\"allowedHeaders\":[\"*\"],\"maxAgeSeconds\":3600}]'
+b2 bucket update --cors-rules $cors h2t-cobra allPrivate
+```
+
+> Application key giới hạn bucket (key mà app đang dùng) nhiều khả năng không sửa được
+> cấu hình bucket — sửa bucket cần quyền ở mức tài khoản. Nếu CLI báo thiếu quyền thì
+> đăng nhập lại bằng **Master Application Key**. Chưa verify điểm này, cứ thử key thường
+> trước, lỗi thì đổi.
+
+Đổi domain hosting thì phải sửa lại `allowedOrigins` rồi nạp lại rule, nếu không upload sẽ hỏng.
+
+**Kiểm tra rule đã ăn chưa** — chạy được từ bất kỳ máy nào, không cần key:
+
+```bash
+curl -i -X OPTIONS "https://s3.us-east-005.backblazeb2.com/h2t-cobra/test.jpg"   -H "Origin: https://threed-idea-max.onrender.com"   -H "Access-Control-Request-Method: PUT"   -H "Access-Control-Request-Headers: content-type"
+```
+
+- Chưa bật: `403` kèm `CORSResponse: CORS is not enabled for this bucket.`
+- Bật rồi nhưng rule không phủ request này: `403` kèm `This CORS request is not allowed.`
+- Đúng: `200` kèm header `Access-Control-Allow-Origin` khớp origin vừa gửi
 
 ### 3. Điền `.env`
 

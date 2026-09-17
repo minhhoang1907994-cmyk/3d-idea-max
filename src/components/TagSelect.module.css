@@ -1,0 +1,82 @@
+.cell {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  min-width: 0;
+}
+
+.field {
+  display: flex;
+  align-items: stretch;
+  gap: 0.25rem;
+  min-width: 0;
+}
+
+.input {
+  flex: 1;
+  min-width: 0;
+  padding: 0.4rem 0.5rem;
+  font: inherit;
+  font-size: 0.84rem;
+  font-weight: 600;
+  color: var(--text);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+}
+
+.input:focus {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+
+.toggle {
+  flex: none;
+  width: 1.6rem;
+  padding: 0;
+  font-size: 0.7rem;
+  line-height: 1;
+  color: var(--text-muted);
+  background: var(--surface-sunken);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.toggle:hover {
+  color: var(--text);
+}
+
+.menu {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  max-height: 11rem;
+  margin: 0;
+  padding: 0.3rem;
+  overflow-y: auto;
+  list-style: none;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  box-shadow: var(--shadow-card);
+}
+
+.option {
+  width: 100%;
+  padding: 0.3rem 0.45rem;
+  font: inherit;
+  font-size: 0.78rem;
+  font-weight: 600;
+  text-align: left;
+  color: var(--text);
+  background: var(--surface-sunken);
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.optionSelected {
+  outline: 2px solid var(--accent);
+  outline-offset: -1px;
+}

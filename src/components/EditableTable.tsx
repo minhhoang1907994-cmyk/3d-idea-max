@@ -1,15 +1,16 @@
 import { useState, type ReactNode } from 'react';
 import { formatAmountForEdit, formatVnd, isHttpLink, parseAmountInput } from '../lib/companyLedger';
 import { ImageCell } from './ImageCell';
+import { TagSelect } from './TagSelect';
 import styles from './EditableTable.module.css';
 
 /**
  * Kiểu dữ liệu của một cột — quyết định cách hiển thị và cách đọc giá trị người dùng gõ.
  *
  * `amount` là số tiền (number | null), các kiểu còn lại đều là chuỗi. `image` không
- * render <input> ở đây mà giao cho <ImageCell> — xem file đó.
+ * render <input> ở đây mà giao cho <ImageCell> — xem file đó, `tag` giao cho <TagSelect>.
  */
-export type ColumnKind = 'text' | 'amount' | 'date' | 'month' | 'link' | 'image';
+export type ColumnKind = 'text' | 'amount' | 'date' | 'month' | 'link' | 'image' | 'tag';
 
 export type EditableColumn<T> = {
   key: Extract<keyof T, string>;
@@ -19,7 +20,7 @@ export type EditableColumn<T> = {
   /** Chiều rộng cột, ví dụ '12rem' hoặc 'minmax(0, 2fr)' — bỏ trống thì tự co giãn */
   width?: string;
   placeholder?: string;
-  /** Gợi ý gõ nhanh cho ô text (danh sách <datalist>) */
+  /** Gợi ý gõ nhanh: ô `text` dùng <datalist>, ô `tag` dựng danh sách riêng */
   suggestions?: readonly string[];
 };
 
@@ -134,6 +135,20 @@ export function EditableTable<T extends { id: string }>({
           value={value}
           month={((row as { month?: string }).month ?? '').trim()}
           label={column.label}
+          onChange={(next) => onChange(row.id, { [column.key]: next } as Partial<T>)}
+        />
+      );
+    }
+
+    // Ô phân loại có menu riêng: <datalist> lọc theo chữ sẵn có nên dòng đã điền
+    // không đổi loại được — xem <TagSelect>
+    if (kind === 'tag') {
+      return (
+        <TagSelect
+          value={value}
+          options={column.suggestions ?? []}
+          label={column.label}
+          placeholder={column.placeholder}
           onChange={(next) => onChange(row.id, { [column.key]: next } as Partial<T>)}
         />
       );
