@@ -46,6 +46,13 @@
   border-top: 1px solid var(--border);
 }
 
+/* Đan xen chẵn/lẻ cho dễ dò mắt theo dòng. .headRow là con thứ 1 nên dòng dữ liệu
+   bắt đầu từ thứ 2 — quy tắc này phải đứng TRƯỚC .row:hover, cùng specificity thì
+   khai báo sau thắng. */
+.row:nth-child(even) {
+  background: var(--surface-stripe);
+}
+
 .row:hover {
   background: var(--surface-sunken);
 }

@@ -10,6 +10,8 @@
 :root {
   --surface: #ffffff;
   --surface-sunken: #eaf1fa;
+  /* Nền dòng chẵn của bảng — nhạt hơn --surface-sunken để hover vẫn nổi lên được */
+  --surface-stripe: #f5f8fc;
   --border: #dbe4f0;
   --border-strong: #b4c4d9;
   --text: #16273c;
