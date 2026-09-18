@@ -96,12 +96,31 @@ const MODEL_BLOCK = `Change only the following, choosing each one yourself at ra
 
 Pick choices that differ clearly from the photo, and keep them plausible for this object.`;
 
+/**
+ * Khối cố định khoá bối cảnh ảnh.
+ *
+ * Ảnh sinh ra từ prompt này được đưa thẳng vào tool ảnh → 3D (Meshy, Tripo...). Các tool
+ * đó tách chủ thể khỏi nền rồi dựng mesh, nên mỗi câu dưới đây chặn một thứ làm hỏng khâu
+ * tách nền: nền có cảnh vật, bóng đổ xuống sàn (bị dựng thành khối thừa), vật bị cắt cụt
+ * ngoài khung (phần thiếu bị bịa ra), nền mờ xoá phom (mất chi tiết), và bóng loáng/đổ bóng
+ * bám trên mặt vật (bị nướng vào texture).
+ *
+ * Viết KHẲNG ĐỊNH, không dùng "no/without" — cùng quy tắc với printabilityClauses.
+ */
+const ISOLATION = `The image will be fed straight into an image-to-3D tool, so the prompt must pin the scene down like this, in these words or very close to them:
+- The object stands alone as the only thing in the frame, against a plain pure white background that stays one flat even tone from edge to edge.
+- The surface it stands on is the same plain white, lit so brightly and evenly that it reads as empty white space.
+- Soft shadowless light wraps the object from every side at once, leaving its own form legible through gentle shading alone while the white around it stays clean.
+- The whole object fits inside the frame with clear empty margin on all four sides, centred, seen in three-quarter view from slightly above so the front and one side both read.
+- The object stays sharp and fully in focus from its nearest point to its furthest, with a matte diffuse finish that shows the shape through even tone.`;
+
 const TAIL = `If the object has no face, arms or legs — a vase, a pen holder, a bracket — ignore any change above that cannot apply to it and keep the rest of the description faithful to the photo.
 
-Write flowing natural sentences following [Subject] + [Action] + [Location/context] + [Composition] + [Style], never a comma-separated keyword list.
+Write flowing natural sentences following [Subject] + [Action] + [Location/context] + [Composition] + [Style], never a comma-separated keyword list. Use the plain white studio setup above as the [Location/context] and [Composition] slots; keep every one of its points in the prompt.
 - Describe what IS in the scene, never what is absent.
 - Keep the material and finish suitable for FDM 3D printing.
-- End with a sentence stating it is a 3D printed object.
+- Describe the object as one connected solid resting on a flat stable base, with limbs, tails and accessories tucked against the body so the shape holds itself up.
+- End with a sentence stating it is a 3D printed object photographed for 3D scanning.
 - No parameters like --ar or --v. No negative prompts. No markdown, no quotes, no preamble.
 
 Reply with the prompt text only.`;
@@ -117,16 +136,16 @@ export function buildVariantInstruction(options: {
   const { source, traits } = options;
 
   if (source === 'model') {
-    return [PREAMBLE, MODEL_BLOCK, TAIL].join('\n\n');
+    return [PREAMBLE, MODEL_BLOCK, ISOLATION, TAIL].join('\n\n');
   }
 
   const changes = variantChanges(traits);
   if (changes.length === 0) {
-    return [PREAMBLE, FALLBACK_BLOCK, TAIL].join('\n\n');
+    return [PREAMBLE, FALLBACK_BLOCK, ISOLATION, TAIL].join('\n\n');
   }
 
   const list = changes.map((change) => `- ${change.label}: ${change.text}`).join('\n');
   const block = `Apply exactly these changes and change nothing else:\n${list}`;
 
-  return [PREAMBLE, block, TAIL].join('\n\n');
+  return [PREAMBLE, block, ISOLATION, TAIL].join('\n\n');
 }

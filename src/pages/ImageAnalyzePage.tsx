@@ -161,7 +161,9 @@ export function ImageAnalyzePage({ data }: Props) {
         <h1 className={styles.title}>Phân tích ảnh</h1>
         <p className={styles.subtitle}>
           Tải lên ảnh một sản phẩm in 3D, Gemini đọc ảnh và viết prompt tả lại đúng vật đó — chỉ đổi
-          thế đứng, biểu cảm, trang phục và đế trưng bày.
+          thế đứng, biểu cảm, trang phục và đế trưng bày. Prompt luôn kèm sẵn yêu cầu nền trắng
+          phẳng, không đổ bóng, vật nằm trọn trong khung, để ảnh sinh ra đưa thẳng vào Meshy hay
+          Tripo là dựng được file 3D.
         </p>
       </header>
 

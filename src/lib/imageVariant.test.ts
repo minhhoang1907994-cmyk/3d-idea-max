@@ -151,6 +151,17 @@ describe('buildVariantInstruction', () => {
     expect(text).toContain('choosing each one yourself at random');
   });
 
+  it('luôn khoá nền trắng phẳng, đủ khung, không đổ bóng — để đưa thẳng vào tool ảnh → 3D', () => {
+    for (const source of ['data', 'model'] as const) {
+      const text = buildVariantInstruction({ source, traits: {} });
+      expect(text).toContain('image-to-3D tool');
+      expect(text).toContain('plain pure white background');
+      expect(text).toContain('Soft shadowless light');
+      expect(text).toContain('fits inside the frame with clear empty margin');
+      expect(text).toContain('the only thing in the frame');
+    }
+  });
+
   it('luôn dặn bỏ qua trait với vật không có mặt tay chân', () => {
     for (const source of ['data', 'model'] as const) {
       expect(buildVariantInstruction({ source, traits: {} })).toContain('no face, arms or legs');
