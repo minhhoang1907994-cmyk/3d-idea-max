@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import styles from './App.module.css';
+import { ScrollToTopButton } from './components/ScrollToTopButton';
 import { SideMenu, type PageId } from './components/SideMenu';
 import { useCompanyLedger } from './hooks/useCompanyLedger';
 import { useIdeaData } from './hooks/useIdeaData';
@@ -31,6 +32,7 @@ export default function App() {
         {page === 'data' ? <DataManagerPage dataStore={dataStore} /> : null}
         {page === 'company' ? <CompanyLedgerPage ledger={ledger} /> : null}
       </div>
+      <ScrollToTopButton />
     </div>
   );
 }
