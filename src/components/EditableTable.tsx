@@ -1,4 +1,4 @@
-import { useState, type ReactNode } from 'react';
+import { Fragment, useState, type ReactNode } from 'react';
 import { formatAmountForEdit, formatVnd, isHttpLink, parseAmountInput } from '../lib/companyLedger';
 import { ImageCell } from './ImageCell';
 import { TagSelect } from './TagSelect';
@@ -14,6 +14,16 @@ export type ColumnKind = 'text' | 'amount' | 'date' | 'month' | 'link' | 'image'
 
 /** Bề rộng cột "Thao tác" — cột duy nhất không do trang gọi khai báo */
 const ACTION_COLUMN_WIDTH = '5.5rem';
+/*
+ * Hai kiểu ô này có phần phụ đi kèm ô nhập: nút mở link, và số tiền đã định dạng lại.
+ * Xếp chúng thành cột grid riêng ngay sau cột chính thay vì nhét xuống dưới ô nhập —
+ * nằm dưới thì mỗi dòng cao gấp đôi và phần phụ giữa các dòng không thẳng hàng nhau.
+ * Header cột phụ để trống vì cột chính đã nói rõ, aria-label lo phần đọc màn hình.
+ */
+const SIDE_COLUMNS: Partial<Record<ColumnKind, { width: string; label: string }>> = {
+  link: { width: '4rem', label: 'Mở link' },
+  amount: { width: '8rem', label: 'Số tiền đã định dạng' },
+};
 /*
  * Sàn cho cột co giãn. 7rem là mức cân bằng: bảng rộng nhất hiện có (Chi, 8 cột) ra sàn
  * 67rem ~ 1072px, vẫn vừa vùng nội dung của màn 1366px nên desktop không phát sinh cuộn
@@ -99,7 +109,8 @@ export function EditableTable<T extends { id: string }>({
     });
   }
 
-  function renderCell(row: T, column: EditableColumn<T>): ReactNode {
+  /** `side` là nội dung cột phụ — chỉ dùng với các kiểu có mặt trong SIDE_COLUMNS */
+  function renderCell(row: T, column: EditableColumn<T>): { main: ReactNode; side: ReactNode } {
     const kind = column.kind ?? 'text';
     const rawValue = row[column.key];
 
@@ -117,10 +128,14 @@ export function EditableTable<T extends { id: string }>({
         }
       }
 
-      return (
-        <div className={styles.amountCell}>
+      return {
+        main: (
           <input
-            className={invalid ? `${styles.input} ${styles.inputInvalid}` : styles.input}
+            className={
+              invalid
+                ? `${styles.input} ${styles.amountInput} ${styles.inputInvalid}`
+                : `${styles.input} ${styles.amountInput}`
+            }
             value={text}
             inputMode="numeric"
             placeholder={column.placeholder ?? '0'}
@@ -131,72 +146,91 @@ export function EditableTable<T extends { id: string }>({
               if (!invalid) clearDraft(row.id, column.key);
             }}
           />
+        ),
+        side: (
           <span className={invalid ? styles.amountWarning : styles.amountHint}>
             {invalid ? 'không đọc được số' : formatVnd(amount)}
           </span>
-        </div>
-      );
+        ),
+      };
     }
 
     const value = (rawValue ?? '') as string;
 
     // Ô ảnh tự lo phần tải file lên Backblaze nên không dùng chung <input> bên dưới
     if (kind === 'image') {
-      return (
-        <ImageCell
-          value={value}
-          month={((row as { month?: string }).month ?? '').trim()}
-          label={column.label}
-          onChange={(next) => onChange(row.id, { [column.key]: next } as Partial<T>)}
-        />
-      );
+      return {
+        main: (
+          <ImageCell
+            value={value}
+            month={((row as { month?: string }).month ?? '').trim()}
+            label={column.label}
+            onChange={(next) => onChange(row.id, { [column.key]: next } as Partial<T>)}
+          />
+        ),
+        side: null,
+      };
     }
 
     // Ô phân loại có menu riêng: <datalist> lọc theo chữ sẵn có nên dòng đã điền
     // không đổi loại được — xem <TagSelect>
     if (kind === 'tag') {
-      return (
-        <TagSelect
-          value={value}
-          options={column.suggestions ?? []}
-          label={column.label}
-          placeholder={column.placeholder}
-          onChange={(next) => onChange(row.id, { [column.key]: next } as Partial<T>)}
-        />
-      );
+      return {
+        main: (
+          <TagSelect
+            value={value}
+            options={column.suggestions ?? []}
+            label={column.label}
+            placeholder={column.placeholder}
+            onChange={(next) => onChange(row.id, { [column.key]: next } as Partial<T>)}
+          />
+        ),
+        side: null,
+      };
     }
 
     const listId = kind === 'text' && column.suggestions ? `${column.key}-suggestions` : undefined;
 
-    return (
-      <div className={styles.cell}>
-        <input
-          className={styles.input}
-          type={kind === 'date' || kind === 'month' ? kind : 'text'}
-          value={value}
-          list={listId}
-          placeholder={column.placeholder}
-          aria-label={column.label}
-          onChange={(event) => onChange(row.id, { [column.key]: event.target.value } as Partial<T>)}
-        />
-        {listId ? (
-          <datalist id={listId}>
-            {column.suggestions?.map((suggestion) => (
-              <option key={suggestion} value={suggestion} />
-            ))}
-          </datalist>
-        ) : null}
-        {kind === 'link' && isHttpLink(value) ? (
+    return {
+      main: (
+        <>
+          <input
+            className={styles.input}
+            type={kind === 'date' || kind === 'month' ? kind : 'text'}
+            value={value}
+            list={listId}
+            placeholder={column.placeholder}
+            aria-label={column.label}
+            onChange={(event) =>
+              onChange(row.id, { [column.key]: event.target.value } as Partial<T>)
+            }
+          />
+          {listId ? (
+            <datalist id={listId}>
+              {column.suggestions?.map((suggestion) => (
+                <option key={suggestion} value={suggestion} />
+              ))}
+            </datalist>
+          ) : null}
+        </>
+      ),
+      side:
+        kind === 'link' && isHttpLink(value) ? (
           <a className={styles.openLink} href={value} target="_blank" rel="noreferrer noopener">
             Mở ↗
           </a>
-        ) : null}
-      </div>
-    );
+        ) : null,
+    };
   }
 
+  const sideColumnOf = (column: EditableColumn<T>) => SIDE_COLUMNS[column.kind ?? 'text'];
+
   const widths = [
-    ...columns.map((column) => column.width ?? 'minmax(0, 1fr)'),
+    ...columns.flatMap((column) => {
+      const main = column.width ?? 'minmax(0, 1fr)';
+      const side = sideColumnOf(column);
+      return side ? [main, side.width] : [main];
+    }),
     ACTION_COLUMN_WIDTH,
   ];
   const gridTemplate = widths.join(' ');
@@ -216,11 +250,19 @@ export function EditableTable<T extends { id: string }>({
       <div className={styles.scroller}>
         <div className={styles.table} role="table" style={{ minWidth: `${tableMinWidthRem}rem` }}>
           <div className={styles.headRow} role="row" style={{ gridTemplateColumns: gridTemplate }}>
-            {columns.map((column) => (
-              <span key={column.key} className={styles.headCell} role="columnheader">
-                {column.label}
-              </span>
-            ))}
+            {columns.map((column) => {
+              const side = sideColumnOf(column);
+              return (
+                <Fragment key={column.key}>
+                  <span className={styles.headCell} role="columnheader">
+                    {column.label}
+                  </span>
+                  {side ? (
+                    <span className={styles.headCell} role="columnheader" aria-label={side.label} />
+                  ) : null}
+                </Fragment>
+              );
+            })}
             <span className={styles.headCell} role="columnheader">
               Thao tác
             </span>
@@ -236,11 +278,22 @@ export function EditableTable<T extends { id: string }>({
                 role="row"
                 style={{ gridTemplateColumns: gridTemplate }}
               >
-                {columns.map((column) => (
-                  <div key={column.key} className={styles.bodyCell} role="cell">
-                    {renderCell(row, column)}
-                  </div>
-                ))}
+                {columns.map((column) => {
+                  const side = sideColumnOf(column);
+                  const cell = renderCell(row, column);
+                  return (
+                    <Fragment key={column.key}>
+                      <div className={styles.bodyCell} role="cell">
+                        {cell.main}
+                      </div>
+                      {side ? (
+                        <div className={styles.bodyCell} role="cell">
+                          {cell.side}
+                        </div>
+                      ) : null}
+                    </Fragment>
+                  );
+                })}
                 <div className={styles.bodyCell} role="cell">
                   {confirmingId === row.id ? (
                     <div className={styles.confirm}>

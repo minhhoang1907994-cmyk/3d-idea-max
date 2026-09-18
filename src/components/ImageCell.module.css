@@ -30,9 +30,12 @@
 }
 
 .thumbnail {
-  width: 100%;
+  /* width: auto để hai giới hạn dưới cùng ràng buộc mà ảnh vẫn giữ đúng tỉ lệ —
+     đặt width: 100% thì ảnh dọc bị max-height bóp méo */
+  width: auto;
   max-width: 6rem;
   height: auto;
+  max-height: 60px;
   border: 1px solid var(--border);
   border-radius: 6px;
 }

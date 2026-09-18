@@ -22,7 +22,9 @@
 .row {
   display: grid;
   gap: 0.5rem;
-  align-items: start;
+  /* Căn giữa theo chiều dọc: dòng nào có ô ảnh thì cao hơn hẳn, để start thì mọi ô
+     chữ trong dòng đó dính lên mép trên và lệch hẳn so với ảnh bên cạnh */
+  align-items: center;
   padding: 0.5rem 0.75rem;
 }
 
@@ -61,14 +63,6 @@
   min-width: 0;
 }
 
-.cell,
-.amountCell {
-  display: flex;
-  flex-direction: column;
-  gap: 0.2rem;
-  min-width: 0;
-}
-
 .input {
   width: 100%;
   padding: 0.4rem 0.5rem;
@@ -89,14 +83,13 @@
   border-color: var(--warning);
 }
 
-.amountCell .input {
+.amountInput {
   text-align: right;
 }
 
 .amountHint,
 .amountWarning {
   font-size: 0.72rem;
-  text-align: right;
 }
 
 .amountHint {
@@ -109,8 +102,8 @@
 }
 
 .openLink {
-  align-self: flex-start;
   font-size: 0.72rem;
+  white-space: nowrap;
   color: var(--accent);
 }
 

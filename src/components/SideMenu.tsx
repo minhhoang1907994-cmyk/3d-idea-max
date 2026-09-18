@@ -11,6 +11,12 @@ type Props = {
 };
 
 const ITEMS: { id: PageId; label: string; description: string; icon: string }[] = [
+  {
+    id: 'company',
+    label: 'Sổ công ty',
+    description: 'Thu, chi, note, sản phẩm',
+    icon: '📒',
+  },
   { id: 'mix', label: 'Trộn ý tưởng', description: 'Sinh prompt + thông số in', icon: '🎲' },
   {
     id: 'image',
@@ -25,12 +31,6 @@ const ITEMS: { id: PageId; label: string; description: string; icon: string }[] 
     icon: '🔁',
   },
   { id: 'data', label: 'Quản lý dữ liệu', description: 'Xem, thêm, sửa, xóa option', icon: '🗂️' },
-  {
-    id: 'company',
-    label: 'Sổ công ty',
-    description: 'Thu, chi, note, sản phẩm',
-    icon: '📒',
-  },
 ];
 
 /**

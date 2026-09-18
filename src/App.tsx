@@ -10,7 +10,8 @@ import { MixPage } from './pages/MixPage';
 import { SlicerConvertPage } from './pages/SlicerConvertPage';
 
 export default function App() {
-  const [page, setPage] = useState<PageId>('mix');
+  // Sổ công ty là trang vào đầu tiên — nó là thứ cả nhóm mở hằng ngày
+  const [page, setPage] = useState<PageId>('company');
   // Một nguồn dữ liệu dùng chung cho cả 2 trang: sửa bên Quản lý thì Mix thấy ngay
   const dataStore = useIdeaData();
   // Giữ ở App chứ không trong trang: chuyển tab rồi quay lại vẫn còn phần chưa lưu

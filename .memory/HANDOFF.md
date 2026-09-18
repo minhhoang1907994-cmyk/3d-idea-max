@@ -3,8 +3,9 @@
 ## Session gần nhất
 
 - Ngày: 2026-09-17
-- Tóm tắt: Làm **responsive cho cả 5 page** xuống mốc 360px. Phần lớn là CSS, nhưng recheck
-  bằng Chrome lôi ra 3 lỗi tràn ngang thật đã tồn tại từ trước, không phải chỉ thiếu breakpoint.
+- Tóm tắt: Làm **responsive cho cả 5 page** xuống mốc 360px, rồi thay thanh menu ngang bằng
+  **ngăn kéo mở bằng nút ba gạch**. Phần lớn là CSS, nhưng recheck bằng Chrome lôi ra 4 lỗi
+  thật (3 lỗi tràn ngang có sẵn từ trước + 1 lỗi khoá cuộn do chính phần ngăn kéo sinh ra).
 
 ## Đã thực hiện
 
@@ -43,6 +44,28 @@ không tràn.
 - `SlicerConvertPage.tsx`: bọc 2 `<table>` trong `.tableScroller`, bỏ hack `display: block`
   đặt thẳng lên `<table>`.
 
+### 4. Menu điện thoại: từ thanh ngang cuộn → ngăn kéo (yêu cầu sau của user)
+
+Bản responsive ở mục 3 để menu là thanh ngang cuộn. User đổi ý: dưới 760px menu phải ẩn hẳn,
+mở bằng nút ba gạch. `SideMenu.tsx` viết lại, trả về Fragment gồm 3 khối — thanh trên, lớp phủ,
+`<nav>` — thay cho một `<nav>` như trước.
+
+- **Grid `.shell` không vỡ** vì `.topbar`/`.overlay` mặc định `display: none` (khổ rộng loại
+  hẳn khỏi grid), còn `.menu` ở khổ hẹp là `position: fixed` nên không chiếm ô grid nào.
+- **Thanh trên hiện tên trang đang xem.** Menu ẩn rồi thì đó là chỗ duy nhất còn nói được
+  đang ở đâu.
+- **Chấm "chưa lưu" dồn lên nút ba gạch** (`.toggleDot`). Không có nó thì đóng tab mà không
+  biết còn thay đổi chưa đẩy lên Neon.
+- **Đóng bằng `visibility: hidden`, không chỉ `transform: translateX(-100%)`.** Trượt ra ngoài
+  màn hình thôi thì Tab vẫn lọt vào các mục đang khuất. Kèm `transition: visibility 0s linear
+  0.22s` để `visibility` chỉ tắt sau khi trượt xong.
+- Đóng được bằng lớp phủ / Esc / chọn mục; cả ba đường đều trả focus về nút ba gạch. Mở ra thì
+  focus nhảy vào mục `[aria-current="page"]`. Tab quẩn trong ngăn kéo (`handleNavKeyDown`).
+- **Lỗi tự sinh ra rồi tự bắt được**: mở ngăn kéo ở khổ hẹp rồi kéo cửa sổ rộng ra thì `open`
+  vẫn `true` → `document.body.style.overflow = 'hidden'` còn nguyên trong khi nút ba gạch —
+  chỗ duy nhất đóng được — đã bị CSS ẩn. Trang desktop cứng đờ không cuộn. Sửa bằng effect
+  `matchMedia('(max-width: 760px)')` tự `setOpen(false)` khi vượt mốc.
+
 ## Trạng thái hiện tại
 
 - `npx tsc --noEmit` → No errors · `npx eslint .` → No issues · `prettier --check` → sạch
@@ -50,17 +73,30 @@ không tràn.
   chunk > 500 kB vốn có từ trước)
 - Recheck bằng Chrome: cả 5 page ở viewport 360px có `scrollWidth === clientWidth`, 0 phần tử
   bị cắt chữ ngoài các vùng cuộn có chủ đích
-- Thay đổi còn ở working tree, **chưa commit** (branch `main` — cần tạo branch trước)
+- Ngăn kéo đã verify: vào đúng `left: 0` khi mở / `-272` khi đóng, `body` khoá–mở cuộn đúng
+  nhịp, focus về mục đang xem, Tab và Shift+Tab đều vòng trong menu, tên trang trên thanh trên
+  khớp tiêu đề cả 5 trang. Desktop 1920px: `.topbar`/`.overlay` `display: none`, grid vẫn
+  `232px 1fr`
+- Phần responsive (mục 1–3) **đã commit** ở `d3eae98 v2.4`. Phần ngăn kéo (mục 4) còn ở
+  working tree, **chưa commit** — `SideMenu.tsx` + `SideMenu.module.css` (branch `main`, cần
+  tạo branch trước khi commit)
 
 ## Việc tiếp theo (responsive)
 
 1. Chưa xem bằng mắt ở 360px — cửa sổ Chrome trên máy này không thu nhỏ dưới ~300px CSS nên
    screenshot bị cắt; toàn bộ kết luận đến từ đo DOM trong iframe 375px. Nếu muốn chắc về
    thẩm mỹ (khoảng cách, tràn dòng) thì mở DevTools device toolbar xem tay.
+   **Riêng hiệu ứng trượt của ngăn kéo thì chắc chắn chưa thấy chạy**: trong iframe đo,
+   `requestAnimationFrame` chạy 0 lần (Chrome throttle vì iframe nằm ngoài vùng hiển thị của
+   cửa sổ nhỏ), transition đứng ở `currentTime: 0`. Phải ép `animation.finish()` mới đọc được
+   trạng thái đích. Lần sau đo animation trong iframe thì nhớ cái bẫy này — trạng thái đích
+   đúng không có nghĩa là hiệu ứng chạy mượt.
 2. Chưa kiểm tra ở chiều ngang điện thoại (landscape, ~640–760px) và tablet 768–860px — hai
    mốc này rơi đúng ranh giới giữa các breakpoint, đáng soi lại.
 3. `EditableTable` hiện luôn cuộn ngang trên điện thoại. Nếu thấy khó dùng thì hướng khác là
    chuyển mỗi dòng thành thẻ (card) dưới 480px — thay đổi lớn hơn, chưa làm.
+4. Ngăn kéo chưa thử trên thiết bị cảm ứng thật: chưa có cử chỉ vuốt để đóng, và `100vh` của
+   `.menu` (qua `top: 0; bottom: 0`) chưa đối chiếu với thanh địa chỉ co giãn của Safari iOS.
 
 ## Session trước — 2026-09-17 (upload ảnh Backblaze B2)
 

@@ -24,6 +24,12 @@ type Props = { ledger: ReturnType<typeof useCompanyLedger> };
 /** Bốn tab — tương ứng 4 sheet của file Excel gốc. */
 type TabId = 'expenses' | 'incomes' | 'notes' | 'products';
 
+/**
+ * Che tổng tiền khi chưa bấm con mắt. Độ dài cố định, không theo số chữ số thật —
+ * nếu không, nhìn chuỗi sao cũng đoán được khoản đó cỡ triệu hay cỡ chục triệu.
+ */
+const MASKED_AMOUNT = '*******';
+
 const TABS: { id: TabId; label: string }[] = [
   { id: 'expenses', label: 'Tổng chi' },
   { id: 'incomes', label: 'Tổng thu' },
@@ -77,6 +83,8 @@ export function CompanyLedgerPage({ ledger }: Props) {
   const { data, status } = ledger;
   const [tab, setTab] = useState<TabId>('expenses');
   const [month, setMonth] = useState<string>(() => currentMonth());
+  /** Tổng tiền mặc định ẩn — mở web ở quán cà phê thì người bên cạnh không đọc được */
+  const [amountsVisible, setAmountsVisible] = useState(false);
   const [noteQuery, setNoteQuery] = useState('');
   const [productQuery, setProductQuery] = useState('');
 
@@ -153,6 +161,8 @@ export function CompanyLedgerPage({ ledger }: Props) {
   }
 
   const monthLabel = month === ALL_MONTHS ? 'tất cả các tháng' : formatMonthLabel(month);
+
+  const showAmount = (value: number) => (amountsVisible ? formatVnd(value) : MASKED_AMOUNT);
 
   return (
     <div className={styles.page}>
@@ -271,27 +281,40 @@ export function CompanyLedgerPage({ ledger }: Props) {
             </label>
           </div>
 
+          <div className={styles.summaryHead}>
+            <button
+              type="button"
+              className={styles.eyeButton}
+              aria-pressed={amountsVisible}
+              onClick={() => setAmountsVisible((visible) => !visible)}
+            >
+              <span aria-hidden="true">{amountsVisible ? '🙈' : '👁️'}</span>
+              {amountsVisible ? 'Ẩn số tiền' : 'Hiện số tiền'}
+            </button>
+          </div>
+
           <div className={styles.summary}>
             <div className={styles.summaryCard}>
               <span className={styles.summaryLabel}>Tổng thu — {monthLabel}</span>
-              <strong className={styles.summaryValue}>{formatVnd(summary.incomeTotal)}</strong>
+              <strong className={styles.summaryValue}>{showAmount(summary.incomeTotal)}</strong>
               <span className={styles.summaryHint}>{summary.incomeCount} khoản</span>
             </div>
             <div className={styles.summaryCard}>
               <span className={styles.summaryLabel}>Tổng chi — {monthLabel}</span>
-              <strong className={styles.summaryValue}>{formatVnd(summary.expenseTotal)}</strong>
+              <strong className={styles.summaryValue}>{showAmount(summary.expenseTotal)}</strong>
               <span className={styles.summaryHint}>{summary.expenseCount} khoản</span>
             </div>
             <div className={styles.summaryCard}>
               <span className={styles.summaryLabel}>Còn lại (thu − chi)</span>
+              {/* Đang ẩn thì bỏ luôn màu cảnh báo — màu đỏ tự nó đã nói số này âm */}
               <strong
                 className={
-                  summary.balance < 0
+                  amountsVisible && summary.balance < 0
                     ? `${styles.summaryValue} ${styles.summaryNegative}`
                     : styles.summaryValue
                 }
               >
-                {formatVnd(summary.balance)}
+                {showAmount(summary.balance)}
               </strong>
               <span className={styles.summaryHint}>
                 {summary.missingAmountCount > 0
@@ -316,7 +339,7 @@ export function CompanyLedgerPage({ ledger }: Props) {
           emptyText={`Chưa có khoản chi nào trong ${monthLabel}.`}
           footer={
             <span className={styles.tableTotal}>
-              Tổng chi {monthLabel}: <strong>{formatVnd(summary.expenseTotal)}</strong>
+              Tổng chi {monthLabel}: <strong>{showAmount(summary.expenseTotal)}</strong>
             </span>
           }
         />
@@ -335,7 +358,7 @@ export function CompanyLedgerPage({ ledger }: Props) {
           emptyText={`Chưa có khoản thu nào trong ${monthLabel}.`}
           footer={
             <span className={styles.tableTotal}>
-              Tổng thu {monthLabel}: <strong>{formatVnd(summary.incomeTotal)}</strong>
+              Tổng thu {monthLabel}: <strong>{showAmount(summary.incomeTotal)}</strong>
             </span>
           }
         />
