@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useId, useRef, useState, type KeyboardEvent } from 'react';
 import styles from './SideMenu.module.css';
 
-export type PageId = 'mix' | 'image' | 'convert' | 'data' | 'company';
+export type PageId = 'mix' | 'image' | 'data' | 'company';
 
 type Props = {
   current: PageId;
@@ -23,12 +23,6 @@ const ITEMS: { id: PageId; label: string; description: string; icon: string }[] 
     label: 'Phân tích ảnh',
     description: 'Upload ảnh → sinh prompt tương tự',
     icon: '🖼️',
-  },
-  {
-    id: 'convert',
-    label: 'Đổi slicer',
-    description: 'File 3mf Bambu → slicer khác',
-    icon: '🔁',
   },
   { id: 'data', label: 'Quản lý dữ liệu', description: 'Xem, thêm, sửa, xóa option', icon: '🗂️' },
 ];

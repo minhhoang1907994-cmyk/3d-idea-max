@@ -1,7 +1,15 @@
-# Chuyển file & thông số giữa các slicer (nguồn sự thật cho trang "Đổi slicer")
+# Chuyển file & thông số giữa các slicer
+
+> **Trạng thái: LƯU TRỮ (2026-09-18).** Trang "Đổi slicer" đã được gỡ khỏi app vì phạm vi
+> quá lớn so với giá trị mang lại. File này giữ lại làm tư liệu đã verify, phòng khi làm lại.
+> Toàn bộ code cũ (`src/pages/SlicerConvertPage.tsx`, `src/lib/{inspectProjectFile,
+convertToTargetMachine,buildSlicerHandoff,zipArchive}.ts`, `src/data/{slicerTargets,
+settingMap,machinePresets}.ts`, `scripts/extractMachinePresets.mjs`) nằm ở commit `fbe7d5f`.
+>
+> Trước khi làm lại, đọc mục 9 — bốn lỗi tìm được khi đối chiếu file thật của hai hệ sinh thái.
 
 **Ngày tra cứu**: 2026-09-16
-**Mục đích**: nguồn dữ liệu cho `src/data/slicerTargets.ts` và `src/data/settingMap.ts`.
+**Mục đích ban đầu**: nguồn dữ liệu cho `src/data/slicerTargets.ts` và `src/data/settingMap.ts`.
 Mọi tên khoá (key) và nhãn UI trong hai file đó PHẢI khớp bảng dưới đây, kèm nguồn.
 
 ## ⚠️ Quy tắc bắt buộc khi dùng file này
@@ -243,3 +251,53 @@ Repo Anycubic Slicer Next (nhánh `main`) hiện chưa có profile Kobra X nào 
 | Hành vi chính xác của từng fork khi mở 3mf có preset máy không tồn tại                                      | CHƯA VERIFY — tài liệu OrcaSlicer chỉ nêu "use defaults with warning"                                                                                                                    |
 | Preset máy của Snapmaker/Creality có ánh xạ 1-1 sang máy Bambu nào không                                    | KHÔNG CÓ — không tồn tại ánh xạ chính hãng, nên app không gợi ý                                                                                                                          |
 | Thông số in trên wiki Anycubic Kobra X                                                                      | KHÔNG ĐỌC ĐƯỢC — trang render bằng JS (fetch chỉ ra tiêu đề); nội dung là hướng dẫn lắp đặt / xử lý sự cố, không phải bảng thông số. Dùng preset filament chính hãng thay thế, xem mục 6 |
+
+## 9. Đối chiếu file thật hai hệ sinh thái (2026-09-18) — 4 lỗi của bản đã gỡ
+
+Hai file dùng để đối chiếu, cùng là 3DBenchy:
+
+|                                    | MakerWorld (hệ Bambu)                         | MakerOnline (hệ Anycubic)                                                        |
+| ---------------------------------- | --------------------------------------------- | -------------------------------------------------------------------------------- |
+| Entry ZIP                          | deflate, size ghi ở local header              | deflate + **data descriptor** (flag `0x0808`, local header size = 0)             |
+| `<metadata name="Application">`    | `BambuStudio-02.00.01.50`                     | `BambuStudio-1.3.3.3`                                                            |
+| Dấu vết slicer thật                | `slice_info.config` → `X-BBL-Client-*`        | `slice_info.config` → `X-ACNext-Client-*`                                        |
+| `Metadata/project_settings.config` | 437 khoá                                      | 497 khoá                                                                         |
+| File config phụ                    | `cut_information.xml`                         | **`process_settings_1.config` (277 khoá)**, `plate_1.json`, `source_info.config` |
+| Kiểu giá trị speed/accel           | **mảng** `["220"]` (Bambu 2.x multi-extruder) | chuỗi `"200"`                                                                    |
+
+Điểm quan trọng: **cả hai hệ dùng chung `Metadata/project_settings.config` với cùng tên khoá** —
+39/39 khoá trong `SETTING_MAP` có mặt ở cả hai file. Luận điểm phổ biến "mỗi slicer lưu
+settings theo cách riêng" KHÔNG đúng trong phạm vi họ Orca.
+
+Bốn lỗi tìm được ở bản đã gỡ, phải xử lý nếu làm lại:
+
+1. **Đọc nhầm config với file hệ Anycubic.** File MakerOnline mang 2 bộ process config.
+   App cũ chỉ đọc `project_settings.config` và bỏ qua `process_settings_1.config`
+   (`print_settings_id` của nó trỏ vào máy khác: `0.20mm Standard @Anycubic Kobra 3 0.4
+Nozzle(BENCHYMAKERONLINE.3mf)`). 12/39 ô hiển thị khác nhau giữa hai bộ, gồm
+   `outer_wall_speed` 200 vs 130, `internal_solid_infill_speed` 250 vs 130,
+   `sparse_infill_pattern` gyroid vs grid, `support_type` normal vs tree,
+   `initial_layer_print_height` 0.2 vs 0.24. **CHƯA VERIFY** bộ nào là bộ Anycubic Slicer
+   Next thật sự áp dụng — `model_settings.config` không tham chiếu tới file kia, nên phải
+   mở file gốc trong slicer để biết.
+
+2. **File hình học xuất ra có relationship treo.** `_rels/.rels` được giữ vì là `structure`,
+   nhưng thumbnail nó trỏ tới thì bị bỏ → 3 `<Relationship>` trỏ vào file không tồn tại ở
+   cả hai file (`/Auxiliaries/.thumbnails/*.png` và `/Metadata/plate_1*.png`). `3D/3dmodel.model`
+   cũng còn `<metadata name="Thumbnail_Middle">`. Zip vẫn hợp lệ, nhưng vi phạm OPC —
+   **CHƯA VERIFY** slicer nào từ chối mở. Cách sửa: lọc lại `_rels/.rels` theo danh sách file
+   thực sự giữ lại.
+
+3. **Preset sinh ra sai kiểu với file Bambu Studio 2.x.** Khi bật "mang theo nhóm phụ thuộc
+   máy", 8 khoá ra dạng mảng một phần tử — `"outer_wall_speed": ["220"]` thay vì `"220"` —
+   vì Bambu Studio 2.0 chuyển process key sang mảng theo extruder. File hệ Anycubic (fork từ
+   Orca cũ hơn) vẫn ra chuỗi. **CHƯA VERIFY** OrcaSlicer có nuốt được mảng khi Import Configs.
+
+4. **`producedBy` báo sai với file hệ Anycubic.** Anycubic Slicer Next ghi
+   `Application = BambuStudio-1.3.3.3` trong `3dmodel.model`, nên UI hiện "BambuStudio" cho
+   file tải từ MakerOnline. Dấu hiệu đúng nằm ở `slice_info.config` (`X-ACNext-Client-Version`),
+   file mà app cũ không đọc.
+
+Hai hạn chế phạm vi khác: `machinePresets.ts` chỉ có preset của `kobra-x` (cột "Giá trị quy đổi"
+vì thế chỉ dùng được với 1 trong 5 máy), và zip xuất ra dùng method `stored` nên phình
+3.2 MB → 18.3 MB.

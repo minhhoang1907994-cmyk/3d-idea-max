@@ -2,6 +2,104 @@
 
 ## Session gần nhất
 
+- Ngày: 2026-09-18
+- Tóm tắt: Đối chiếu 2 file `.3mf` thật (MakerWorld hệ Bambu vs MakerOnline hệ Anycubic) để
+  kiểm chứng trang "Đổi slicer" → tìm ra 4 lỗi + 2 hạn chế phạm vi. User quyết định **gỡ
+  hẳn trang này** vì phạm vi quá lớn so với giá trị.
+
+## Đã thực hiện
+
+### 1. Đối chiếu 2 file thật (chạy qua đúng pipeline của app, bằng test tạm rồi xoá)
+
+Cả hai file đều dùng chung `Metadata/project_settings.config`, cùng tên khoá, 39/39 khoá
+trong `SETTING_MAP` có mặt ở cả hai. Bốn lỗi tìm được:
+
+1. File hệ Anycubic mang **2 bộ process config**; app chỉ đọc `project_settings.config`, bỏ
+   qua `process_settings_1.config` → 12/39 ô có thể hiển thị sai. CHƯA VERIFY bộ nào đúng.
+2. File hình học xuất ra có **3 relationship treo** trong `_rels/.rels` (trỏ vào thumbnail
+   đã bị bỏ) — vi phạm OPC, CHƯA VERIFY slicer nào từ chối mở.
+3. Với file Bambu Studio 2.x, preset sinh ra ghi **mảng** `"outer_wall_speed": ["220"]` thay
+   vì chuỗi — CHƯA VERIFY OrcaSlicer có import được.
+4. `producedBy` báo "BambuStudio" cho file Anycubic (Anycubic Slicer Next tự khai như vậy).
+
+Hạn chế phạm vi: `machinePresets.ts` chỉ có preset `kobra-x` (1/5 máy); zip xuất ra dùng
+method `stored` nên phình 3.2 MB → 18.3 MB.
+
+Toàn bộ nội dung này đã ghi vào **mục 9 của `docs/research/slicer-interop.md`** — đó là nơi
+đọc lại, không phải file HANDOFF này.
+
+### 2. Đánh giá bài viết ChatGPT user gửi (thiết kế Universal Profile + benchmark)
+
+Kết luận: phần lớn mô tả lại kiến trúc app đã có (`SETTING_MAP` đã là lớp chuẩn hoá,
+`tier` đã là phân nhóm A/B/C). Phần mới duy nhất — conversion rule suy từ benchmark với
+`factor`/`confidence` — vi phạm quy tắc "không đoán thông số in" và **kém chính xác hơn**
+cách hiện tại (tra preset chính hãng của máy đích). Không áp dụng.
+
+### 3. Gỡ trang "Đổi slicer"
+
+Xoá 14 file: `src/pages/SlicerConvertPage.tsx` + `.module.css`; `src/lib/{buildSlicerHandoff,
+convertToTargetMachine,inspectProjectFile,zipArchive}.ts` kèm `.test.ts`;
+`src/data/{slicerTargets,settingMap,machinePresets}.ts`; `scripts/extractMachinePresets.mjs`.
+
+Sửa: `App.tsx` + `SideMenu.tsx` (bỏ route/menu `convert`, `PageId` còn 4 giá trị);
+`src/types/index.ts` (xoá block 184 dòng type riêng của trang — **giữ `PrintWarning`** vì
+`resolvePrintSettings.ts` dùng); `CLAUDE.md`; `docs/research/slicer-interop.md` (giữ lại
+theo yêu cầu user, thêm header LƯU TRỮ + mục 9).
+
+Giữ nguyên `printers.ts`, `filaments.ts`, `speedPresets.ts` — dùng chung với luồng Mix.
+
+## Trạng thái hiện tại
+
+- `tsc --noEmit` no errors · `vitest run` PASS 254/0 (giảm 54 test của phần đã xoá) ·
+  `eslint` no issues · `prettier --check .` OK · `npm run build` 107 modules, 476 kB.
+- **Chưa commit**, đang ở branch `main`. Cần tạo branch mới trước khi commit.
+- App còn 4 page: Mix, Phân tích ảnh, Quản lý dữ liệu, Sổ công ty.
+
+## Việc tiếp theo
+
+- Tạo branch (vd `chore/remove-slicer-convert`) rồi commit.
+- Tồn từ session trước: recheck UI `ScrollToTopButton` — trang Sổ công ty ở 360px và desktop.
+
+## Ghi chú quan trọng
+
+- Quyết định gỡ trang "Đổi slicer" là của user, lý do: phạm vi quá lớn. Nếu sau này làm lại,
+  đọc `docs/research/slicer-interop.md` mục 9 TRƯỚC, và khôi phục code từ commit `fbe7d5f`.
+- Luận điểm hay gặp "mỗi slicer lưu print settings theo cách riêng" là **sai** trong phạm vi
+  họ Orca — đã verify bằng 2 file thật.
+
+## Session trước — 2026-09-18 (nút lên đầu trang)
+
+- Ngày: 2026-09-18
+- Tóm tắt: Thêm nút mũi tên "lên đầu trang" nổi ở góc dưới phải, áp dụng cho cả 5 page.
+
+## Đã thực hiện
+
+- `src/components/ScrollToTopButton.tsx` (mới) — nút `position: fixed` góc dưới phải, chỉ
+  hiện khi `window.scrollY > 320` (hằng `SHOW_AFTER_PX`), click gọi
+  `window.scrollTo({ top: 0, behavior: 'smooth' })`. Listener `scroll` đăng ký `passive: true`
+  và gỡ trong cleanup.
+- `src/components/ScrollToTopButton.module.css` (mới) — hình tròn 2.75rem, màu `--accent`,
+  hover `--accent-bright`, `--shadow-card`, `focus-visible` viền `--accent-blue`; ở <=480px
+  lùi sát góc hơn (0.85rem).
+- `src/App.tsx` — render `<ScrollToTopButton />` trong `.shell`, ngoài `.main`, nên dùng được
+  ở mọi page mà không phải sửa từng page.
+
+## Trạng thái hiện tại
+
+- `npx tsc --noEmit`: không lỗi.
+- CHƯA recheck bằng browser — đã hỏi user tự check hay để tự động check, user chưa chọn.
+  Điểm cần nhìn khi recheck: nút không đè lên nút ngăn kéo menu ở điện thoại, và không
+  che ô nhập ở dòng cuối bảng Sổ công ty.
+- Trang cuộn bằng `window`/body (`.shell` chỉ `min-height: 100vh`, `.main` không
+  `overflow`), nên bắt `window.scrollY` là đúng nguồn. Nếu sau này đổi sang cuộn trong
+  `.main` thì phải sửa lại component này.
+
+## Việc tiếp theo
+
+- Recheck UI nút này (khi user chọn phương án) — trang Sổ công ty ở 360px và desktop.
+
+## Session trước — 2026-09-17 (responsive + ngăn kéo menu)
+
 - Ngày: 2026-09-17
 - Tóm tắt: Làm **responsive cho cả 5 page** xuống mốc 360px, rồi thay thanh menu ngang bằng
   **ngăn kéo mở bằng nút ba gạch**. Phần lớn là CSS, nhưng recheck bằng Chrome lôi ra 4 lỗi

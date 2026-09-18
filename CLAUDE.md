@@ -7,10 +7,13 @@ selectbox → sinh ra 2 thứ:
 2. **Bộ thông số in Bambu Studio** (Quality / Strength / Speed / Filament) phù hợp
    với sản phẩm và máy in đã chọn
 
-Ngoài luồng Mix còn bốn trang phụ: Phân tích ảnh (Gemini đọc ảnh → prompt), Quản lý dữ liệu,
-**Đổi slicer** — tách file `.3mf` tải từ MakerWorld thành phần hình học dùng chung + bảng
-thông số ánh xạ sang slicer khác (xem `docs/research/slicer-interop.md`) — và **Sổ công ty**:
-thu, chi theo tháng, link tư liệu, sản phẩm đã in (thay file Excel 4 sheet của nhóm).
+Ngoài luồng Mix còn ba trang phụ: Phân tích ảnh (Gemini đọc ảnh → prompt), Quản lý dữ liệu,
+và **Sổ công ty**: thu, chi theo tháng, link tư liệu, sản phẩm đã in (thay file Excel 4 sheet
+của nhóm).
+
+Từng có trang **Đổi slicer** (tách file `.3mf` MakerWorld thành hình học + bảng ánh xạ thông
+số sang slicer khác). Đã gỡ bỏ vì phạm vi quá lớn so với giá trị mang lại — chi tiết ở
+`docs/research/slicer-interop.md`. Khôi phục code: `git show fbe7d5f`.
 
 ## Tech Stack
 
@@ -316,7 +319,7 @@ npx tsc --noEmit     # type check
 - `docs/research/bambu-print-parameters.md` — bảng thông số Bambu + trạng thái verify
 - `docs/research/anycubic-print-parameters.md` — bảng thông số Anycubic + Anycubic Slicer Next
 - `docs/research/slicer-interop.md` — cấu trúc file 3mf, phả hệ slicer, bảng ánh xạ thông số
-  Orca ↔ Cura (nguồn sự thật cho trang "Đổi slicer")
+  Orca ↔ Cura. Trang "Đổi slicer" đã gỡ, file giữ lại làm tư liệu nếu sau này làm lại
 - `docs/neon-setup.md` — cài đặt Neon, mô hình quyền, cách sao lưu/khôi phục dữ liệu
 - `docs/backblaze-setup.md` — nơi lưu ảnh Sổ công ty: tạo key, CORS rule, giới hạn hiện có
 

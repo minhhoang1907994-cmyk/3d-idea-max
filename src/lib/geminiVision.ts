@@ -15,26 +15,6 @@ export const DEFAULT_VISION_MODEL = 'gemini-2.5-flash';
 export const STORAGE_KEY_API = '3d-idea-max.gemini-api-key';
 export const STORAGE_KEY_MODEL = '3d-idea-max.gemini-model';
 
-/**
- * Yêu cầu gửi kèm ảnh. Ép Gemini trả về đúng một prompt tiếng Anh theo công thức
- * dành cho tạo ảnh, để dán thẳng sang Gemini/Imagen mà không phải sửa.
- */
-const INSTRUCTION = `You are helping design a 3D printable product.
-
-Look at the product in this image and write ONE image-generation prompt in English that would produce a NEW product in the same spirit — same craft, same charm, same kind of mechanism — but not an identical copy.
-
-Follow this structure in flowing natural sentences, never a comma-separated keyword list:
-[Subject] + [Action] + [Location/context] + [Composition] + [Style]
-
-Rules:
-- Describe what IS in the scene, never what is absent.
-- Name the 3D printing mechanism you can see (articulated segments, interlocking tiles, snap-fit parts, living hinge, swappable inserts, and so on) if there is one.
-- Mention material and finish that suit FDM 3D printing.
-- End with a sentence stating it is a 3D printed object.
-- No parameters like --ar or --v. No negative prompts. No markdown, no quotes, no preamble.
-
-Reply with the prompt text only.`;
-
 export type VisionResult = {
   prompt: string;
   /** Mô tả ngắn tiếng Việt về những gì model nhận ra, để user đối chiếu */
@@ -87,10 +67,19 @@ export async function analyzeImage(options: {
   base64Image: string;
   mimeType: string;
   apiKey: string;
+  /** Yêu cầu gửi kèm ảnh — xem buildVariantInstruction trong lib/imageVariant.ts */
+  instruction: string;
   model?: string;
   signal?: AbortSignal;
 }): Promise<VisionResult> {
-  const { base64Image, mimeType, apiKey, model = DEFAULT_VISION_MODEL, signal } = options;
+  const {
+    base64Image,
+    mimeType,
+    apiKey,
+    instruction,
+    model = DEFAULT_VISION_MODEL,
+    signal,
+  } = options;
 
   if (apiKey.trim() === '') {
     throw new Error('Chưa có API key. Nhập key Gemini ở phần cấu hình phía trên.');
@@ -105,7 +94,7 @@ export async function analyzeImage(options: {
     body: JSON.stringify({
       contents: [
         {
-          parts: [{ inlineData: { mimeType, data: base64Image } }, { text: INSTRUCTION }],
+          parts: [{ inlineData: { mimeType, data: base64Image } }, { text: instruction }],
         },
       ],
     }),

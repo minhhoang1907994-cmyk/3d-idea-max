@@ -8,7 +8,6 @@ import { CompanyLedgerPage } from './pages/CompanyLedgerPage';
 import { DataManagerPage } from './pages/DataManagerPage';
 import { ImageAnalyzePage } from './pages/ImageAnalyzePage';
 import { MixPage } from './pages/MixPage';
-import { SlicerConvertPage } from './pages/SlicerConvertPage';
 
 export default function App() {
   // Sổ công ty là trang vào đầu tiên — nó là thứ cả nhóm mở hằng ngày
@@ -27,8 +26,7 @@ export default function App() {
       <SideMenu current={page} onNavigate={setPage} dirtyPages={dirtyPages} />
       <div className={styles.main}>
         {page === 'mix' ? <MixPage data={dataStore.data} /> : null}
-        {page === 'image' ? <ImageAnalyzePage /> : null}
-        {page === 'convert' ? <SlicerConvertPage /> : null}
+        {page === 'image' ? <ImageAnalyzePage data={dataStore.data} /> : null}
         {page === 'data' ? <DataManagerPage dataStore={dataStore} /> : null}
         {page === 'company' ? <CompanyLedgerPage ledger={ledger} /> : null}
       </div>

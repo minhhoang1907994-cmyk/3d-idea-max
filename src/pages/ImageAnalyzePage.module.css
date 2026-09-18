@@ -88,6 +88,75 @@
   border-radius: 7px;
 }
 
+.variant {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  padding: 1rem 1.1rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  box-shadow: var(--shadow-card);
+}
+
+.variantHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.variantTitle {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.sourceRow {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.25rem;
+  padding: 0.2rem;
+  background: var(--surface-sunken);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+
+.sourceButton {
+  padding: 0.4rem 0.3rem;
+  font: inherit;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  background: none;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.sourceButton:hover {
+  color: var(--text);
+  background: var(--surface);
+}
+
+.sourceActive,
+.sourceActive:hover {
+  color: var(--accent-text);
+  background: var(--accent);
+}
+
+.variantNote {
+  margin: 0;
+  font-size: 0.76rem;
+  line-height: 1.5;
+  color: var(--text-faint);
+}
+
+.traitGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: 0.7rem;
+}
+
 .dropzone {
   display: flex;
   flex-direction: column;
@@ -229,8 +298,13 @@
     font-size: 1.3rem;
   }
 
-  .config {
+  .config,
+  .variant {
     padding: 0.85rem 0.9rem;
+  }
+
+  .traitGrid {
+    grid-template-columns: 1fr;
   }
 
   .dropzone {
