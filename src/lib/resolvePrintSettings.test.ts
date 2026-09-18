@@ -9,6 +9,7 @@ import type {
   AttributeOption,
   Filament,
   MixResult,
+  Printer,
   PrintSettings,
   SizeOption,
 } from '../types';
@@ -69,9 +70,46 @@ const pla = FILAMENTS_BY_ID['pla-basic']!;
 const abs = FILAMENTS_BY_ID['abs']!;
 const plaCf = FILAMENTS_BY_ID['pla-cf']!;
 const a1 = PRINTERS_BY_ID['a1']!;
-const a1Mini = PRINTERS_BY_ID['a1-mini']!;
-const x1c = PRINTERS_BY_ID['x1c']!;
 const kobraX = PRINTERS_BY_ID['kobra-x']!;
+
+/**
+ * A1 mini và X1-Carbon đã gỡ khỏi danh sách máy chọn được, nhưng hai nhánh logic mà
+ * chúng cover vẫn cần test: khổ in nhỏ hơn mô hình, và máy kín + có preset tốc độ.
+ * Giữ lại dưới dạng fixture — số liệu lấy từ docs/research/bambu-print-parameters.md.
+ */
+const a1Mini: Printer = {
+  id: 'a1-mini',
+  label: 'Bambu Lab A1 mini',
+  vendor: 'Bambu Lab',
+  slicerId: 'bambu-studio',
+  buildVolumeMm: { x: 180, y: 180, z: 180 },
+  isEnclosed: false,
+  supportedFilamentIds: ['pla-basic', 'petg-hf', 'tpu', 'pla-cf', 'petg-cf'],
+  notRecommendedFilamentIds: ['abs', 'asa', 'pc', 'asa-cf'],
+  sourceUrl: 'https://wiki.bambulab.com/en/a1-mini/manual/faq',
+};
+
+const x1c: Printer = {
+  id: 'x1c',
+  label: 'Bambu Lab X1-Carbon',
+  vendor: 'Bambu Lab',
+  slicerId: 'bambu-studio',
+  buildVolumeMm: { x: 256, y: 256, z: 256 },
+  isEnclosed: true,
+  supportedFilamentIds: [
+    'pla-basic',
+    'petg-hf',
+    'tpu',
+    'abs',
+    'asa',
+    'pc',
+    'pla-cf',
+    'petg-cf',
+    'asa-cf',
+  ],
+  notRecommendedFilamentIds: [],
+  sourceUrl: 'https://bambulab.com/en-us/x1',
+};
 
 /** Bảng của slicer chính hãng — luôn đứng đầu danh sách. */
 function nativeSlicer(settings: PrintSettings) {
