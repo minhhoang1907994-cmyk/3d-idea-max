@@ -66,6 +66,25 @@ set name = 'companyRevenues'
 where name = 'companyFinishedGoods'
   and not exists (select 1 from idea_documents where name = 'companyRevenues');
 
+-- Dòng nhập bằng bản app trước khi có cột Tháng/Ngày thì thiếu hai khoá đó. Thiếu `month`
+-- thì bộ lọc tháng không bắt được dòng nào cả (chỉ hiện ở "Tất cả các tháng"), nên điền
+-- tháng 2026-09 — tháng nhập liệu, KHÔNG phải ngày bán thật, nên `date` để rỗng cho người
+-- dùng tự điền. `||` chỉ thêm khoá còn thiếu, không đè lên dòng đã có sẵn giá trị.
+update idea_documents
+set content = (
+  select jsonb_agg(
+    case
+      when item->>'month' is null or item->>'date' is null
+        then jsonb_build_object('month', '2026-09', 'date', '') || item
+      else item
+    end
+    order by ordinality
+  )
+  from jsonb_array_elements(content) with ordinality as t(item, ordinality)
+)
+where name = 'companyRevenues'
+  and jsonb_array_length(content) > 0;
+
 -- Trường hợp cả hai cùng tồn tại (đã lỡ tạo companyRevenues trước khi chạy file này):
 -- bản cũ không còn ai đọc, xoá cho sạch. App KHÔNG xoá được dòng nào (role app_editor
 -- không có DELETE) nên chỉ owner chạy được câu này.

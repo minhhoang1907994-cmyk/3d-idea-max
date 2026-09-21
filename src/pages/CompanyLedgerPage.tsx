@@ -266,9 +266,10 @@ export function CompanyLedgerPage({ ledger }: Props) {
       ) : status.missing.length > 0 ? (
         <p className={styles.banner}>
           {status.missing.length} phần của sổ chưa có trên Neon ({status.missing.join(', ')}) nên
-          đang hiển thị bản đóng gói sẵn và <strong>chưa lưu lên được</strong>. Chạy{' '}
-          <code>db/migrations/003_company_documents.sql</code> trên Neon SQL Editor rồi{' '}
-          <code>npm run neon:seed:company</code> một lần.
+          đang hiển thị bản đóng gói sẵn và <strong>chưa lưu lên được</strong>. Chạy file migration
+          mới nhất trong <code>db/migrations/</code> trên Neon SQL Editor, rồi đẩy đúng phần còn
+          thiếu: <code>node scripts/neonSync.mjs push {status.missing.join(' ')}</code>. Xem{' '}
+          <code>docs/neon-setup.md</code>.
         </p>
       ) : (
         <p className={styles.banner}>
