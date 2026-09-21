@@ -4,6 +4,7 @@ import {
   ALL_MONTHS,
   createEntryId,
   createExpenseEntry,
+  createFinishedGood,
   currentMonth,
   filterByMonth,
   formatAmountForEdit,
@@ -14,6 +15,7 @@ import {
   monthOfDate,
   parseAmountInput,
   sumAmounts,
+  sumFinishedGoodPrices,
   summarizeLedger,
 } from './companyLedger';
 
@@ -206,6 +208,40 @@ describe('createExpenseEntry', () => {
       amount: null,
       date: '',
       imageUrl: '',
+    });
+  });
+});
+
+describe('sumFinishedGoodPrices', () => {
+  const good = (id: string, price: number | null) => ({
+    id,
+    name: '',
+    quantity: '',
+    description: '',
+    price,
+  });
+
+  it('cộng giá bán của mọi dòng', () => {
+    expect(sumFinishedGoodPrices([good('fg-1', 40000), good('fg-2', 15000)])).toBe(55000);
+  });
+
+  it('bỏ qua dòng chưa điền giá thay vì coi là 0', () => {
+    expect(sumFinishedGoodPrices([good('fg-1', 40000), good('fg-2', null)])).toBe(40000);
+  });
+
+  it('danh sách rỗng ra 0', () => {
+    expect(sumFinishedGoodPrices([])).toBe(0);
+  });
+});
+
+describe('createFinishedGood', () => {
+  it('dòng mới chưa có giá bán', () => {
+    expect(createFinishedGood('fg-1')).toEqual({
+      id: 'fg-1',
+      name: '',
+      quantity: '',
+      description: '',
+      price: null,
     });
   });
 });

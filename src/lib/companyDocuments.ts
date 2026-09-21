@@ -1,5 +1,5 @@
 /**
- * Chuyển đổi giữa Sổ công ty của app (CompanyData) và 4 document lưu trên Neon.
+ * Chuyển đổi giữa Sổ công ty của app (CompanyData) và 5 document lưu trên Neon.
  *
  * Cùng cách làm với lib/ideaDocuments.ts: tên document trùng khoá của
  * COMPANY_DATA_FILES nên một document tương ứng đúng một file JSON trong
@@ -17,6 +17,7 @@ const FIELD_BY_DOCUMENT: Record<CompanyDocumentName, keyof CompanyData> = {
   companyIncomes: 'incomes',
   companyNotes: 'notes',
   companyProducts: 'products',
+  companyFinishedGoods: 'finishedGoods',
 };
 
 export type CompanyDocumentVersions = Partial<Record<CompanyDocumentName, number>>;

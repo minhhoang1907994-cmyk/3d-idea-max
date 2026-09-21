@@ -124,8 +124,10 @@ deploy lại. Biến `VITE_*` được nhúng lúc build, nên đổi giá trị
 ### 2b. Mở quyền cho Sổ công ty (bắt buộc nếu dùng trang Sổ công ty)
 
 Dán [`db/migrations/003_company_documents.sql`](../db/migrations/003_company_documents.sql)
-vào SQL Editor → Run. File này nới danh sách `name` trong policy RLS cho 4 document của
-trang Sổ công ty (`companyExpenses`, `companyIncomes`, `companyNotes`, `companyProducts`).
+rồi [`db/migrations/004_finished_goods_document.sql`](../db/migrations/004_finished_goods_document.sql)
+vào SQL Editor → Run (đúng thứ tự). Hai file này nới danh sách `name` trong policy RLS cho 5
+document của trang Sổ công ty (`companyExpenses`, `companyIncomes`, `companyNotes`,
+`companyProducts`, `companyFinishedGoods`).
 
 Chưa chạy thì Neon từ chối ghi với lỗi
 `new row violates row-level security policy for table idea_documents`.
@@ -134,7 +136,7 @@ Chưa chạy thì Neon từ chối ghi với lỗi
 
 ```bash
 npm run neon:seed          # 7 document ý tưởng
-npm run neon:seed:company  # 4 document của Sổ công ty
+npm run neon:seed:company  # 5 document của Sổ công ty
 ```
 
 Đọc file trong `src/data/json/` và upsert lên Neon. Chạy lại bất cứ lúc nào để **ghi đè**

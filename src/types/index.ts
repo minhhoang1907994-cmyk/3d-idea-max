@@ -405,3 +405,23 @@ export type CompanyProduct = {
   /** Link file mẫu hoặc mô tả — hiển thị thành link khi bắt đầu bằng http */
   description: string;
 };
+
+/**
+ * Một thành phẩm đã in xong và đem bán.
+ *
+ * Khác CompanyProduct ở chỗ có giá bán: "Sản phẩm" là danh mục mẫu đã/đang in,
+ * còn đây là hàng bán được nên cần cộng tổng tiền.
+ */
+export type FinishedGood = {
+  id: string;
+  name: string;
+  quantity: string;
+  /** Link file mẫu hoặc mô tả — hiển thị thành link khi bắt đầu bằng http */
+  description: string;
+  /**
+   * Giá bán của cả dòng (không phải đơn giá) — cùng quy ước với `amount` của
+   * ExpenseEntry, nên tổng là cộng thẳng cột này, không nhân với `quantity`.
+   * null = chưa định giá, hiển thị "chưa có" và KHÔNG cộng vào tổng.
+   */
+  price: number | null;
+};

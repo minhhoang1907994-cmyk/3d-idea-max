@@ -31,19 +31,21 @@ export const DOCUMENT_NAMES = [
 export type DocumentName = (typeof DOCUMENT_NAMES)[number];
 
 /**
- * Tên 4 document của Sổ công ty — khớp khoá của COMPANY_DATA_FILES trong
+ * Tên 5 document của Sổ công ty — khớp khoá của COMPANY_DATA_FILES trong
  * data/companyData.ts. Nằm chung bảng `idea_documents` vì cùng một mô hình lưu trữ
  * (mỗi document là một file JSON) và cùng một cơ chế khoá lạc quan; tách bảng riêng
  * sẽ phải nhân đôi trigger lịch sử và policy RLS mà không đổi được gì.
  *
  * ⚠️ Thêm tên mới ở đây PHẢI kèm migration nới danh sách `name` trong policy RLS,
- * nếu không Neon từ chối ghi — xem db/migrations/003_company_documents.sql.
+ * nếu không Neon từ chối ghi — xem db/migrations/003_company_documents.sql và
+ * db/migrations/004_finished_goods_document.sql.
  */
 export const COMPANY_DOCUMENT_NAMES = [
   'companyExpenses',
   'companyIncomes',
   'companyNotes',
   'companyProducts',
+  'companyFinishedGoods',
 ] as const;
 
 export type CompanyDocumentName = (typeof COMPANY_DOCUMENT_NAMES)[number];

@@ -18,6 +18,7 @@ const FALLBACK: CompanyData = {
   incomes: [{ id: 'inc-1', month: '2026-09', source: 'vốn', note: '', amount: 3000000 }],
   notes: [{ id: 'note-1', type: 'Trick', link: 'https://a.b', description: 'x' }],
   products: [{ id: 'prod-1', name: 'Benchy', quantity: '1', description: '' }],
+  finishedGoods: [{ id: 'fg-1', name: 'Móc khoá', quantity: '2', description: '', price: 40000 }],
 };
 
 describe('mergeCompanyDocuments', () => {
@@ -52,6 +53,7 @@ describe('mergeCompanyDocuments', () => {
       'companyIncomes',
       'companyNotes',
       'companyProducts',
+      'companyFinishedGoods',
     ]);
     expect(result.versions).toEqual({});
   });
@@ -84,12 +86,13 @@ describe('mergeCompanyDocuments', () => {
 });
 
 describe('splitCompanyDocuments', () => {
-  it('tách đúng 4 document theo tên dùng trên Neon', () => {
+  it('tách đúng 5 document theo tên dùng trên Neon', () => {
     expect(splitCompanyDocuments(FALLBACK)).toEqual({
       companyExpenses: FALLBACK.expenses,
       companyIncomes: FALLBACK.incomes,
       companyNotes: FALLBACK.notes,
       companyProducts: FALLBACK.products,
+      companyFinishedGoods: FALLBACK.finishedGoods,
     });
   });
 });

@@ -6,8 +6,8 @@
  *   node scripts/neonSync.mjs push <tên...>   — chỉ đẩy đúng những document được nêu tên
  *   node scripts/neonSync.mjs pull            — kéo dữ liệu trên Neon về file JSON (sao lưu / đưa vào repo)
  *
- * Nêu tên khi chỉ muốn đẩy một phần: `push` ghi đè bản trên Neon, nên đẩy cả 11 document
- * chỉ để tạo mới 4 document của Sổ công ty là xoá mất phần người khác vừa sửa online.
+ * Nêu tên khi chỉ muốn đẩy một phần: `push` ghi đè bản trên Neon, nên đẩy cả 12 document
+ * chỉ để tạo mới 5 document của Sổ công ty là xoá mất phần người khác vừa sửa online.
  *
  * Chuỗi kết nối đọc từ biến môi trường VITE_NEON_DATABASE_URL, hoặc từ file .env ở
  * gốc repo. Script chạy bằng chính role `app_editor` như app, nên quyền của nó đúng
@@ -41,6 +41,7 @@ const DOCUMENTS = {
   companyIncomes: 'companyIncomes.json',
   companyNotes: 'companyNotes.json',
   companyProducts: 'companyProducts.json',
+  companyFinishedGoods: 'companyFinishedGoods.json',
 };
 
 function readEnvFile() {

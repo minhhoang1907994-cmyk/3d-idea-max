@@ -30,6 +30,7 @@ const DOCUMENT_BY_COLLECTION: Record<CollectionKey, CompanyDocumentName> = {
   incomes: 'companyIncomes',
   notes: 'companyNotes',
   products: 'companyProducts',
+  finishedGoods: 'companyFinishedGoods',
 };
 
 export type CompanyStatus = {
@@ -50,7 +51,7 @@ function describeError(error: unknown, fallback: string): string {
 }
 
 /**
- * Quản lý Sổ công ty (thu, chi, note, sản phẩm).
+ * Quản lý Sổ công ty (thu, chi, note, sản phẩm, thành phẩm).
  *
  * Cùng mô hình với useIdeaData: nguồn chính là Neon, mất mạng thì rơi về bản đóng gói
  * sẵn trong bundle để không trắng màn hình. Tách hook riêng vì trang Sổ công ty không
@@ -179,7 +180,7 @@ export function useCompanyLedger() {
     }
     setStatus((current) => ({
       ...current,
-      message: 'Đã tải 4 file JSON về máy — chép đè vào src/data/json/ để đưa vào repo.',
+      message: `Đã tải ${COMPANY_DOCUMENT_NAMES.length} file JSON về máy — chép đè vào src/data/json/ để đưa vào repo.`,
     }));
   }, [data]);
 

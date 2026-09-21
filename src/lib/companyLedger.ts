@@ -5,7 +5,13 @@
  * để test được — xem CLAUDE.md > Quy tắc của project.
  */
 
-import type { CompanyNote, CompanyProduct, ExpenseEntry, IncomeEntry } from '../types';
+import type {
+  CompanyNote,
+  CompanyProduct,
+  ExpenseEntry,
+  FinishedGood,
+  IncomeEntry,
+} from '../types';
 
 /** Dòng nào cũng có tiền và tháng — đủ để cộng tổng mà không cần biết là thu hay chi. */
 type MonthlyAmountRow = { month: string; amount: number | null };
@@ -154,4 +160,16 @@ export function createCompanyNote(id: string): CompanyNote {
 
 export function createCompanyProduct(id: string): CompanyProduct {
   return { id, name: '', quantity: '', description: '' };
+}
+
+export function createFinishedGood(id: string): FinishedGood {
+  return { id, name: '', quantity: '', description: '', price: null };
+}
+
+/**
+ * Tổng giá bán của danh sách thành phẩm. Dòng chưa điền giá (`null`) bị bỏ qua,
+ * giống `sumAmounts` — số 0 ở đây là khẳng định "bán không đồng nào", không phải "chưa biết".
+ */
+export function sumFinishedGoodPrices(goods: readonly FinishedGood[]): number {
+  return goods.reduce((total, good) => total + (good.price ?? 0), 0);
 }
