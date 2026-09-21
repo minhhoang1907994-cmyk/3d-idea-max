@@ -61,42 +61,42 @@
     {
       "id": "display",
       "label": "Chỉ để trưng bày",
-      "promptText": "intended as a display piece",
-      "sparseInfillDensityPercent": 10,
-      "sparseInfillPattern": "Grid",
       "wallLoops": 3,
+      "promptText": "intended as a display piece",
       "topShellLayers": 3,
-      "bottomShellLayers": 3
+      "bottomShellLayers": 3,
+      "sparseInfillPattern": "Grid",
+      "sparseInfillDensityPercent": 10
     },
     {
       "id": "everyday",
       "label": "Dùng hằng ngày",
-      "promptText": "intended for everyday use",
-      "sparseInfillDensityPercent": 20,
-      "sparseInfillPattern": "Gyroid",
       "wallLoops": 3,
+      "promptText": "intended for everyday use",
       "topShellLayers": 4,
-      "bottomShellLayers": 3
+      "bottomShellLayers": 3,
+      "sparseInfillPattern": "Gyroid",
+      "sparseInfillDensityPercent": 20
     },
     {
       "id": "functional",
       "label": "Chịu lực, cơ khí",
-      "promptText": "intended as a sturdy functional part",
-      "sparseInfillDensityPercent": 25,
-      "sparseInfillPattern": "Gyroid",
       "wallLoops": 4,
+      "promptText": "intended as a sturdy functional part",
       "topShellLayers": 5,
-      "bottomShellLayers": 4
+      "bottomShellLayers": 4,
+      "sparseInfillPattern": "Gyroid",
+      "sparseInfillDensityPercent": 25
     },
     {
       "id": "heavy-duty",
       "label": "Chịu tải nặng",
-      "promptText": "intended as a heavy-duty load-bearing part",
-      "sparseInfillDensityPercent": 40,
-      "sparseInfillPattern": "Gyroid",
       "wallLoops": 5,
+      "promptText": "intended as a heavy-duty load-bearing part",
       "topShellLayers": 6,
-      "bottomShellLayers": 5
+      "bottomShellLayers": 5,
+      "sparseInfillPattern": "Gyroid",
+      "sparseInfillDensityPercent": 40
     }
   ]
 }

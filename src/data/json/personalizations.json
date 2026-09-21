@@ -14,14 +14,26 @@
     "label": "Chữ lồng",
     "promptText": "carrying a decorative interlocked monogram"
   },
-  { "id": "date-stamp", "label": "Dấu ngày tháng", "promptText": "stamped with a memorable date" },
-  { "id": "number-plate", "label": "Số thứ tự", "promptText": "marked with a large bold number" },
+  {
+    "id": "date-stamp",
+    "label": "Dấu ngày tháng",
+    "promptText": "stamped with a memorable date"
+  },
+  {
+    "id": "number-plate",
+    "label": "Số thứ tự",
+    "promptText": "marked with a large bold number"
+  },
   {
     "id": "lithophane-photo",
     "label": "Ảnh lithophane",
     "promptText": "featuring a lithophane photo panel that appears when backlit"
   },
-  { "id": "qr-code", "label": "Mã QR", "promptText": "with a raised QR code tile on the back" },
+  {
+    "id": "qr-code",
+    "label": "Mã QR",
+    "promptText": "with a raised QR code tile on the back"
+  },
   {
     "id": "soundwave",
     "label": "Sóng âm",
@@ -37,7 +49,11 @@
     "label": "Cung hoàng đạo",
     "promptText": "decorated with a zodiac constellation"
   },
-  { "id": "fingerprint", "label": "Vân tay", "promptText": "carrying a fingerprint relief" },
+  {
+    "id": "fingerprint",
+    "label": "Vân tay",
+    "promptText": "carrying a fingerprint relief"
+  },
   {
     "id": "swappable-name-tiles",
     "label": "Thẻ tên thay được",

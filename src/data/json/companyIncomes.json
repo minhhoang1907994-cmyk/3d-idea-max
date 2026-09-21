@@ -1,23 +1,23 @@
 [
   {
     "id": "inc-001",
-    "month": "2026-09",
-    "source": "Hoàng - vốn ban đầu",
     "note": "",
-    "amount": 3000000
+    "month": "2026-09",
+    "amount": 3000000,
+    "source": "Hoàng - vốn ban đầu (33.33% cổ phần)"
   },
   {
     "id": "inc-002",
-    "month": "2026-09",
-    "source": "Thụy - vốn ban đầu",
     "note": "",
-    "amount": 3000000
+    "month": "2026-09",
+    "amount": 3000000,
+    "source": "Thụy - vốn ban đầu (33.33% cổ phần)"
   },
   {
     "id": "inc-003",
+    "note": "Nợ 2tr hẹn 15/10/2026 trả (ko trả thì cắt 22.22% cổ phần)",
     "month": "2026-09",
-    "source": "Thắng - vốn ban đầu",
-    "note": "Nợ 2tr hẹn 15/10/2026 trả",
-    "amount": 3000000
+    "amount": 3000000,
+    "source": "Thắng - vốn ban đầu (33.33% cổ phần)"
   }
 ]

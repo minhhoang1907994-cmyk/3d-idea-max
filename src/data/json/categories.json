@@ -2,7 +2,6 @@
   {
     "id": "toys-and-figures",
     "label": "Đồ chơi & mô hình",
-    "promptText": "a collectible toy",
     "domain": "playful",
     "products": [
       {
@@ -156,12 +155,12 @@
         "promptText": "a friendly cartoon monster figure"
       }
     ],
+    "promptText": "a collectible toy",
     "isCharacter": true
   },
   {
     "id": "home-decor",
     "label": "Trang trí nhà cửa",
-    "promptText": "a home decor object",
     "domain": "decorative",
     "products": [
       {
@@ -315,12 +314,12 @@
         "label": "Vỏ đèn ngủ",
         "promptText": "a soft-glow night light cover"
       }
-    ]
+    ],
+    "promptText": "a home decor object"
   },
   {
     "id": "kitchenware",
     "label": "Đồ dùng nhà bếp",
-    "promptText": "a kitchen utility object",
     "domain": "functional",
     "products": [
       {
@@ -473,12 +472,12 @@
         "label": "Giá thẻ công thức",
         "promptText": "an angled recipe card stand"
       }
-    ]
+    ],
+    "promptText": "a kitchen utility object"
   },
   {
     "id": "desk-organization",
     "label": "Tổ chức bàn làm việc",
-    "promptText": "a desk organizer",
     "domain": "functional",
     "products": [
       {
@@ -646,12 +645,12 @@
         "label": "Bảng theo dõi thói quen",
         "promptText": "a habit tracker board with flip tokens for each day"
       }
-    ]
+    ],
+    "promptText": "a desk organizer"
   },
   {
     "id": "tech-accessories",
     "label": "Phụ kiện công nghệ",
-    "promptText": "a tech accessory",
     "domain": "functional",
     "products": [
       {
@@ -804,12 +803,12 @@
         "label": "Giá đọc sách điện tử",
         "promptText": "a folding e-reader stand"
       }
-    ]
+    ],
+    "promptText": "a tech accessory"
   },
   {
     "id": "school-supplies",
     "label": "Đồ dùng học tập",
-    "promptText": "a study accessory",
     "domain": "functional",
     "products": [
       {
@@ -977,12 +976,12 @@
         "label": "Bảng theo dõi bài tập",
         "promptText": "a homework tracking board with movable markers"
       }
-    ]
+    ],
+    "promptText": "a study accessory"
   },
   {
     "id": "tools-and-hardware",
     "label": "Dụng cụ & đồ nghề",
-    "promptText": "a workshop tool",
     "domain": "functional",
     "products": [
       {
@@ -1135,12 +1134,12 @@
         "label": "Vách hộp dụng cụ",
         "promptText": "a modular toolbox divider"
       }
-    ]
+    ],
+    "promptText": "a workshop tool"
   },
   {
     "id": "educational-toys",
     "label": "Đồ chơi giáo dục",
-    "promptText": "an educational toy",
     "domain": "playful",
     "products": [
       {
@@ -1293,12 +1292,12 @@
         "label": "Mô hình bàn tay",
         "promptText": "an articulated skeletal hand model"
       }
-    ]
+    ],
+    "promptText": "an educational toy"
   },
   {
     "id": "fashion-accessories",
     "label": "Phụ kiện thời trang",
-    "promptText": "a wearable accessory",
     "domain": "decorative",
     "products": [
       {
@@ -1451,12 +1450,12 @@
         "label": "Móc khóa trang trí",
         "promptText": "a sculpted keyring fob"
       }
-    ]
+    ],
+    "promptText": "a wearable accessory"
   },
   {
     "id": "pet-supplies",
     "label": "Đồ cho thú cưng",
-    "promptText": "a pet accessory",
     "domain": "playful",
     "products": [
       {
@@ -1609,12 +1608,12 @@
         "label": "Chốt lồng vận chuyển",
         "promptText": "a replacement latch for a pet carrier door"
       }
-    ]
+    ],
+    "promptText": "a pet accessory"
   },
   {
     "id": "garden-and-plants",
     "label": "Cây cảnh & làm vườn",
-    "promptText": "a gardening object",
     "domain": "nature",
     "products": [
       {
@@ -1767,12 +1766,12 @@
         "label": "Hộp gói hạt giống",
         "promptText": "a divided seed packet storage box"
       }
-    ]
+    ],
+    "promptText": "a gardening object"
   },
   {
     "id": "mechanical-parts",
     "label": "Cơ khí & khớp nối",
-    "promptText": "a mechanical part",
     "domain": "mechanical",
     "products": [
       {
@@ -1925,12 +1924,12 @@
         "label": "Hộp lò xo lên dây",
         "promptText": "a wind-up spring motor box"
       }
-    ]
+    ],
+    "promptText": "a mechanical part"
   },
   {
     "id": "gifts-and-keepsakes",
     "label": "Quà tặng & kỷ niệm",
-    "promptText": "a keepsake gift",
     "domain": "decorative",
     "products": [
       {
@@ -2084,12 +2083,12 @@
         "label": "Hộp thiệp quà",
         "promptText": "a sculpted gift card holder"
       }
-    ]
+    ],
+    "promptText": "a keepsake gift"
   },
   {
     "id": "vehicle-accessories",
     "label": "Phụ kiện xe cộ",
-    "promptText": "a vehicle accessory",
     "domain": "functional",
     "products": [
       {
@@ -2242,12 +2241,12 @@
         "label": "Đệm kê xe kéo",
         "promptText": "a stepped caravan levelling block"
       }
-    ]
+    ],
+    "promptText": "a vehicle accessory"
   },
   {
     "id": "bathroom-accessories",
     "label": "Đồ dùng phòng tắm",
-    "promptText": "a bathroom accessory",
     "domain": "functional",
     "products": [
       {
@@ -2400,12 +2399,12 @@
         "label": "Biển phòng tắm",
         "promptText": "a door sign for a bathroom"
       }
-    ]
+    ],
+    "promptText": "a bathroom accessory"
   },
   {
     "id": "storage-and-containers",
     "label": "Hộp & lưu trữ",
-    "promptText": "a storage container",
     "domain": "functional",
     "products": [
       {
@@ -2558,12 +2557,12 @@
         "label": "Giá xếp nắp hộp",
         "promptText": "a rack that stands food container lids upright"
       }
-    ]
+    ],
+    "promptText": "a storage container"
   },
   {
     "id": "sports-and-outdoors",
     "label": "Thể thao & dã ngoại",
-    "promptText": "an outdoor gear item",
     "domain": "playful",
     "products": [
       {
@@ -2716,6 +2715,7 @@
         "label": "Nĩa nướng",
         "promptText": "a long campfire toasting fork handle"
       }
-    ]
+    ],
+    "promptText": "an outdoor gear item"
   }
 ]

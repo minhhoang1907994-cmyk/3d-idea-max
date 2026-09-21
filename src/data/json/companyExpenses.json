@@ -1,72 +1,62 @@
 [
   {
-    "id": "exp-001",
-    "month": "2026-09",
-    "name": "Máy In Bambu Lab A1",
-    "link": "",
-    "quantity": "1",
-    "amount": null,
-    "date": "",
-    "imageUrl": ""
-  },
-  {
-    "id": "exp-002",
-    "month": "2026-09",
-    "name": "Cuộn PLA",
-    "link": "",
-    "quantity": "6",
-    "amount": null,
-    "date": "",
-    "imageUrl": ""
-  },
-  {
-    "id": "exp-003",
-    "month": "2026-09",
-    "name": "Tài khoản Meshy Plus",
-    "link": "",
-    "quantity": "1 tháng",
-    "amount": null,
-    "date": "",
-    "imageUrl": ""
-  },
-  {
-    "id": "exp-004",
-    "month": "2026-09",
-    "name": "điện",
-    "link": "",
-    "quantity": "1 tháng",
-    "amount": null,
-    "date": "",
-    "imageUrl": ""
-  },
-  {
     "id": "exp-005",
-    "month": "2026-09",
-    "name": "Máy In Kobra X",
-    "link": "",
-    "quantity": "1",
-    "amount": 6425000,
     "date": "2026-09-17",
-    "imageUrl": ""
+    "link": "",
+    "name": "Máy In Kobra X",
+    "month": "2026-09",
+    "amount": 6425000,
+    "imageUrl": "expenses/2026-09/mu59azqhqqeyku.jpg",
+    "quantity": "1"
   },
   {
     "id": "exp-006",
-    "month": "2026-09",
-    "name": "LÕI NHỰA ĐÚC TÁI SỬ DỤNG KAABER CHO NHỰA IN 3D",
-    "link": "https://shopee.vn/L%C3%95I-NH%E1%BB%B0A-%C4%90%C3%9AC-T%C3%81I-S%E1%BB%AC-D%E1%BB%A4NG-KAABER-CHO-NH%E1%BB%B0A-IN-3D-KH%C3%94NG-L%C3%95I-T%C6%AF%C6%A0NG-TH%C3%8DCH-NH%E1%BB%B0A-IN-3D-BAMBU-KAABER...-i.1928142831.56167831283?extraParams=%7B%22display_model_id%22%3A376509474482%2C%22model_selection_logic%22%3A3%7D",
-    "quantity": "4",
-    "amount": 127100,
     "date": "2026-09-16",
-    "imageUrl": ""
+    "link": "https://shopee.vn/L%C3%95I-NH%E1%BB%B0A-%C4%90%C3%9AC-T%C3%81I-S%E1%BB%AC-D%E1%BB%A4NG-KAABER-CHO-NH%E1%BB%B0A-IN-3D-KH%C3%94NG-L%C3%95I-T%C6%AF%C6%A0NG-TH%C3%8DCH-NH%E1%BB%B0A-IN-3D-BAMBU-KAABER...-i.1928142831.56167831283?extraParams=%7B%22display_model_id%22%3A376509474482%2C%22model_selection_logic%22%3A3%7D",
+    "name": "LÕI NHỰA ĐÚC TÁI SỬ DỤNG KAABER CHO NHỰA IN 3D",
+    "month": "2026-09",
+    "amount": 127100,
+    "imageUrl": "expenses/2026-09/mu598m2gp5lwjz.jpg",
+    "quantity": "4"
   },
   {
     "id": "exp-007",
-    "month": "2026-09",
-    "name": "NHỰA IN 3D PETG KHÔNG LÕI KAABER 1KG",
-    "link": "https://shopee.vn/NH%E1%BB%B0A-IN-3D-PETG-KH%C3%94NG-L%C3%95I-KAABER-1KG-%E2%80%93-GI%C3%81-R%E1%BA%BA-D%E1%BB%84-IN-M%C3%80U-S%E1%BA%AEC-%C4%90A-D%E1%BA%A0NG-i.1928142831.41134243834?extraParams=%7B%22display_model_id%22%3A446478152419%2C%22model_selection_logic%22%3A3%7D",
-    "quantity": "4",
-    "amount": 406460,
     "date": "2026-09-17",
-    "imageUrl": ""
+    "link": "https://shopee.vn/NH%E1%BB%B0A-IN-3D-PETG-KH%C3%94NG-L%C3%95I-KAABER-1KG-%E2%80%93-GI%C3%81-R%E1%BA%BA-D%E1%BB%84-IN-M%C3%80U-S%E1%BA%AEC-%C4%90A-D%E1%BA%A0NG-i.1928142831.41134243834?extraParams=%7B%22display_model_id%22%3A446478152419%2C%22model_selection_logic%22%3A3%7D",
+    "name": "NHỰA IN 3D PETG KHÔNG LÕI KAABER 1KG",
+    "month": "2026-09",
+    "amount": 406460,
+    "imageUrl": "expenses/2026-09/mu59b599wdckab.jpg",
+    "quantity": "4"
+  },
+  {
+    "id": "exp-muazf1mu-5mdx",
+    "date": "2026-09-21",
+    "link": "",
+    "name": "Tiền điện tháng 9 (từ ngày 20)",
+    "month": "2026-09",
+    "amount": 70000,
+    "imageUrl": "",
+    "quantity": ""
+  },
+  {
+    "id": "exp-muazft6u-6qxg",
+    "date": "2026-09-21",
+    "link": "https://shopee.vn/NH%E1%BB%B0A-IN-3D-PETG-KH%C3%94NG-L%C3%95I-KAABER-1KG-%E2%80%93-GI%C3%81-R%E1%BA%BA-D%E1%BB%84-IN-M%C3%80U-S%E1%BA%AEC-%C4%90A-D%E1%BA%A0NG-i.1928142831.41134243834?extraParams=%7B%22display_model_id%22%3A446478152419%2C%22model_selection_logic%22%3A3%7D",
+    "name": "NHỰA IN 3D PETG KHÔNG LÕI KAABER 1KG",
+    "month": "2026-09",
+    "amount": null,
+    "imageUrl": "",
+    "quantity": ""
+  },
+  {
+    "id": "exp-muazg1om-933a",
+    "date": "",
+    "link": "",
+    "name": "",
+    "month": "2026-09",
+    "amount": null,
+    "imageUrl": "",
+    "quantity": ""
   }
 ]

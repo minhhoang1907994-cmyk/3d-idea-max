@@ -675,6 +675,11 @@
         "id": "holding-book",
         "label": "Cầm sách đọc",
         "promptText": "holding an open book in both hands"
+      },
+      {
+        "id": "mot-tay-chong-xuong-dat-1-tay-do-len-nhu-sap-sua-dam-vao-nguoi-doi-dien",
+        "label": "một tay chống xuống đất, 1 tay dơ lên như sắp sửa đấm vào người đối diện",
+        "promptText": "one hand on the ground, the other hand raised as if about to punch the opposite person"
       }
     ]
   },
