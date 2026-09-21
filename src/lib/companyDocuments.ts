@@ -17,7 +17,7 @@ const FIELD_BY_DOCUMENT: Record<CompanyDocumentName, keyof CompanyData> = {
   companyIncomes: 'incomes',
   companyNotes: 'notes',
   companyProducts: 'products',
-  companyFinishedGoods: 'finishedGoods',
+  companyRevenues: 'revenues',
 };
 
 export type CompanyDocumentVersions = Partial<Record<CompanyDocumentName, number>>;

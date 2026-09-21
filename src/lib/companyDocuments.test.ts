@@ -18,7 +18,17 @@ const FALLBACK: CompanyData = {
   incomes: [{ id: 'inc-1', month: '2026-09', source: 'vốn', note: '', amount: 3000000 }],
   notes: [{ id: 'note-1', type: 'Trick', link: 'https://a.b', description: 'x' }],
   products: [{ id: 'prod-1', name: 'Benchy', quantity: '1', description: '' }],
-  finishedGoods: [{ id: 'fg-1', name: 'Móc khoá', quantity: '2', description: '', price: 40000 }],
+  revenues: [
+    {
+      id: 'fg-1',
+      month: '2026-09',
+      name: 'Móc khoá',
+      quantity: '2',
+      description: '',
+      price: 40000,
+      date: '',
+    },
+  ],
 };
 
 describe('mergeCompanyDocuments', () => {
@@ -53,7 +63,7 @@ describe('mergeCompanyDocuments', () => {
       'companyIncomes',
       'companyNotes',
       'companyProducts',
-      'companyFinishedGoods',
+      'companyRevenues',
     ]);
     expect(result.versions).toEqual({});
   });
@@ -92,7 +102,7 @@ describe('splitCompanyDocuments', () => {
       companyIncomes: FALLBACK.incomes,
       companyNotes: FALLBACK.notes,
       companyProducts: FALLBACK.products,
-      companyFinishedGoods: FALLBACK.finishedGoods,
+      companyRevenues: FALLBACK.revenues,
     });
   });
 });

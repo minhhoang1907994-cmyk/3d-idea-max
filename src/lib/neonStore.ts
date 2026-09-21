@@ -38,14 +38,14 @@ export type DocumentName = (typeof DOCUMENT_NAMES)[number];
  *
  * ⚠️ Thêm tên mới ở đây PHẢI kèm migration nới danh sách `name` trong policy RLS,
  * nếu không Neon từ chối ghi — xem db/migrations/003_company_documents.sql và
- * db/migrations/004_finished_goods_document.sql.
+ * db/migrations/005_revenue_document.sql.
  */
 export const COMPANY_DOCUMENT_NAMES = [
   'companyExpenses',
   'companyIncomes',
   'companyNotes',
   'companyProducts',
-  'companyFinishedGoods',
+  'companyRevenues',
 ] as const;
 
 export type CompanyDocumentName = (typeof COMPANY_DOCUMENT_NAMES)[number];

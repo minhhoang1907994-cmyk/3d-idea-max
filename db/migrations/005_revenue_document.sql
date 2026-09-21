@@ -1,16 +1,11 @@
--- ⚠️ ĐÃ BỊ 005_revenue_document.sql THAY THẾ — tab "Thành phẩm" đổi tên thành "Doanh thu"
--- và document companyFinishedGoods đổi thành companyRevenues. Cài mới thì chạy 003 rồi
--- 005, BỎ QUA file này. Giữ lại vì nó đã được chạy trên database thật.
+-- Đổi tên document thứ 5 của Sổ công ty: companyFinishedGoods → companyRevenues
+-- (tab "Thành phẩm" đổi tên thành "Doanh thu").
 --
--- Nới danh sách `name` được phép ghi vào idea_documents cho document thứ 5 của Sổ công ty:
--- companyFinishedGoods (tab "Thành phẩm" — hàng đã in xong và đem bán, có giá bán).
---
--- Chạy file này trong Neon SQL Editor bằng role owner (neondb_owner), MỘT LẦN, TRƯỚC KHI
--- chạy `npm run neon:seed:company`. Chưa chạy thì Neon từ chối ghi document mới với lỗi
--- "new row violates row-level security policy for table idea_documents".
---
--- Chỉ chép lại nguyên danh sách của 003 và thêm một tên: policy RLS không cộng dồn được,
--- mỗi lần drop/create là ghi đè toàn bộ điều kiện cũ.
+-- Chạy file này trong Neon SQL Editor bằng role owner (neondb_owner), MỘT LẦN, bằng nút
+-- Run (KHÔNG phải Explain — EXPLAIN không nhận DDL và sẽ báo syntax error tại `drop`).
+-- Thay thế hoàn toàn 004_finished_goods_document.sql: policy RLS không cộng dồn được,
+-- mỗi lần drop/create là ghi đè toàn bộ điều kiện cũ. Cài mới thì chạy 003 rồi 005,
+-- không cần chạy 004.
 
 -- Policy cho role `anonymous` (đường Data API, hiện không dùng được — giữ cho khớp 001)
 drop policy if exists idea_documents_insert on idea_documents;
@@ -21,7 +16,7 @@ create policy idea_documents_insert on idea_documents
       'categories', 'attributes', 'technicalAxes',
       'mechanisms', 'characters', 'personalizations', 'fusionFormulas',
       'companyExpenses', 'companyIncomes', 'companyNotes', 'companyProducts',
-      'companyFinishedGoods'
+      'companyRevenues'
     )
   );
 
@@ -34,7 +29,7 @@ create policy idea_documents_update on idea_documents
       'categories', 'attributes', 'technicalAxes',
       'mechanisms', 'characters', 'personalizations', 'fusionFormulas',
       'companyExpenses', 'companyIncomes', 'companyNotes', 'companyProducts',
-      'companyFinishedGoods'
+      'companyRevenues'
     )
   );
 
@@ -47,7 +42,7 @@ create policy idea_documents_app_insert on idea_documents
       'categories', 'attributes', 'technicalAxes',
       'mechanisms', 'characters', 'personalizations', 'fusionFormulas',
       'companyExpenses', 'companyIncomes', 'companyNotes', 'companyProducts',
-      'companyFinishedGoods'
+      'companyRevenues'
     )
   );
 
@@ -60,9 +55,23 @@ create policy idea_documents_app_update on idea_documents
       'categories', 'attributes', 'technicalAxes',
       'mechanisms', 'characters', 'personalizations', 'fusionFormulas',
       'companyExpenses', 'companyIncomes', 'companyNotes', 'companyProducts',
-      'companyFinishedGoods'
+      'companyRevenues'
     )
   );
 
+-- Chuyển document cũ sang tên mới, giữ nguyên nội dung nếu đã có ai nhập dòng nào.
+-- `where not exists` để chạy lại lần hai không đè mất bản mới.
+update idea_documents
+set name = 'companyRevenues'
+where name = 'companyFinishedGoods'
+  and not exists (select 1 from idea_documents where name = 'companyRevenues');
+
+-- Trường hợp cả hai cùng tồn tại (đã lỡ tạo companyRevenues trước khi chạy file này):
+-- bản cũ không còn ai đọc, xoá cho sạch. App KHÔNG xoá được dòng nào (role app_editor
+-- không có DELETE) nên chỉ owner chạy được câu này.
+delete from idea_documents where name = 'companyFinishedGoods';
+delete from idea_document_history where name = 'companyFinishedGoods';
+
 -- Kiểm tra sau khi chạy (chạy bằng role owner):
--- select policyname, cmd, with_check from pg_policies where tablename = 'idea_documents';
+-- select name, version, jsonb_array_length(content) as rows from idea_documents
+--   where name like 'company%' order by name;

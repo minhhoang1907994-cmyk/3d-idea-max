@@ -8,7 +8,7 @@ selectbox → sinh ra 2 thứ:
    với sản phẩm và máy in đã chọn
 
 Ngoài luồng Mix còn ba trang phụ: Phân tích ảnh (Gemini đọc ảnh → prompt), Quản lý dữ liệu,
-và **Sổ công ty**: thu, chi theo tháng, link tư liệu, sản phẩm đã in, thành phẩm đem bán
+và **Sổ công ty**: thu, chi theo tháng, link tư liệu, sản phẩm đã in, doanh thu
 (thay file Excel 4 sheet của nhóm).
 
 Từng có trang **Đổi slicer** (tách file `.3mf` MakerWorld thành hình học + bảng ánh xạ thông
@@ -38,7 +38,7 @@ số sang slicer khác). Đã gỡ bỏ vì phạm vi quá lớn so với giá t
 | 6   | Quy mô dữ liệu: **15 danh mục × 30 sản phẩm**                | Dễ nâng lên sau, không phải sửa cấu trúc                                                                                                                                                                                                                                                                                                                                   |
 | 7   | Tool tạo ảnh đích: **Gemini**                                | Prompt dạng câu văn tự nhiên, không keyword list, không cú pháp tham số                                                                                                                                                                                                                                                                                                    |
 | 8   | Dữ liệu ý tưởng lưu trên **Neon**, ai cũng sửa được          | Không đăng nhập — app nối bằng role `app_editor` (chỉ select/insert/update trên `idea_documents`), chuỗi kết nối nằm trong bundle. Bù lại: không cấp DELETE, RLS khoá `name`, có bảng lịch sử, JSON trong repo là bản gốc. Neon Data API KHÔNG dùng được — xem `docs/neon-setup.md`                                                                                        |
-| 9   | **Sổ công ty** dùng chung bảng `idea_documents`              | 5 document `companyExpenses` / `companyIncomes` / `companyNotes` / `companyProducts` / `companyFinishedGoods` — cùng mô hình một-document-một-file-JSON, cùng trigger version + lịch sử. Thêm tên document mới PHẢI kèm migration nới `name` trong policy RLS (`db/migrations/003_company_documents.sql`, `004_finished_goods_document.sql`). Xoá dòng = ghi đè cả document, vì role `app_editor` không có DELETE                      |
+| 9   | **Sổ công ty** dùng chung bảng `idea_documents`              | 5 document `companyExpenses` / `companyIncomes` / `companyNotes` / `companyProducts` / `companyRevenues` — cùng mô hình một-document-một-file-JSON, cùng trigger version + lịch sử. Thêm tên document mới PHẢI kèm migration nới `name` trong policy RLS (`db/migrations/003_company_documents.sql`, `005_revenue_document.sql`). Xoá dòng = ghi đè cả document, vì role `app_editor` không có DELETE                      |
 | 10  | **Ảnh của Sổ công ty lưu trên Backblaze B2**, bucket Private | Cột "Hình ảnh" lưu **object key**, không lưu URL: bucket private nên URL xem ảnh phải ký và có hạn, ký lại ngay lúc render. Giữ private vì Backblaze bắt có payment method mới tạo được public bucket, mà giá thì không khác. Tự ký SigV4 bằng `crypto.subtle` thay vì thêm `aws-sdk`. Đổi domain hosting PHẢI sửa lại CORS rule của bucket. Xem `docs/backblaze-setup.md` |
 
 ## Project Conventions

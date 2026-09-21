@@ -407,13 +407,15 @@ export type CompanyProduct = {
 };
 
 /**
- * Một thành phẩm đã in xong và đem bán.
+ * Một dòng doanh thu: món đã in xong và bán được.
  *
  * Khác CompanyProduct ở chỗ có giá bán: "Sản phẩm" là danh mục mẫu đã/đang in,
- * còn đây là hàng bán được nên cần cộng tổng tiền.
+ * còn đây là hàng bán được nên cần cộng tổng tiền theo tháng.
  */
-export type FinishedGood = {
+export type RevenueEntry = {
   id: string;
+  /** 'YYYY-MM' — gom theo tháng như ExpenseEntry, tự suy ra từ `date` khi sửa ngày */
+  month: string;
   name: string;
   quantity: string;
   /** Link file mẫu hoặc mô tả — hiển thị thành link khi bắt đầu bằng http */
@@ -424,4 +426,6 @@ export type FinishedGood = {
    * null = chưa định giá, hiển thị "chưa có" và KHÔNG cộng vào tổng.
    */
   price: number | null;
+  /** 'YYYY-MM-DD' hoặc rỗng khi chưa rõ ngày bán */
+  date: string;
 };

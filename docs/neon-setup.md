@@ -124,10 +124,11 @@ deploy lại. Biến `VITE_*` được nhúng lúc build, nên đổi giá trị
 ### 2b. Mở quyền cho Sổ công ty (bắt buộc nếu dùng trang Sổ công ty)
 
 Dán [`db/migrations/003_company_documents.sql`](../db/migrations/003_company_documents.sql)
-rồi [`db/migrations/004_finished_goods_document.sql`](../db/migrations/004_finished_goods_document.sql)
-vào SQL Editor → Run (đúng thứ tự). Hai file này nới danh sách `name` trong policy RLS cho 5
-document của trang Sổ công ty (`companyExpenses`, `companyIncomes`, `companyNotes`,
-`companyProducts`, `companyFinishedGoods`).
+rồi [`db/migrations/005_revenue_document.sql`](../db/migrations/005_revenue_document.sql)
+vào SQL Editor → **Run** (đúng thứ tự; bấm Explain sẽ báo `syntax error at or near "drop"` vì
+EXPLAIN không nhận DDL). Hai file này nới danh sách `name` trong policy RLS cho 5 document của
+trang Sổ công ty (`companyExpenses`, `companyIncomes`, `companyNotes`, `companyProducts`,
+`companyRevenues`). Bỏ qua `004_finished_goods_document.sql` — nó đã bị 005 thay thế.
 
 Chưa chạy thì Neon từ chối ghi với lỗi
 `new row violates row-level security policy for table idea_documents`.

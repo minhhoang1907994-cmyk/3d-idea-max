@@ -9,12 +9,12 @@ import type {
   CompanyNote,
   CompanyProduct,
   ExpenseEntry,
-  FinishedGood,
+  RevenueEntry,
   IncomeEntry,
 } from '../types';
 
-/** Dòng nào cũng có tiền và tháng — đủ để cộng tổng mà không cần biết là thu hay chi. */
-type MonthlyAmountRow = { month: string; amount: number | null };
+/** Đủ để gom danh sách tháng — không cần biết dòng đó là thu, chi hay doanh thu. */
+type MonthRow = { month: string };
 
 /** Tổng hợp một tháng (hoặc toàn bộ khi `month` là ALL_MONTHS). */
 export type LedgerSummary = {
@@ -55,7 +55,7 @@ export function formatMonthLabel(month: string): string {
  * Danh sách tháng có trong sổ, mới nhất trước. Luôn kèm `extraMonth` (tháng đang
  * chọn / tháng hiện tại) để tháng vừa tạo chưa có dòng nào vẫn chọn được.
  */
-export function listMonths(rows: readonly MonthlyAmountRow[], extraMonth?: string): string[] {
+export function listMonths(rows: readonly MonthRow[], extraMonth?: string): string[] {
   const months = new Set<string>();
   for (const row of rows) {
     if (MONTH_PATTERN.test(row.month)) months.add(row.month);
@@ -162,14 +162,15 @@ export function createCompanyProduct(id: string): CompanyProduct {
   return { id, name: '', quantity: '', description: '' };
 }
 
-export function createFinishedGood(id: string): FinishedGood {
-  return { id, name: '', quantity: '', description: '', price: null };
+/** Dòng doanh thu trống cho tháng đang chọn. */
+export function createRevenueEntry(month: string, id: string): RevenueEntry {
+  return { id, month, name: '', quantity: '', description: '', price: null, date: '' };
 }
 
 /**
- * Tổng giá bán của danh sách thành phẩm. Dòng chưa điền giá (`null`) bị bỏ qua,
+ * Tổng giá bán của danh sách doanh thu. Dòng chưa điền giá (`null`) bị bỏ qua,
  * giống `sumAmounts` — số 0 ở đây là khẳng định "bán không đồng nào", không phải "chưa biết".
  */
-export function sumFinishedGoodPrices(goods: readonly FinishedGood[]): number {
-  return goods.reduce((total, good) => total + (good.price ?? 0), 0);
+export function sumRevenuePrices(rows: readonly RevenueEntry[]): number {
+  return rows.reduce((total, row) => total + (row.price ?? 0), 0);
 }

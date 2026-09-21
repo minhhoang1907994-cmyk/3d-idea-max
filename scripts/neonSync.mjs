@@ -41,7 +41,7 @@ const DOCUMENTS = {
   companyIncomes: 'companyIncomes.json',
   companyNotes: 'companyNotes.json',
   companyProducts: 'companyProducts.json',
-  companyFinishedGoods: 'companyFinishedGoods.json',
+  companyRevenues: 'companyRevenues.json',
 };
 
 function readEnvFile() {

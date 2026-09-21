@@ -8,7 +8,7 @@
     "build": "tsc -b && vite build",
     "preview": "vite preview",
     "neon:seed": "node scripts/neonSync.mjs push",
-    "neon:seed:company": "node scripts/neonSync.mjs push companyExpenses companyIncomes companyNotes companyProducts companyFinishedGoods",
+    "neon:seed:company": "node scripts/neonSync.mjs push companyExpenses companyIncomes companyNotes companyProducts companyRevenues",
     "neon:pull": "node scripts/neonSync.mjs pull",
     "test": "vitest run",
     "lint": "eslint .",

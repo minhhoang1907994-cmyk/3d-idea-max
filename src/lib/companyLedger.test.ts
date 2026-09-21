@@ -4,7 +4,7 @@ import {
   ALL_MONTHS,
   createEntryId,
   createExpenseEntry,
-  createFinishedGood,
+  createRevenueEntry,
   currentMonth,
   filterByMonth,
   formatAmountForEdit,
@@ -15,7 +15,7 @@ import {
   monthOfDate,
   parseAmountInput,
   sumAmounts,
-  sumFinishedGoodPrices,
+  sumRevenuePrices,
   summarizeLedger,
 } from './companyLedger';
 
@@ -212,36 +212,49 @@ describe('createExpenseEntry', () => {
   });
 });
 
-describe('sumFinishedGoodPrices', () => {
+describe('sumRevenuePrices', () => {
   const good = (id: string, price: number | null) => ({
     id,
+    month: '2026-09',
     name: '',
     quantity: '',
     description: '',
     price,
+    date: '',
   });
 
   it('cộng giá bán của mọi dòng', () => {
-    expect(sumFinishedGoodPrices([good('fg-1', 40000), good('fg-2', 15000)])).toBe(55000);
+    expect(sumRevenuePrices([good('fg-1', 40000), good('fg-2', 15000)])).toBe(55000);
   });
 
   it('bỏ qua dòng chưa điền giá thay vì coi là 0', () => {
-    expect(sumFinishedGoodPrices([good('fg-1', 40000), good('fg-2', null)])).toBe(40000);
+    expect(sumRevenuePrices([good('fg-1', 40000), good('fg-2', null)])).toBe(40000);
   });
 
   it('danh sách rỗng ra 0', () => {
-    expect(sumFinishedGoodPrices([])).toBe(0);
+    expect(sumRevenuePrices([])).toBe(0);
+  });
+
+  it('lọc tháng trước rồi mới cộng — tổng phải theo tháng đang xem', () => {
+    const goods = [
+      { ...good('fg-1', 40000), month: '2026-09' },
+      { ...good('fg-2', 15000), month: '2026-10' },
+    ];
+    expect(sumRevenuePrices(filterByMonth(goods, '2026-09'))).toBe(40000);
+    expect(sumRevenuePrices(filterByMonth(goods, ALL_MONTHS))).toBe(55000);
   });
 });
 
-describe('createFinishedGood', () => {
-  it('dòng mới chưa có giá bán', () => {
-    expect(createFinishedGood('fg-1')).toEqual({
+describe('createRevenueEntry', () => {
+  it('dòng mới nhận tháng đang xem và chưa có giá bán', () => {
+    expect(createRevenueEntry('2026-10', 'fg-1')).toEqual({
       id: 'fg-1',
+      month: '2026-10',
       name: '',
       quantity: '',
       description: '',
       price: null,
+      date: '',
     });
   });
 });

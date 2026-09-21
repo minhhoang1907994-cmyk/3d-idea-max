@@ -7,7 +7,7 @@ import {
   createCompanyProduct,
   createEntryId,
   createExpenseEntry,
-  createFinishedGood,
+  createRevenueEntry,
   createIncomeEntry,
   currentMonth,
   filterByMonth,
@@ -15,22 +15,22 @@ import {
   formatVnd,
   listMonths,
   monthOfDate,
-  sumFinishedGoodPrices,
+  sumRevenuePrices,
   summarizeLedger,
 } from '../lib/companyLedger';
 import type {
   CompanyNote,
   CompanyProduct,
   ExpenseEntry,
-  FinishedGood,
+  RevenueEntry,
   IncomeEntry,
 } from '../types';
 import styles from './CompanyLedgerPage.module.css';
 
 type Props = { ledger: ReturnType<typeof useCompanyLedger> };
 
-/** Bốn tab đầu tương ứng 4 sheet của file Excel gốc; "Thành phẩm" là tab thêm sau. */
-type TabId = 'expenses' | 'incomes' | 'notes' | 'products' | 'finishedGoods';
+/** Bốn tab đầu tương ứng 4 sheet của file Excel gốc; "Doanh thu" là tab thêm sau. */
+type TabId = 'expenses' | 'incomes' | 'notes' | 'products' | 'revenues';
 
 /**
  * Che tổng tiền khi chưa bấm con mắt. Độ dài cố định, không theo số chữ số thật —
@@ -43,7 +43,7 @@ const TABS: { id: TabId; label: string }[] = [
   { id: 'incomes', label: 'Tổng thu' },
   { id: 'notes', label: 'Note' },
   { id: 'products', label: 'Sản phẩm' },
-  { id: 'finishedGoods', label: 'Thành phẩm' },
+  { id: 'revenues', label: 'Doanh thu' },
 ];
 
 const EXPENSE_COLUMNS: EditableColumn<ExpenseEntry>[] = [
@@ -81,7 +81,7 @@ const PRODUCT_COLUMNS: EditableColumn<CompanyProduct>[] = [
   },
 ];
 
-const FINISHED_GOOD_COLUMNS: EditableColumn<FinishedGood>[] = [
+const REVENUE_COLUMNS: EditableColumn<RevenueEntry>[] = [
   { key: 'name', label: 'Tên', width: 'minmax(0, 2fr)' },
   { key: 'quantity', label: 'Số lượng', width: '7rem', placeholder: '1' },
   {
@@ -92,6 +92,8 @@ const FINISHED_GOOD_COLUMNS: EditableColumn<FinishedGood>[] = [
     placeholder: 'https://makerworld.com/...',
   },
   { key: 'price', label: 'Giá bán', kind: 'amount', width: '9.5rem' },
+  { key: 'date', label: 'Ngày', kind: 'date', width: '9.5rem' },
+  { key: 'month', label: 'Tháng', kind: 'month', width: '9rem' },
 ];
 
 /** Gõ chữ nào trong ô tìm kiếm cũng so với toàn bộ nội dung dòng, không phân biệt hoa thường. */
@@ -109,11 +111,15 @@ export function CompanyLedgerPage({ ledger }: Props) {
   const [amountsVisible, setAmountsVisible] = useState(false);
   const [noteQuery, setNoteQuery] = useState('');
   const [productQuery, setProductQuery] = useState('');
-  const [finishedGoodQuery, setFinishedGoodQuery] = useState('');
+  const [revenueQuery, setRevenueQuery] = useState('');
 
   const months = useMemo(
-    () => listMonths([...data.expenses, ...data.incomes], month === ALL_MONTHS ? undefined : month),
-    [data.expenses, data.incomes, month],
+    () =>
+      listMonths(
+        [...data.expenses, ...data.incomes, ...data.revenues],
+        month === ALL_MONTHS ? undefined : month,
+      ),
+    [data.expenses, data.incomes, data.revenues, month],
   );
   const summary = useMemo(
     () => summarizeLedger(data.expenses, data.incomes, month),
@@ -140,22 +146,19 @@ export function CompanyLedgerPage({ ledger }: Props) {
     [data.products, productQuery],
   );
 
-  const visibleFinishedGoods = useMemo(
+  const visibleRevenues = useMemo(
     () =>
-      data.finishedGoods.filter((good) =>
-        matchesQuery([good.name, good.quantity, good.description], finishedGoodQuery),
+      filterByMonth(data.revenues, month).filter((row) =>
+        matchesQuery([row.name, row.quantity, row.description], revenueQuery),
       ),
-    [data.finishedGoods, finishedGoodQuery],
+    [data.revenues, month, revenueQuery],
   );
-  /** Tổng theo danh sách đang hiển thị — lọc từ khoá thì tổng phải đi theo, nếu không
-   * người dùng lọc ra 3 dòng mà vẫn thấy tổng của cả bảng sẽ đọc nhầm. */
-  const finishedGoodTotal = useMemo(
-    () => sumFinishedGoodPrices(visibleFinishedGoods),
-    [visibleFinishedGoods],
-  );
-  const finishedGoodMissingPriceCount = useMemo(
-    () => visibleFinishedGoods.filter((good) => good.price === null).length,
-    [visibleFinishedGoods],
+  /** Tổng theo danh sách đang hiển thị — lọc tháng hay lọc từ khoá thì tổng phải đi theo,
+   * nếu không người dùng lọc ra 3 dòng mà vẫn thấy tổng của cả bảng sẽ đọc nhầm. */
+  const revenueTotal = useMemo(() => sumRevenuePrices(visibleRevenues), [visibleRevenues]);
+  const revenueMissingPriceCount = useMemo(
+    () => visibleRevenues.filter((row) => row.price === null).length,
+    [visibleRevenues],
   );
 
   /** Loại note đã có trong sổ — gợi ý để không đẻ thêm biến thể "trick" / "Trick". */
@@ -201,6 +204,13 @@ export function CompanyLedgerPage({ ledger }: Props) {
     ledger.updateRow('expenses', id, derivedMonth ? { ...patch, month: derivedMonth } : patch);
   }
 
+  /** Cùng lý do với changeExpense: sửa ngày bán thì tháng phải đi theo, nếu không dòng
+   * đó biến mất khỏi bộ lọc tháng và tổng giá bán của cả hai tháng đều sai. */
+  function changeRevenue(id: string, patch: Partial<RevenueEntry>) {
+    const derivedMonth = typeof patch.date === 'string' ? monthOfDate(patch.date) : '';
+    ledger.updateRow('revenues', id, derivedMonth ? { ...patch, month: derivedMonth } : patch);
+  }
+
   const monthLabel = month === ALL_MONTHS ? 'tất cả các tháng' : formatMonthLabel(month);
 
   const showAmount = (value: number) => (amountsVisible ? formatVnd(value) : MASKED_AMOUNT);
@@ -211,9 +221,9 @@ export function CompanyLedgerPage({ ledger }: Props) {
         <div>
           <h1 className={styles.title}>Sổ công ty</h1>
           <p className={styles.subtitle}>
-            Thu, chi, link tư liệu, sản phẩm đã in và thành phẩm đem bán — thay cho file Excel 4
-            sheet. Dữ liệu lưu trên
-            Neon, bấm <strong>Lưu lên Neon</strong> là cả nhóm mở web đều thấy bản mới.
+            Thu, chi, link tư liệu, sản phẩm đã in và doanh thu — thay cho file Excel 4 sheet. Dữ
+            liệu lưu trên Neon, bấm <strong>Lưu lên Neon</strong> là cả nhóm mở web đều thấy bản
+            mới.
           </p>
           <p className={styles.sourceBadge}>
             {status.loading
@@ -291,7 +301,7 @@ export function CompanyLedgerPage({ ledger }: Props) {
         })}
       </div>
 
-      {tab === 'expenses' || tab === 'incomes' ? (
+      {tab === 'expenses' || tab === 'incomes' || tab === 'revenues' ? (
         <>
           <div className={styles.toolbar}>
             <label className={styles.field}>
@@ -321,6 +331,19 @@ export function CompanyLedgerPage({ ledger }: Props) {
                 }}
               />
             </label>
+
+            {tab === 'revenues' ? (
+              <label className={styles.field}>
+                <span className={styles.fieldLabel}>Tìm trong doanh thu</span>
+                <input
+                  className={styles.select}
+                  type="search"
+                  value={revenueQuery}
+                  placeholder="móc khoá, kệ điện thoại…"
+                  onChange={(event) => setRevenueQuery(event.target.value)}
+                />
+              </label>
+            ) : null}
           </div>
 
           <div className={styles.summaryHead}>
@@ -334,7 +357,11 @@ export function CompanyLedgerPage({ ledger }: Props) {
               {amountsVisible ? 'Ẩn số tiền' : 'Hiện số tiền'}
             </button>
           </div>
+        </>
+      ) : null}
 
+      {tab === 'expenses' || tab === 'incomes' ? (
+        <>
           <div className={styles.summary}>
             <div className={styles.summaryCard}>
               <span className={styles.summaryLabel}>Tổng thu — {monthLabel}</span>
@@ -474,61 +501,38 @@ export function CompanyLedgerPage({ ledger }: Props) {
         </>
       ) : null}
 
-      {tab === 'finishedGoods' ? (
+      {tab === 'revenues' ? (
         <>
-          <div className={styles.toolbar}>
-            <label className={styles.field}>
-              <span className={styles.fieldLabel}>Tìm thành phẩm</span>
-              <input
-                className={styles.select}
-                type="search"
-                value={finishedGoodQuery}
-                placeholder="móc khoá, kệ điện thoại…"
-                onChange={(event) => setFinishedGoodQuery(event.target.value)}
-              />
-            </label>
-          </div>
-
-          <div className={styles.summaryHead}>
-            <button
-              type="button"
-              className={styles.eyeButton}
-              aria-pressed={amountsVisible}
-              onClick={() => setAmountsVisible((visible) => !visible)}
-            >
-              <span aria-hidden="true">{amountsVisible ? '🙈' : '👁️'}</span>
-              {amountsVisible ? 'Ẩn số tiền' : 'Hiện số tiền'}
-            </button>
-          </div>
-
           <div className={styles.summary}>
             <div className={styles.summaryCard}>
-              <span className={styles.summaryLabel}>Tổng giá bán</span>
-              <strong className={styles.summaryValue}>{showAmount(finishedGoodTotal)}</strong>
+              <span className={styles.summaryLabel}>Tổng giá bán — {monthLabel}</span>
+              <strong className={styles.summaryValue}>{showAmount(revenueTotal)}</strong>
               <span className={styles.summaryHint}>
-                {finishedGoodMissingPriceCount > 0
-                  ? `${finishedGoodMissingPriceCount} dòng chưa điền giá, chưa tính vào tổng`
-                  : `${visibleFinishedGoods.length} thành phẩm`}
+                {revenueMissingPriceCount > 0
+                  ? `${revenueMissingPriceCount} dòng chưa điền giá, chưa tính vào tổng`
+                  : `${visibleRevenues.length} dòng`}
               </span>
             </div>
           </div>
 
           <EditableTable
-            columns={FINISHED_GOOD_COLUMNS}
-            rows={visibleFinishedGoods}
-            onChange={(id, patch) => ledger.updateRow('finishedGoods', id, patch)}
-            onDelete={(id) => ledger.deleteRow('finishedGoods', id)}
-            onAdd={() => ledger.addRow('finishedGoods', createFinishedGood(createEntryId('fg')))}
-            addLabel="Thêm thành phẩm"
+            columns={REVENUE_COLUMNS}
+            rows={visibleRevenues}
+            onChange={changeRevenue}
+            onDelete={(id) => ledger.deleteRow('revenues', id)}
+            onAdd={() =>
+              ledger.addRow('revenues', createRevenueEntry(monthForNewRow, createEntryId('rev')))
+            }
+            addLabel="Thêm dòng doanh thu"
             emptyText={
-              finishedGoodQuery.trim().length > 0
-                ? 'Không có thành phẩm nào khớp từ khoá.'
-                : 'Chưa có thành phẩm nào.'
+              revenueQuery.trim().length > 0
+                ? 'Không có dòng doanh thu nào khớp từ khoá.'
+                : `Chưa có doanh thu nào trong ${monthLabel}.`
             }
             footer={
               <span className={styles.tableTotal}>
-                Hiện {visibleFinishedGoods.length}/{data.finishedGoods.length} thành phẩm — tổng giá
-                bán: <strong>{showAmount(finishedGoodTotal)}</strong>
+                Hiện {visibleRevenues.length}/{data.revenues.length} dòng — tổng giá bán{' '}
+                {monthLabel}: <strong>{showAmount(revenueTotal)}</strong>
               </span>
             }
           />
