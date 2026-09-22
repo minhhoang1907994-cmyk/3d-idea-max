@@ -1,0 +1,86 @@
+.footer {
+  margin-top: auto;
+  padding: 1.5rem 1.25rem 2rem;
+  border-top: 1px solid var(--border);
+  background: var(--surface);
+}
+
+.inner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+}
+
+.logo {
+  width: 2.4rem;
+  height: auto;
+}
+
+.brandText {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.brandName {
+  font-size: 0.95rem;
+  font-weight: 700;
+}
+
+.brandNote {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.social {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.socialLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.5rem 0.9rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--accent-text);
+  text-decoration: none;
+  background: var(--accent-blue);
+  border-radius: 999px;
+}
+
+.socialLink:hover {
+  background: var(--accent-blue-bright);
+}
+
+.socialIcon {
+  width: 1.1rem;
+  height: 1.1rem;
+}
+
+.copyright {
+  max-width: 1100px;
+  margin: 1rem auto 0;
+  font-size: 0.78rem;
+  color: var(--text-faint);
+  text-align: center;
+}
+
+@media (max-width: 480px) {
+  .inner {
+    justify-content: center;
+    text-align: center;
+  }
+}

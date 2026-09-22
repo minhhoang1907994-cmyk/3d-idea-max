@@ -79,6 +79,14 @@ const PRODUCT_COLUMNS: EditableColumn<CompanyProduct>[] = [
     width: 'minmax(0, 3fr)',
     placeholder: 'https://makerworld.com/...',
   },
+  {
+    key: 'imageUrl',
+    label: 'Hình ảnh',
+    kind: 'image',
+    width: 'minmax(0, 1.4fr)',
+    // Dòng sản phẩm không có cột Tháng nên ảnh dồn vào products/unsorted/
+    imagePrefix: 'products',
+  },
 ];
 
 const REVENUE_COLUMNS: EditableColumn<RevenueEntry>[] = [

@@ -404,6 +404,11 @@ export type CompanyProduct = {
   quantity: string;
   /** Link file mẫu hoặc mô tả — hiển thị thành link khi bắt đầu bằng http */
   description: string;
+  /**
+   * Ảnh sản phẩm: object key trên Backblaze B2, rỗng khi không có — giống
+   * ExpenseEntry.imageUrl, xem chú thích ở đó.
+   */
+  imageUrl: string;
 };
 
 /**

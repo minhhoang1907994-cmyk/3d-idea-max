@@ -76,6 +76,12 @@ describe('buildObjectKey', () => {
     expect(buildObjectKey('image/webp', 'linh tinh', random, now)).toMatch(/^expenses\/unsorted\//);
   });
 
+  it('tách ảnh sang thư mục khác khi truyền prefix', () => {
+    expect(buildObjectKey('image/jpeg', '', random, now, 'products')).toMatch(
+      /^products\/unsorted\/[a-z0-9]+\.jpg$/,
+    );
+  });
+
   it('dùng đuôi bin cho kiểu ảnh lạ thay vì đoán bừa', () => {
     expect(buildObjectKey('image/heic', '2026-09', random, now)).toMatch(/\.bin$/);
   });

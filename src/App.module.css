@@ -5,7 +5,11 @@
 }
 
 .main {
+  display: flex;
+  flex-direction: column;
   min-width: 0;
+  /* Trang ngắn (Mix chưa bấm) vẫn đẩy được chân trang xuống đáy màn hình */
+  min-height: 100vh;
 }
 
 @media (max-width: 760px) {

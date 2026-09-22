@@ -226,17 +226,23 @@ const EXTENSION_BY_TYPE: Record<string, string> = {
   'image/avif': 'avif',
 };
 
+/** Thư mục gốc mặc định — cột Hình ảnh của tab Tổng chi có trước nên giữ tên cũ. */
+export const DEFAULT_IMAGE_PREFIX = 'expenses';
+
 /**
  * Sinh đường dẫn lưu ảnh: `expenses/2026-09/<ngẫu nhiên>.jpg`.
  *
- * Không giữ tên file gốc: tên tiếng Việt có dấu và khoảng trắng làm URL khó đọc, mà
- * tên do người dùng đặt cũng dễ trùng nhau giữa hai máy cùng thêm dòng một lúc.
+ * `prefix` tách ảnh theo tab đang nhập (chi, sản phẩm...) để về sau nhìn bucket còn
+ * biết ảnh thuộc đâu. Không giữ tên file gốc: tên tiếng Việt có dấu và khoảng trắng
+ * làm URL khó đọc, mà tên do người dùng đặt cũng dễ trùng nhau giữa hai máy cùng
+ * thêm dòng một lúc.
  */
 export function buildObjectKey(
   contentType: string,
   month: string,
   random: () => number = Math.random,
   now: () => number = Date.now,
+  prefix: string = DEFAULT_IMAGE_PREFIX,
 ): string {
   const extension = EXTENSION_BY_TYPE[contentType.toLowerCase()] ?? 'bin';
   const folder = /^\d{4}-\d{2}$/.test(month) ? month : 'unsorted';
@@ -244,7 +250,7 @@ export function buildObjectKey(
   const noise = Math.floor(random() * 36 ** 6)
     .toString(36)
     .padStart(6, '0');
-  return `expenses/${folder}/${stamp}${noise}.${extension}`;
+  return `${prefix}/${folder}/${stamp}${noise}.${extension}`;
 }
 
 // ----- Tải lên / đọc về -----
@@ -265,7 +271,7 @@ export class B2UploadError extends Error {
 export async function uploadImage(
   file: File,
   config: B2Config,
-  options?: { month?: string; now?: Date },
+  options?: { month?: string; prefix?: string; now?: Date },
 ): Promise<string> {
   if (!file.type.startsWith('image/')) {
     throw new B2UploadError(`"${file.name}" không phải file ảnh.`);
@@ -276,7 +282,13 @@ export async function uploadImage(
   }
 
   const contentType = file.type;
-  const objectKey = buildObjectKey(contentType, options?.month ?? '');
+  const objectKey = buildObjectKey(
+    contentType,
+    options?.month ?? '',
+    Math.random,
+    Date.now,
+    options?.prefix ?? DEFAULT_IMAGE_PREFIX,
+  );
   const url = await presignObjectUrl({
     config,
     method: 'PUT',

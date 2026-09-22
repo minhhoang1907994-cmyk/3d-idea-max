@@ -8,6 +8,8 @@ type Props = {
   value: string;
   /** Tháng của dòng — chỉ dùng để xếp ảnh vào thư mục cho dễ tìm sau này */
   month: string;
+  /** Thư mục gốc trên B2, tách ảnh theo tab; bỏ trống thì dùng mặc định của b2Storage */
+  prefix?: string;
   label: string;
   onChange: (value: string) => void;
 };
@@ -25,7 +27,7 @@ type Props = {
  * Chưa cấu hình B2 (thiếu biến VITE_B2_*): quay về ô dán link như bản trước, không
  * chặn người dùng.
  */
-export function ImageCell({ value, month, label, onChange }: Props) {
+export function ImageCell({ value, month, prefix, label, onChange }: Props) {
   const config = getB2Config();
   const inputId = useId();
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -71,7 +73,7 @@ export function ImageCell({ value, month, label, onChange }: Props) {
     setUploading(true);
     setError(null);
     try {
-      const objectKey = await uploadImage(file, config, { month });
+      const objectKey = await uploadImage(file, config, { month, prefix });
       onChange(objectKey);
     } catch (cause) {
       setError(

@@ -44,6 +44,8 @@ export type EditableColumn<T> = {
   placeholder?: string;
   /** Gợi ý gõ nhanh: ô `text` dùng <datalist>, ô `tag` dựng danh sách riêng */
   suggestions?: readonly string[];
+  /** Chỉ dùng cho ô `image`: thư mục gốc trên B2 — xem <ImageCell> */
+  imagePrefix?: string;
 };
 
 type Props<T extends { id: string }> = {
@@ -164,6 +166,7 @@ export function EditableTable<T extends { id: string }>({
           <ImageCell
             value={value}
             month={((row as { month?: string }).month ?? '').trim()}
+            prefix={column.imagePrefix}
             label={column.label}
             onChange={(next) => onChange(row.id, { [column.key]: next } as Partial<T>)}
           />
