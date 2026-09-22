@@ -3,12 +3,13 @@ import styles from './SiteHeader.module.css';
 
 type Props = {
   current: PageId;
+  onNavigate: (page: PageId) => void;
+  /** Trang nào đang có thay đổi chưa lưu — hiện chấm cảnh báo cạnh mục đó */
+  dirtyPages: readonly PageId[];
 };
 
-/** Đầu trang dùng chung, cặp với SiteFooter. Chỉ hiện ở khổ rộng — xem SiteHeader.module.css */
-export function SiteHeader({ current }: Props) {
-  const currentItem = PAGE_ITEMS.find((item) => item.id === current);
-
+/** Đầu trang dùng chung: thương hiệu + điều hướng 4 trang. Cặp màu với SiteFooter */
+export function SiteHeader({ current, onNavigate, dirtyPages }: Props) {
   return (
     <header className={styles.header}>
       <div className={styles.inner}>
@@ -20,14 +21,29 @@ export function SiteHeader({ current }: Props) {
           </div>
         </div>
 
-        {currentItem ? (
-          <span className={styles.currentPage}>
-            <span className={styles.currentIcon} aria-hidden="true">
-              {currentItem.icon}
-            </span>
-            {currentItem.label}
-          </span>
-        ) : null}
+        <nav className={styles.nav} aria-label="Điều hướng chính">
+          {PAGE_ITEMS.map((item) => {
+            const isActive = item.id === current;
+            return (
+              <button
+                key={item.id}
+                type="button"
+                className={isActive ? `${styles.item} ${styles.itemActive}` : styles.item}
+                title={item.description}
+                aria-current={isActive ? 'page' : undefined}
+                onClick={() => onNavigate(item.id)}
+              >
+                <span className={styles.icon} aria-hidden="true">
+                  {item.icon}
+                </span>
+                <span className={styles.itemLabel}>{item.label}</span>
+                {dirtyPages.includes(item.id) ? (
+                  <span className={styles.dot} title="Có thay đổi chưa lưu" />
+                ) : null}
+              </button>
+            );
+          })}
+        </nav>
       </div>
     </header>
   );

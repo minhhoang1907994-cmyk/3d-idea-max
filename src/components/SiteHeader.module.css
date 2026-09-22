@@ -1,13 +1,12 @@
 /*
  * Cùng dải màu với SiteFooter (nền xanh đậm + viền cam) để đầu và chân trang đọc như
- * một bộ. Khổ hẹp thì ẩn hẳn: chỗ đó đã có thanh trên của SideMenu, hai thanh chồng
- * nhau chỉ tốn chiều cao màn hình.
+ * một bộ. Đây là chỗ điều hướng duy nhất của app — không còn menu cột trái.
  */
 .header {
   position: sticky;
   top: 0;
   z-index: 10;
-  padding: 0.85rem 1.5rem;
+  padding: 0.7rem 1.5rem;
   background: linear-gradient(160deg, #1e3554, #16273c);
   border-bottom: 3px solid var(--accent);
 }
@@ -17,8 +16,8 @@
   flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
-  gap: 0.75rem 2rem;
-  max-width: 1100px;
+  gap: 0.6rem 2rem;
+  max-width: 1280px;
   margin: 0 auto;
 }
 
@@ -54,27 +53,106 @@
   color: rgba(255, 255, 255, 0.62);
 }
 
-/* Nhắc lại trang đang xem — menu trái đã đánh dấu, nhưng cuộn sâu thì mất khỏi tầm mắt */
-.currentPage {
+.nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+.item {
   display: inline-flex;
   align-items: center;
   gap: 0.45rem;
-  padding: 0.4rem 0.9rem;
+  padding: 0.5rem 0.95rem;
+  font: inherit;
   font-size: 0.85rem;
   font-weight: 600;
-  color: #ffffff;
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.24);
+  color: rgba(255, 255, 255, 0.78);
+  background: transparent;
+  border: 1px solid transparent;
   border-radius: 999px;
+  cursor: pointer;
+  transition:
+    background 0.15s ease,
+    color 0.15s ease;
 }
 
-.currentIcon {
-  font-size: 0.95rem;
+.item:hover {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.itemActive,
+.itemActive:hover {
+  color: var(--accent-text);
+  background: linear-gradient(135deg, var(--accent-bright), var(--accent));
+  border-color: transparent;
+  box-shadow: 0 6px 14px rgba(200, 84, 12, 0.32);
+}
+
+.item:focus-visible {
+  outline: 2px solid var(--accent-blue-bright);
+  outline-offset: 2px;
+}
+
+.icon {
+  font-size: 1rem;
   line-height: 1;
 }
 
-@media (max-width: 760px) {
+.itemLabel {
+  white-space: nowrap;
+}
+
+.dot {
+  width: 7px;
+  height: 7px;
+  background: var(--warning);
+  border-radius: 50%;
+}
+
+.itemActive .dot {
+  background: var(--accent-text);
+}
+
+/* Khổ hẹp: thương hiệu rút còn logo + tên, điều hướng thành hàng cuộn ngang */
+@media (max-width: 860px) {
   .header {
+    padding: 0.6rem 0.9rem;
+  }
+
+  .inner {
+    gap: 0.5rem;
+  }
+
+  .brandNote {
     display: none;
+  }
+
+  .nav {
+    flex: 1 1 100%;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    padding-bottom: 0.15rem;
+    scrollbar-width: none;
+  }
+
+  .nav::-webkit-scrollbar {
+    display: none;
+  }
+
+  .item {
+    flex: none;
+    padding: 0.45rem 0.8rem;
+  }
+}
+
+@media (max-width: 420px) {
+  .brandName {
+    font-size: 0.9rem;
+  }
+
+  .logo {
+    width: 2.1rem;
   }
 }

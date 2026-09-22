@@ -8,7 +8,7 @@ type SocialLink = {
   iconPath: string;
 };
 
-// Cùng cách làm với ITEMS của SideMenu: chrome của app, thêm mạng xã hội mới là thêm ở đây
+// Cùng cách làm với PAGE_ITEMS: chrome của app, thêm mạng xã hội mới là thêm ở đây
 const SOCIAL_LINKS: SocialLink[] = [
   {
     id: 'facebook',

@@ -1,4 +1,4 @@
-/** Danh sách trang của app — SideMenu, SiteHeader cùng đọc từ đây để không lệch nhãn */
+/** Danh sách trang của app — SiteHeader đọc từ đây, không hardcode trong JSX */
 export type PageId = 'mix' | 'image' | 'data' | 'company';
 
 export type PageItem = {

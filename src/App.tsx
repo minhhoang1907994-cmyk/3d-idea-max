@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import styles from './App.module.css';
 import { ScrollToTopButton } from './components/ScrollToTopButton';
-import { SideMenu } from './components/SideMenu';
 import { SiteFooter } from './components/SiteFooter';
 import { SiteHeader } from './components/SiteHeader';
 import { useCompanyLedger } from './hooks/useCompanyLedger';
@@ -26,15 +25,12 @@ export default function App() {
 
   return (
     <div className={styles.shell}>
-      <SideMenu current={page} onNavigate={setPage} dirtyPages={dirtyPages} />
-      <div className={styles.main}>
-        <SiteHeader current={page} />
-        {page === 'mix' ? <MixPage data={dataStore.data} /> : null}
-        {page === 'image' ? <ImageAnalyzePage data={dataStore.data} /> : null}
-        {page === 'data' ? <DataManagerPage dataStore={dataStore} /> : null}
-        {page === 'company' ? <CompanyLedgerPage ledger={ledger} /> : null}
-        <SiteFooter />
-      </div>
+      <SiteHeader current={page} onNavigate={setPage} dirtyPages={dirtyPages} />
+      {page === 'mix' ? <MixPage data={dataStore.data} /> : null}
+      {page === 'image' ? <ImageAnalyzePage data={dataStore.data} /> : null}
+      {page === 'data' ? <DataManagerPage dataStore={dataStore} /> : null}
+      {page === 'company' ? <CompanyLedgerPage ledger={ledger} /> : null}
+      <SiteFooter />
       <ScrollToTopButton />
     </div>
   );
