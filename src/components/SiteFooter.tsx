@@ -27,13 +27,7 @@ export function SiteFooter() {
     <footer className={styles.footer}>
       <div className={styles.inner}>
         <div className={styles.brand}>
-          <img
-            className={styles.logo}
-            src="/logo.png"
-            alt="H2T Cobra"
-            width={432}
-            height={483}
-          />
+          <img className={styles.logo} src="/logo.png" alt="H2T Cobra" width={432} height={483} />
           <div className={styles.brandText}>
             <span className={styles.brandName}>H2T Cobra 3D</span>
             <span className={styles.brandNote}>Ý tưởng &amp; thông số in 3D cho cả nhóm</span>

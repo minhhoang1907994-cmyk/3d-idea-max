@@ -25,19 +25,77 @@
 }
 
 .preview {
+  position: relative;
   align-self: flex-start;
+  max-width: 100%;
   line-height: 0;
+}
+
+.previewLink {
+  display: block;
 }
 
 .thumbnail {
   /* width: auto để hai giới hạn dưới cùng ràng buộc mà ảnh vẫn giữ đúng tỉ lệ —
      đặt width: 100% thì ảnh dọc bị max-height bóp méo */
   width: auto;
-  max-width: 6rem;
+  max-width: 100%;
   height: auto;
-  max-height: 60px;
+  max-height: 120px;
   border: 1px solid var(--border);
   border-radius: 6px;
+}
+
+/* Hiện khi rê chuột, khi bàn phím đang ở trong ô, và luôn hiện trên màn cảm ứng */
+.overlay {
+  position: absolute;
+  top: 0.25rem;
+  right: 0.25rem;
+  display: flex;
+  gap: 0.25rem;
+  opacity: 0;
+  transition: opacity 0.15s ease;
+}
+
+.preview:hover .overlay,
+.cell:focus-within .overlay {
+  opacity: 1;
+}
+
+@media (hover: none) {
+  .overlay {
+    opacity: 1;
+  }
+}
+
+.iconButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  padding: 0;
+  font-size: 0.85rem;
+  line-height: 1;
+  color: var(--text);
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid var(--border-strong);
+  border-radius: 6px;
+  box-shadow: 0 2px 6px rgba(22, 39, 60, 0.25);
+  cursor: pointer;
+}
+
+.iconButton:hover {
+  border-color: var(--accent);
+}
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
 }
 
 .actions {
@@ -47,8 +105,7 @@
   align-items: center;
 }
 
-.uploadButton,
-.clearButton {
+.uploadButton {
   padding: 0.3rem 0.55rem;
   font: inherit;
   font-size: 0.74rem;
@@ -59,8 +116,7 @@
   cursor: pointer;
 }
 
-.uploadButton:hover,
-.clearButton:hover {
+.uploadButton:hover {
   border-color: var(--accent);
 }
 

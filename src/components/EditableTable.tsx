@@ -13,7 +13,7 @@ import styles from './EditableTable.module.css';
 export type ColumnKind = 'text' | 'amount' | 'date' | 'month' | 'link' | 'image' | 'tag';
 
 /** Bề rộng cột "Thao tác" — cột duy nhất không do trang gọi khai báo */
-const ACTION_COLUMN_WIDTH = '4.5rem';
+const ACTION_COLUMN_WIDTH = '4.25rem';
 /*
  * Hai kiểu ô này có phần phụ đi kèm ô nhập: nút mở link, và số tiền đã định dạng lại.
  * Xếp chúng thành cột grid riêng ngay sau cột chính thay vì nhét xuống dưới ô nhập —
@@ -26,8 +26,8 @@ const SIDE_COLUMNS: Partial<Record<ColumnKind, { width: string; label: string }>
 };
 /*
  * Sàn cho cột co giãn. Mọi trang đều bó trong khung 1100px (lề 1.25rem mỗi bên) nên vùng
- * nội dung còn ~66rem — bảng rộng nhất hiện có (Chi: 7 cột + 2 cột phụ + Thao tác) phải
- * nằm gọn trong đó thì mới khỏi cuộn ngang. Với 5.5rem, sàn của bảng đó ra ~64rem: vừa
+ * nội dung còn ~66rem — bảng rộng nhất hiện có (Chi: 6 cột + 2 cột phụ + Thao tác) phải
+ * nằm gọn trong đó thì mới khỏi cuộn ngang. Với 5.5rem, sàn của bảng đó ra ~63rem: vừa
  * khít, mà ô nhập vẫn đọc được. Hạ thêm nữa thì ô chữ bị nén quá hẹp.
  */
 const FLEX_COLUMN_MIN_REM = 5.5;
@@ -303,29 +303,35 @@ export function EditableTable<T extends { id: string }>({
                     <div className={styles.confirm}>
                       <button
                         type="button"
-                        className={styles.dangerButton}
+                        className={`${styles.iconButton} ${styles.dangerButton}`}
+                        title="Xoá thật dòng này"
+                        aria-label="Xoá thật dòng này"
                         onClick={() => {
                           onDelete(row.id);
                           setConfirmingId(null);
                         }}
                       >
-                        Xoá
+                        <span aria-hidden="true">✓</span>
                       </button>
                       <button
                         type="button"
-                        className={styles.ghostButton}
+                        className={`${styles.iconButton} ${styles.ghostButton}`}
+                        title="Huỷ xoá"
+                        aria-label="Huỷ xoá"
                         onClick={() => setConfirmingId(null)}
                       >
-                        Huỷ
+                        <span aria-hidden="true">✕</span>
                       </button>
                     </div>
                   ) : (
                     <button
                       type="button"
-                      className={styles.ghostButton}
+                      className={`${styles.iconButton} ${styles.ghostButton}`}
+                      title="Xoá dòng"
+                      aria-label="Xoá dòng"
                       onClick={() => setConfirmingId(row.id)}
                     >
-                      Xoá dòng
+                      <span aria-hidden="true">🗑</span>
                     </button>
                   )}
                 </div>

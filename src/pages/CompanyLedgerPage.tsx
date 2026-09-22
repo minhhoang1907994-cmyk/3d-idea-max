@@ -58,8 +58,7 @@ const EXPENSE_COLUMNS: EditableColumn<ExpenseEntry>[] = [
   { key: 'quantity', label: 'Số lượng', width: '4.5rem', placeholder: '1' },
   { key: 'amount', label: 'Giá', kind: 'amount', width: '7.5rem' },
   { key: 'date', label: 'Ngày', kind: 'date', width: '8.5rem' },
-  { key: 'month', label: 'Tháng', kind: 'month', width: '7.5rem' },
-  { key: 'imageUrl', label: 'Hình ảnh', kind: 'image', width: 'minmax(0, 1.4fr)' },
+  { key: 'imageUrl', label: 'Hình ảnh', kind: 'image', width: '12.5rem' },
 ];
 
 const INCOME_COLUMNS: EditableColumn<IncomeEntry>[] = [
@@ -83,7 +82,7 @@ const PRODUCT_COLUMNS: EditableColumn<CompanyProduct>[] = [
     key: 'imageUrl',
     label: 'Hình ảnh',
     kind: 'image',
-    width: 'minmax(0, 1.4fr)',
+    width: '12.5rem',
     // Dòng sản phẩm không có cột Tháng nên ảnh dồn vào products/unsorted/
     imagePrefix: 'products',
   },

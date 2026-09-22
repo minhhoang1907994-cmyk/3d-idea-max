@@ -111,39 +111,52 @@ export function ImageCell({ value, month, prefix, label, onChange }: Props) {
 
   return (
     <div className={styles.cell}>
-      {src ? (
-        <a href={src} target="_blank" rel="noreferrer noopener" className={styles.preview}>
-          <img className={styles.thumbnail} src={src} alt={label} loading="lazy" />
-        </a>
-      ) : null}
+      <input
+        ref={fileInputRef}
+        id={inputId}
+        className={styles.fileInput}
+        type="file"
+        accept="image/*"
+        disabled={uploading}
+        aria-label={label}
+        onChange={(event) => void handleFile(event.target.files?.[0])}
+      />
 
-      <div className={styles.actions}>
-        <input
-          ref={fileInputRef}
-          id={inputId}
-          className={styles.fileInput}
-          type="file"
-          accept="image/*"
-          disabled={uploading}
-          aria-label={label}
-          onChange={(event) => void handleFile(event.target.files?.[0])}
-        />
-        <label className={styles.uploadButton} htmlFor={inputId}>
-          {uploading ? 'Đang tải…' : value.length > 0 ? 'Đổi ảnh' : 'Tải ảnh lên'}
-        </label>
-        {value.length > 0 && !uploading ? (
-          <button
-            type="button"
-            className={styles.clearButton}
-            onClick={() => {
-              setError(null);
-              onChange('');
-            }}
-          >
-            Bỏ ảnh
-          </button>
-        ) : null}
-      </div>
+      {src ? (
+        /* Có ảnh rồi thì hai nút chữ chiếm chỗ hơn cả tấm ảnh — dồn thành icon đè lên
+           ảnh, chỉ hiện khi rê chuột hoặc focus bàn phím (xem ImageCell.module.css) */
+        <div className={styles.preview}>
+          <a href={src} target="_blank" rel="noreferrer noopener" className={styles.previewLink}>
+            <img className={styles.thumbnail} src={src} alt={label} loading="lazy" />
+          </a>
+          {uploading ? null : (
+            <div className={styles.overlay}>
+              <label className={styles.iconButton} htmlFor={inputId} title="Đổi ảnh">
+                <span aria-hidden="true">✎</span>
+                <span className={styles.srOnly}>Đổi ảnh</span>
+              </label>
+              <button
+                type="button"
+                className={styles.iconButton}
+                title="Bỏ ảnh"
+                onClick={() => {
+                  setError(null);
+                  onChange('');
+                }}
+              >
+                <span aria-hidden="true">🗑</span>
+                <span className={styles.srOnly}>Bỏ ảnh</span>
+              </button>
+            </div>
+          )}
+        </div>
+      ) : (
+        <div className={styles.actions}>
+          <label className={styles.uploadButton} htmlFor={inputId}>
+            {uploading ? 'Đang tải…' : 'Tải ảnh lên'}
+          </label>
+        </div>
+      )}
 
       {error ? <span className={styles.error}>{error}</span> : null}
     </div>
