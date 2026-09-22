@@ -298,7 +298,7 @@ export function EditableTable<T extends { id: string }>({
                     </Fragment>
                   );
                 })}
-                <div className={styles.bodyCell} role="cell">
+                <div className={`${styles.bodyCell} ${styles.actionCell}`} role="cell">
                   {confirmingId === row.id ? (
                     <div className={styles.confirm}>
                       <button

@@ -1,0 +1,21 @@
+/* Nền lấy đúng màu nền của ảnh bìa để phần thừa hai bên không lộ đường ghép */
+.cover {
+  background: #16273c;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.image {
+  display: block;
+  width: 100%;
+  height: auto;
+  /* contain + max-height: màn rộng thì ảnh không cao quá nửa màn hình, mà dòng chữ
+     dưới cùng của banner vẫn đọc được — object-fit: cover sẽ cắt mất dòng đó */
+  max-height: 340px;
+  object-fit: contain;
+}
+
+@media (max-width: 860px) {
+  .image {
+    max-height: 200px;
+  }
+}

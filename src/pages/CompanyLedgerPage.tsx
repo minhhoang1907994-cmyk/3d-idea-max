@@ -308,243 +308,247 @@ export function CompanyLedgerPage({ ledger }: Props) {
         })}
       </div>
 
-      {tab === 'expenses' || tab === 'incomes' || tab === 'revenues' ? (
-        <>
-          <div className={styles.toolbar}>
-            <label className={styles.field}>
-              <span className={styles.fieldLabel}>Tháng</span>
-              <select
-                className={styles.select}
-                value={month}
-                onChange={(event) => setMonth(event.target.value)}
-              >
-                <option value={ALL_MONTHS}>Tất cả các tháng</option>
-                {months.map((item) => (
-                  <option key={item} value={item}>
-                    {formatMonthLabel(item)}
-                  </option>
-                ))}
-              </select>
-            </label>
-
-            <label className={styles.field}>
-              <span className={styles.fieldLabel}>Chuyển sang tháng khác</span>
-              <input
-                className={styles.select}
-                type="month"
-                value={month === ALL_MONTHS ? '' : month}
-                onChange={(event) => {
-                  if (event.target.value) setMonth(event.target.value);
-                }}
-              />
-            </label>
-
-            {tab === 'revenues' ? (
+      <div className={styles.panel}>
+        {tab === 'expenses' || tab === 'incomes' || tab === 'revenues' ? (
+          <>
+            <div className={styles.toolbar}>
               <label className={styles.field}>
-                <span className={styles.fieldLabel}>Tìm trong doanh thu</span>
+                <span className={styles.fieldLabel}>Tháng</span>
+                <select
+                  className={styles.select}
+                  value={month}
+                  onChange={(event) => setMonth(event.target.value)}
+                >
+                  <option value={ALL_MONTHS}>Tất cả các tháng</option>
+                  {months.map((item) => (
+                    <option key={item} value={item}>
+                      {formatMonthLabel(item)}
+                    </option>
+                  ))}
+                </select>
+              </label>
+
+              <label className={styles.field}>
+                <span className={styles.fieldLabel}>Chuyển sang tháng khác</span>
+                <input
+                  className={styles.select}
+                  type="month"
+                  value={month === ALL_MONTHS ? '' : month}
+                  onChange={(event) => {
+                    if (event.target.value) setMonth(event.target.value);
+                  }}
+                />
+              </label>
+
+              {tab === 'revenues' ? (
+                <label className={styles.field}>
+                  <span className={styles.fieldLabel}>Tìm trong doanh thu</span>
+                  <input
+                    className={styles.select}
+                    type="search"
+                    value={revenueQuery}
+                    placeholder="móc khoá, kệ điện thoại…"
+                    onChange={(event) => setRevenueQuery(event.target.value)}
+                  />
+                </label>
+              ) : null}
+            </div>
+
+            <div className={styles.summaryHead}>
+              <button
+                type="button"
+                className={styles.eyeButton}
+                aria-pressed={amountsVisible}
+                onClick={() => setAmountsVisible((visible) => !visible)}
+              >
+                <span aria-hidden="true">{amountsVisible ? '🙈' : '👁️'}</span>
+                {amountsVisible ? 'Ẩn số tiền' : 'Hiện số tiền'}
+              </button>
+            </div>
+          </>
+        ) : null}
+
+        {tab === 'expenses' || tab === 'incomes' ? (
+          <>
+            <div className={styles.summary}>
+              <div className={styles.summaryCard}>
+                <span className={styles.summaryLabel}>Tổng thu — {monthLabel}</span>
+                <strong className={styles.summaryValue}>{showAmount(summary.incomeTotal)}</strong>
+                <span className={styles.summaryHint}>{summary.incomeCount} khoản</span>
+              </div>
+              <div className={styles.summaryCard}>
+                <span className={styles.summaryLabel}>Tổng chi — {monthLabel}</span>
+                <strong className={styles.summaryValue}>{showAmount(summary.expenseTotal)}</strong>
+                <span className={styles.summaryHint}>{summary.expenseCount} khoản</span>
+              </div>
+              <div className={styles.summaryCard}>
+                <span className={styles.summaryLabel}>Còn lại (thu − chi)</span>
+                {/* Đang ẩn thì bỏ luôn màu cảnh báo — màu đỏ tự nó đã nói số này âm */}
+                <strong
+                  className={
+                    amountsVisible && summary.balance < 0
+                      ? `${styles.summaryValue} ${styles.summaryNegative}`
+                      : styles.summaryValue
+                  }
+                >
+                  {showAmount(summary.balance)}
+                </strong>
+                <span className={styles.summaryHint}>
+                  {summary.missingAmountCount > 0
+                    ? `${summary.missingAmountCount} dòng chưa điền tiền, chưa tính vào tổng`
+                    : 'đã tính đủ mọi dòng'}
+                </span>
+              </div>
+            </div>
+          </>
+        ) : null}
+
+        {tab === 'expenses' ? (
+          <EditableTable
+            columns={EXPENSE_COLUMNS}
+            rows={visibleExpenses}
+            onChange={changeExpense}
+            onDelete={(id) => ledger.deleteRow('expenses', id)}
+            onAdd={() =>
+              ledger.addRow('expenses', createExpenseEntry(monthForNewRow, createEntryId('exp')))
+            }
+            addLabel="Thêm khoản chi"
+            emptyText={`Chưa có khoản chi nào trong ${monthLabel}.`}
+            footer={
+              <span className={styles.tableTotal}>
+                Tổng chi {monthLabel}: <strong>{showAmount(summary.expenseTotal)}</strong>
+              </span>
+            }
+          />
+        ) : null}
+
+        {tab === 'incomes' ? (
+          <EditableTable
+            columns={INCOME_COLUMNS}
+            rows={visibleIncomes}
+            onChange={(id, patch) => ledger.updateRow('incomes', id, patch)}
+            onDelete={(id) => ledger.deleteRow('incomes', id)}
+            onAdd={() =>
+              ledger.addRow('incomes', createIncomeEntry(monthForNewRow, createEntryId('inc')))
+            }
+            addLabel="Thêm khoản thu"
+            emptyText={`Chưa có khoản thu nào trong ${monthLabel}.`}
+            footer={
+              <span className={styles.tableTotal}>
+                Tổng thu {monthLabel}: <strong>{showAmount(summary.incomeTotal)}</strong>
+              </span>
+            }
+          />
+        ) : null}
+
+        {tab === 'notes' ? (
+          <>
+            <div className={styles.toolbar}>
+              <label className={styles.field}>
+                <span className={styles.fieldLabel}>Tìm trong note</span>
                 <input
                   className={styles.select}
                   type="search"
-                  value={revenueQuery}
-                  placeholder="móc khoá, kệ điện thoại…"
-                  onChange={(event) => setRevenueQuery(event.target.value)}
+                  value={noteQuery}
+                  placeholder="kẹt nhựa, halloween, support…"
+                  onChange={(event) => setNoteQuery(event.target.value)}
                 />
               </label>
-            ) : null}
-          </div>
-
-          <div className={styles.summaryHead}>
-            <button
-              type="button"
-              className={styles.eyeButton}
-              aria-pressed={amountsVisible}
-              onClick={() => setAmountsVisible((visible) => !visible)}
-            >
-              <span aria-hidden="true">{amountsVisible ? '🙈' : '👁️'}</span>
-              {amountsVisible ? 'Ẩn số tiền' : 'Hiện số tiền'}
-            </button>
-          </div>
-        </>
-      ) : null}
-
-      {tab === 'expenses' || tab === 'incomes' ? (
-        <>
-          <div className={styles.summary}>
-            <div className={styles.summaryCard}>
-              <span className={styles.summaryLabel}>Tổng thu — {monthLabel}</span>
-              <strong className={styles.summaryValue}>{showAmount(summary.incomeTotal)}</strong>
-              <span className={styles.summaryHint}>{summary.incomeCount} khoản</span>
             </div>
-            <div className={styles.summaryCard}>
-              <span className={styles.summaryLabel}>Tổng chi — {monthLabel}</span>
-              <strong className={styles.summaryValue}>{showAmount(summary.expenseTotal)}</strong>
-              <span className={styles.summaryHint}>{summary.expenseCount} khoản</span>
+            <EditableTable
+              columns={noteColumns}
+              rows={visibleNotes}
+              onChange={(id, patch) => ledger.updateRow('notes', id, patch)}
+              onDelete={(id) => ledger.deleteRow('notes', id)}
+              onAdd={() => ledger.addRow('notes', createCompanyNote(createEntryId('note')))}
+              addLabel="Thêm note"
+              emptyText={
+                noteQuery.trim().length > 0
+                  ? 'Không có note nào khớp từ khoá.'
+                  : 'Chưa có note nào.'
+              }
+              footer={
+                <span className={styles.tableTotal}>
+                  Hiện {visibleNotes.length}/{data.notes.length} note
+                </span>
+              }
+            />
+          </>
+        ) : null}
+
+        {tab === 'products' ? (
+          <>
+            <div className={styles.toolbar}>
+              <label className={styles.field}>
+                <span className={styles.fieldLabel}>Tìm sản phẩm</span>
+                <input
+                  className={styles.select}
+                  type="search"
+                  value={productQuery}
+                  placeholder="benchy, fox, ghost…"
+                  onChange={(event) => setProductQuery(event.target.value)}
+                />
+              </label>
             </div>
-            <div className={styles.summaryCard}>
-              <span className={styles.summaryLabel}>Còn lại (thu − chi)</span>
-              {/* Đang ẩn thì bỏ luôn màu cảnh báo — màu đỏ tự nó đã nói số này âm */}
-              <strong
-                className={
-                  amountsVisible && summary.balance < 0
-                    ? `${styles.summaryValue} ${styles.summaryNegative}`
-                    : styles.summaryValue
-                }
-              >
-                {showAmount(summary.balance)}
-              </strong>
-              <span className={styles.summaryHint}>
-                {summary.missingAmountCount > 0
-                  ? `${summary.missingAmountCount} dòng chưa điền tiền, chưa tính vào tổng`
-                  : 'đã tính đủ mọi dòng'}
-              </span>
+            <EditableTable
+              columns={PRODUCT_COLUMNS}
+              rows={visibleProducts}
+              onChange={(id, patch) => ledger.updateRow('products', id, patch)}
+              onDelete={(id) => ledger.deleteRow('products', id)}
+              onAdd={() => ledger.addRow('products', createCompanyProduct(createEntryId('prod')))}
+              addLabel="Thêm sản phẩm"
+              emptyText={
+                productQuery.trim().length > 0
+                  ? 'Không có sản phẩm nào khớp từ khoá.'
+                  : 'Chưa có sản phẩm nào.'
+              }
+              footer={
+                <span className={styles.tableTotal}>
+                  Hiện {visibleProducts.length}/{data.products.length} sản phẩm
+                </span>
+              }
+            />
+          </>
+        ) : null}
+
+        {tab === 'revenues' ? (
+          <>
+            <div className={styles.summary}>
+              <div className={styles.summaryCard}>
+                <span className={styles.summaryLabel}>Tổng giá bán — {monthLabel}</span>
+                <strong className={styles.summaryValue}>{showAmount(revenueTotal)}</strong>
+                <span className={styles.summaryHint}>
+                  {revenueMissingPriceCount > 0
+                    ? `${revenueMissingPriceCount} dòng chưa điền giá, chưa tính vào tổng`
+                    : `${visibleRevenues.length} dòng`}
+                </span>
+              </div>
             </div>
-          </div>
-        </>
-      ) : null}
 
-      {tab === 'expenses' ? (
-        <EditableTable
-          columns={EXPENSE_COLUMNS}
-          rows={visibleExpenses}
-          onChange={changeExpense}
-          onDelete={(id) => ledger.deleteRow('expenses', id)}
-          onAdd={() =>
-            ledger.addRow('expenses', createExpenseEntry(monthForNewRow, createEntryId('exp')))
-          }
-          addLabel="Thêm khoản chi"
-          emptyText={`Chưa có khoản chi nào trong ${monthLabel}.`}
-          footer={
-            <span className={styles.tableTotal}>
-              Tổng chi {monthLabel}: <strong>{showAmount(summary.expenseTotal)}</strong>
-            </span>
-          }
-        />
-      ) : null}
-
-      {tab === 'incomes' ? (
-        <EditableTable
-          columns={INCOME_COLUMNS}
-          rows={visibleIncomes}
-          onChange={(id, patch) => ledger.updateRow('incomes', id, patch)}
-          onDelete={(id) => ledger.deleteRow('incomes', id)}
-          onAdd={() =>
-            ledger.addRow('incomes', createIncomeEntry(monthForNewRow, createEntryId('inc')))
-          }
-          addLabel="Thêm khoản thu"
-          emptyText={`Chưa có khoản thu nào trong ${monthLabel}.`}
-          footer={
-            <span className={styles.tableTotal}>
-              Tổng thu {monthLabel}: <strong>{showAmount(summary.incomeTotal)}</strong>
-            </span>
-          }
-        />
-      ) : null}
-
-      {tab === 'notes' ? (
-        <>
-          <div className={styles.toolbar}>
-            <label className={styles.field}>
-              <span className={styles.fieldLabel}>Tìm trong note</span>
-              <input
-                className={styles.select}
-                type="search"
-                value={noteQuery}
-                placeholder="kẹt nhựa, halloween, support…"
-                onChange={(event) => setNoteQuery(event.target.value)}
-              />
-            </label>
-          </div>
-          <EditableTable
-            columns={noteColumns}
-            rows={visibleNotes}
-            onChange={(id, patch) => ledger.updateRow('notes', id, patch)}
-            onDelete={(id) => ledger.deleteRow('notes', id)}
-            onAdd={() => ledger.addRow('notes', createCompanyNote(createEntryId('note')))}
-            addLabel="Thêm note"
-            emptyText={
-              noteQuery.trim().length > 0 ? 'Không có note nào khớp từ khoá.' : 'Chưa có note nào.'
-            }
-            footer={
-              <span className={styles.tableTotal}>
-                Hiện {visibleNotes.length}/{data.notes.length} note
-              </span>
-            }
-          />
-        </>
-      ) : null}
-
-      {tab === 'products' ? (
-        <>
-          <div className={styles.toolbar}>
-            <label className={styles.field}>
-              <span className={styles.fieldLabel}>Tìm sản phẩm</span>
-              <input
-                className={styles.select}
-                type="search"
-                value={productQuery}
-                placeholder="benchy, fox, ghost…"
-                onChange={(event) => setProductQuery(event.target.value)}
-              />
-            </label>
-          </div>
-          <EditableTable
-            columns={PRODUCT_COLUMNS}
-            rows={visibleProducts}
-            onChange={(id, patch) => ledger.updateRow('products', id, patch)}
-            onDelete={(id) => ledger.deleteRow('products', id)}
-            onAdd={() => ledger.addRow('products', createCompanyProduct(createEntryId('prod')))}
-            addLabel="Thêm sản phẩm"
-            emptyText={
-              productQuery.trim().length > 0
-                ? 'Không có sản phẩm nào khớp từ khoá.'
-                : 'Chưa có sản phẩm nào.'
-            }
-            footer={
-              <span className={styles.tableTotal}>
-                Hiện {visibleProducts.length}/{data.products.length} sản phẩm
-              </span>
-            }
-          />
-        </>
-      ) : null}
-
-      {tab === 'revenues' ? (
-        <>
-          <div className={styles.summary}>
-            <div className={styles.summaryCard}>
-              <span className={styles.summaryLabel}>Tổng giá bán — {monthLabel}</span>
-              <strong className={styles.summaryValue}>{showAmount(revenueTotal)}</strong>
-              <span className={styles.summaryHint}>
-                {revenueMissingPriceCount > 0
-                  ? `${revenueMissingPriceCount} dòng chưa điền giá, chưa tính vào tổng`
-                  : `${visibleRevenues.length} dòng`}
-              </span>
-            </div>
-          </div>
-
-          <EditableTable
-            columns={REVENUE_COLUMNS}
-            rows={visibleRevenues}
-            onChange={changeRevenue}
-            onDelete={(id) => ledger.deleteRow('revenues', id)}
-            onAdd={() =>
-              ledger.addRow('revenues', createRevenueEntry(monthForNewRow, createEntryId('rev')))
-            }
-            addLabel="Thêm dòng doanh thu"
-            emptyText={
-              revenueQuery.trim().length > 0
-                ? 'Không có dòng doanh thu nào khớp từ khoá.'
-                : `Chưa có doanh thu nào trong ${monthLabel}.`
-            }
-            footer={
-              <span className={styles.tableTotal}>
-                Hiện {visibleRevenues.length}/{data.revenues.length} dòng — tổng giá bán{' '}
-                {monthLabel}: <strong>{showAmount(revenueTotal)}</strong>
-              </span>
-            }
-          />
-        </>
-      ) : null}
+            <EditableTable
+              columns={REVENUE_COLUMNS}
+              rows={visibleRevenues}
+              onChange={changeRevenue}
+              onDelete={(id) => ledger.deleteRow('revenues', id)}
+              onAdd={() =>
+                ledger.addRow('revenues', createRevenueEntry(monthForNewRow, createEntryId('rev')))
+              }
+              addLabel="Thêm dòng doanh thu"
+              emptyText={
+                revenueQuery.trim().length > 0
+                  ? 'Không có dòng doanh thu nào khớp từ khoá.'
+                  : `Chưa có doanh thu nào trong ${monthLabel}.`
+              }
+              footer={
+                <span className={styles.tableTotal}>
+                  Hiện {visibleRevenues.length}/{data.revenues.length} dòng — tổng giá bán{' '}
+                  {monthLabel}: <strong>{showAmount(revenueTotal)}</strong>
+                </span>
+              }
+            />
+          </>
+        ) : null}
+      </div>
     </div>
   );
 }

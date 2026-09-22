@@ -2,6 +2,7 @@ import { useState } from 'react';
 import styles from './App.module.css';
 import { ScrollToTopButton } from './components/ScrollToTopButton';
 import { SiteFooter } from './components/SiteFooter';
+import { SiteCover } from './components/SiteCover';
 import { SiteHeader } from './components/SiteHeader';
 import { useCompanyLedger } from './hooks/useCompanyLedger';
 import { useIdeaData } from './hooks/useIdeaData';
@@ -26,6 +27,7 @@ export default function App() {
   return (
     <div className={styles.shell}>
       <SiteHeader current={page} onNavigate={setPage} dirtyPages={dirtyPages} />
+      <SiteCover />
       {page === 'mix' ? <MixPage data={dataStore.data} /> : null}
       {page === 'image' ? <ImageAnalyzePage data={dataStore.data} /> : null}
       {page === 'data' ? <DataManagerPage dataStore={dataStore} /> : null}

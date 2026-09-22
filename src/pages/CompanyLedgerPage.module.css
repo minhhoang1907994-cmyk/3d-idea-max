@@ -109,12 +109,19 @@
   border-left-color: var(--accent);
 }
 
+/*
+ * Dải tab kiểu segmented control: nền chìm bao quanh cả dải, tab đang mở tô màu cam
+ * của app. Bản trước tab đang mở chỉ là nền trắng trên nền sáng nên gần như không
+ * phân biệt được đang đứng ở tab nào.
+ */
 .tabs {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.4rem;
-  padding-bottom: 0.15rem;
-  border-bottom: 1px solid var(--border);
+  gap: 0.3rem;
+  padding: 0.3rem;
+  background: var(--surface-sunken);
+  border: 1px solid var(--border);
+  border-radius: 12px;
 }
 
 .tab {
@@ -127,7 +134,7 @@
   color: var(--text-muted);
   background: transparent;
   border: 1px solid transparent;
-  border-radius: 8px 8px 0 0;
+  border-radius: 8px;
   cursor: pointer;
 }
 
@@ -136,12 +143,17 @@
   background: var(--surface);
 }
 
-.tabActive {
-  color: var(--text);
-  background: var(--surface);
-  border-color: var(--border);
-  border-bottom-color: var(--surface);
-  margin-bottom: -1px;
+.tabActive,
+.tabActive:hover {
+  color: var(--accent-text);
+  background: linear-gradient(135deg, var(--accent-bright), var(--accent));
+  border-color: transparent;
+  box-shadow: 0 6px 14px rgba(200, 84, 12, 0.32);
+}
+
+.tab:focus-visible {
+  outline: 2px solid var(--accent-blue);
+  outline-offset: 2px;
 }
 
 .tabCount {
@@ -151,6 +163,23 @@
   color: var(--text-faint);
   background: var(--surface-sunken);
   border-radius: 999px;
+}
+
+/* Trên nền cam thì xám nhạt đọc không ra — đổi sang trắng trên nền trắng mờ */
+.tabActive .tabCount {
+  color: var(--accent-text);
+  background: rgba(255, 255, 255, 0.25);
+}
+
+/* Khung bao toàn bộ nội dung của tab đang mở: nhìn ra ngay phần nào thuộc tab nào */
+.panel {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1rem;
+  background: var(--surface-stripe);
+  border: 1px solid var(--border);
+  border-radius: 12px;
 }
 
 .toolbar {

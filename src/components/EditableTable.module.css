@@ -66,6 +66,12 @@
   min-width: 0;
 }
 
+/* Cột "Thao tác": nút nằm giữa cho thẳng hàng với tiêu đề cột đã căn giữa */
+.actionCell {
+  display: flex;
+  justify-content: center;
+}
+
 .input {
   width: 100%;
   padding: 0.4rem 0.5rem;
@@ -121,6 +127,7 @@
 .confirm {
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
   gap: 0.3rem;
 }
 
