@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useId, useRef, useState, type KeyboardEvent } from 'react';
+import { PAGE_ITEMS, type PageId } from '../lib/pages';
 import styles from './SideMenu.module.css';
-
-export type PageId = 'mix' | 'image' | 'data' | 'company';
 
 type Props = {
   current: PageId;
@@ -9,23 +8,6 @@ type Props = {
   /** Trang nào đang có thay đổi chưa lưu — hiện chấm cảnh báo cạnh mục đó */
   dirtyPages: readonly PageId[];
 };
-
-const ITEMS: { id: PageId; label: string; description: string; icon: string }[] = [
-  {
-    id: 'company',
-    label: 'Sổ công ty',
-    description: 'Thu, chi, note, sản phẩm',
-    icon: '📒',
-  },
-  { id: 'mix', label: 'Trộn ý tưởng', description: 'Sinh prompt + thông số in', icon: '🎲' },
-  {
-    id: 'image',
-    label: 'Phân tích ảnh',
-    description: 'Upload ảnh → sinh prompt tương tự',
-    icon: '🖼️',
-  },
-  { id: 'data', label: 'Quản lý dữ liệu', description: 'Xem, thêm, sửa, xóa option', icon: '🗂️' },
-];
 
 /**
  * Trên desktop đây là cột menu cố định bên trái. Dưới 760px nó thu thành ngăn kéo trượt từ
@@ -99,7 +81,7 @@ export function SideMenu({ current, onNavigate, dirtyPages }: Props) {
     }
   };
 
-  const currentItem = ITEMS.find((item) => item.id === current);
+  const currentItem = PAGE_ITEMS.find((item) => item.id === current);
 
   return (
     <>
@@ -162,7 +144,7 @@ export function SideMenu({ current, onNavigate, dirtyPages }: Props) {
         </div>
 
         <ul className={styles.list}>
-          {ITEMS.map((item) => {
+          {PAGE_ITEMS.map((item) => {
             const isActive = item.id === current;
             return (
               <li key={item.id}>

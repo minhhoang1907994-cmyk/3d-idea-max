@@ -1,10 +1,12 @@
 import { useState } from 'react';
 import styles from './App.module.css';
 import { ScrollToTopButton } from './components/ScrollToTopButton';
-import { SideMenu, type PageId } from './components/SideMenu';
+import { SideMenu } from './components/SideMenu';
 import { SiteFooter } from './components/SiteFooter';
+import { SiteHeader } from './components/SiteHeader';
 import { useCompanyLedger } from './hooks/useCompanyLedger';
 import { useIdeaData } from './hooks/useIdeaData';
+import { type PageId } from './lib/pages';
 import { CompanyLedgerPage } from './pages/CompanyLedgerPage';
 import { DataManagerPage } from './pages/DataManagerPage';
 import { ImageAnalyzePage } from './pages/ImageAnalyzePage';
@@ -26,6 +28,7 @@ export default function App() {
     <div className={styles.shell}>
       <SideMenu current={page} onNavigate={setPage} dirtyPages={dirtyPages} />
       <div className={styles.main}>
+        <SiteHeader current={page} />
         {page === 'mix' ? <MixPage data={dataStore.data} /> : null}
         {page === 'image' ? <ImageAnalyzePage data={dataStore.data} /> : null}
         {page === 'data' ? <DataManagerPage dataStore={dataStore} /> : null}
