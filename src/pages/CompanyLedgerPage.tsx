@@ -55,23 +55,23 @@ const EXPENSE_COLUMNS: EditableColumn<ExpenseEntry>[] = [
     width: 'minmax(0, 2fr)',
     placeholder: 'https://',
   },
-  { key: 'quantity', label: 'Số lượng', width: '7rem', placeholder: '1' },
-  { key: 'amount', label: 'Giá', kind: 'amount', width: '9.5rem' },
-  { key: 'date', label: 'Ngày', kind: 'date', width: '9.5rem' },
-  { key: 'month', label: 'Tháng', kind: 'month', width: '9rem' },
+  { key: 'quantity', label: 'Số lượng', width: '4.5rem', placeholder: '1' },
+  { key: 'amount', label: 'Giá', kind: 'amount', width: '7.5rem' },
+  { key: 'date', label: 'Ngày', kind: 'date', width: '8.5rem' },
+  { key: 'month', label: 'Tháng', kind: 'month', width: '7.5rem' },
   { key: 'imageUrl', label: 'Hình ảnh', kind: 'image', width: 'minmax(0, 1.4fr)' },
 ];
 
 const INCOME_COLUMNS: EditableColumn<IncomeEntry>[] = [
   { key: 'source', label: 'Nguồn', width: 'minmax(0, 2fr)', placeholder: 'Hoàng - vốn ban đầu' },
   { key: 'note', label: 'Ghi chú', width: 'minmax(0, 2fr)' },
-  { key: 'amount', label: 'Số tiền', kind: 'amount', width: '9.5rem' },
-  { key: 'month', label: 'Tháng', kind: 'month', width: '9rem' },
+  { key: 'amount', label: 'Số tiền', kind: 'amount', width: '7.5rem' },
+  { key: 'month', label: 'Tháng', kind: 'month', width: '7.5rem' },
 ];
 
 const PRODUCT_COLUMNS: EditableColumn<CompanyProduct>[] = [
   { key: 'name', label: 'Tên', width: 'minmax(0, 2fr)' },
-  { key: 'quantity', label: 'Số lượng', width: '7rem', placeholder: '1' },
+  { key: 'quantity', label: 'Số lượng', width: '4.5rem', placeholder: '1' },
   {
     key: 'description',
     label: 'Link / mô tả',
@@ -91,7 +91,7 @@ const PRODUCT_COLUMNS: EditableColumn<CompanyProduct>[] = [
 
 const REVENUE_COLUMNS: EditableColumn<RevenueEntry>[] = [
   { key: 'name', label: 'Tên', width: 'minmax(0, 2fr)' },
-  { key: 'quantity', label: 'Số lượng', width: '7rem', placeholder: '1' },
+  { key: 'quantity', label: 'Số lượng', width: '4.5rem', placeholder: '1' },
   {
     key: 'description',
     label: 'Link / mô tả',
@@ -99,9 +99,9 @@ const REVENUE_COLUMNS: EditableColumn<RevenueEntry>[] = [
     width: 'minmax(0, 3fr)',
     placeholder: 'https://makerworld.com/...',
   },
-  { key: 'price', label: 'Giá bán', kind: 'amount', width: '9.5rem' },
-  { key: 'date', label: 'Ngày', kind: 'date', width: '9.5rem' },
-  { key: 'month', label: 'Tháng', kind: 'month', width: '9rem' },
+  { key: 'price', label: 'Giá bán', kind: 'amount', width: '7.5rem' },
+  { key: 'date', label: 'Ngày', kind: 'date', width: '8.5rem' },
+  { key: 'month', label: 'Tháng', kind: 'month', width: '7.5rem' },
 ];
 
 /** Gõ chữ nào trong ô tìm kiếm cũng so với toàn bộ nội dung dòng, không phân biệt hoa thường. */
@@ -184,7 +184,7 @@ export function CompanyLedgerPage({ ledger }: Props) {
         key: 'type',
         label: 'Loại',
         kind: 'tag',
-        width: '10rem',
+        width: '8.5rem',
         placeholder: 'Trick',
         suggestions: noteTypes,
       },

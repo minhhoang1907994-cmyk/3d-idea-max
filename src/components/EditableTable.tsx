@@ -13,7 +13,7 @@ import styles from './EditableTable.module.css';
 export type ColumnKind = 'text' | 'amount' | 'date' | 'month' | 'link' | 'image' | 'tag';
 
 /** Bề rộng cột "Thao tác" — cột duy nhất không do trang gọi khai báo */
-const ACTION_COLUMN_WIDTH = '5.5rem';
+const ACTION_COLUMN_WIDTH = '4.5rem';
 /*
  * Hai kiểu ô này có phần phụ đi kèm ô nhập: nút mở link, và số tiền đã định dạng lại.
  * Xếp chúng thành cột grid riêng ngay sau cột chính thay vì nhét xuống dưới ô nhập —
@@ -21,17 +21,18 @@ const ACTION_COLUMN_WIDTH = '5.5rem';
  * Header cột phụ để trống vì cột chính đã nói rõ, aria-label lo phần đọc màn hình.
  */
 const SIDE_COLUMNS: Partial<Record<ColumnKind, { width: string; label: string }>> = {
-  link: { width: '4rem', label: 'Mở link' },
-  amount: { width: '8rem', label: 'Số tiền đã định dạng' },
+  link: { width: '3.25rem', label: 'Mở link' },
+  amount: { width: '6.5rem', label: 'Số tiền đã định dạng' },
 };
 /*
- * Sàn cho cột co giãn. 7rem là mức cân bằng: bảng rộng nhất hiện có (Chi, 8 cột) ra sàn
- * 67rem ~ 1072px, vẫn vừa vùng nội dung của màn 1366px nên desktop không phát sinh cuộn
- * ngang mới; hẹp hơn 7rem thì ô nhập trên điện thoại không còn đọc được nội dung.
+ * Sàn cho cột co giãn. Mọi trang đều bó trong khung 1100px (lề 1.25rem mỗi bên) nên vùng
+ * nội dung còn ~66rem — bảng rộng nhất hiện có (Chi: 7 cột + 2 cột phụ + Thao tác) phải
+ * nằm gọn trong đó thì mới khỏi cuộn ngang. Với 5.5rem, sàn của bảng đó ra ~64rem: vừa
+ * khít, mà ô nhập vẫn đọc được. Hạ thêm nữa thì ô chữ bị nén quá hẹp.
  */
-const FLEX_COLUMN_MIN_REM = 7;
+const FLEX_COLUMN_MIN_REM = 5.5;
 /** Khớp với `gap` của .headRow/.row và `padding` hai bên trong EditableTable.module.css */
-const COLUMN_GAP_REM = 0.5;
+const COLUMN_GAP_REM = 0.4;
 const ROW_PADDING_REM = 1.5;
 
 export type EditableColumn<T> = {

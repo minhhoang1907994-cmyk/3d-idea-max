@@ -21,7 +21,7 @@
 .headRow,
 .row {
   display: grid;
-  gap: 0.5rem;
+  gap: 0.4rem;
   /* Căn giữa theo chiều dọc: dòng nào có ô ảnh thì cao hơn hẳn, để start thì mọi ô
      chữ trong dòng đó dính lên mép trên và lệch hẳn so với ảnh bên cạnh */
   align-items: center;
