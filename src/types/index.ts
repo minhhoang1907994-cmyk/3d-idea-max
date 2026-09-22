@@ -404,11 +404,6 @@ export type CompanyProduct = {
   quantity: string;
   /** Link file mẫu hoặc mô tả — hiển thị thành link khi bắt đầu bằng http */
   description: string;
-  /**
-   * Ảnh sản phẩm: object key trên Backblaze B2, rỗng khi không có — giống
-   * ExpenseEntry.imageUrl, xem chú thích ở đó.
-   */
-  imageUrl: string;
 };
 
 /**
@@ -433,4 +428,9 @@ export type RevenueEntry = {
   price: number | null;
   /** 'YYYY-MM-DD' hoặc rỗng khi chưa rõ ngày bán */
   date: string;
+  /**
+   * Ảnh món đã bán: object key trên Backblaze B2, rỗng khi không có — giống
+   * ExpenseEntry.imageUrl, xem chú thích ở đó.
+   */
+  imageUrl: string;
 };

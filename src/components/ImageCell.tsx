@@ -100,7 +100,9 @@ export function ImageCell({ value, month, prefix, label, onChange }: Props) {
           onChange={(event) => onChange(event.target.value)}
         />
         {isHttpLink(value) ? (
-          <img className={styles.thumbnail} src={value} alt="" loading="lazy" />
+          <div className={styles.preview}>
+            <img className={styles.thumbnail} src={value} alt="" loading="lazy" />
+          </div>
         ) : null}
         <span className={styles.hint}>
           Chưa cấu hình Backblaze (VITE_B2_*) — dán link ảnh vào đây.

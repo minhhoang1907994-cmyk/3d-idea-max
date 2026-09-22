@@ -26,8 +26,19 @@
 
 .preview {
   position: relative;
-  align-self: flex-start;
+  /* Ảnh nằm giữa ô: cùng một cột mà ảnh dọc dạt trái, ảnh ngang tràn hết bề ngang
+     thì nhìn cả bảng rất lệch */
+  align-self: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   max-width: 100%;
+  padding: 0.3rem;
+  /* Nền sau ảnh: ảnh PNG nền trong suốt không lẫn vào nền dòng, và phần thừa hai bên
+     của ảnh dọc trông vẫn ra một khung */
+  background: var(--surface-sunken);
+  border: 1px solid var(--border);
+  border-radius: 8px;
   line-height: 0;
 }
 
@@ -42,15 +53,14 @@
   max-width: 100%;
   height: auto;
   max-height: 120px;
-  border: 1px solid var(--border);
   border-radius: 6px;
 }
 
 /* Hiện khi rê chuột, khi bàn phím đang ở trong ô, và luôn hiện trên màn cảm ứng */
 .overlay {
   position: absolute;
-  top: 0.25rem;
-  right: 0.25rem;
+  top: 0.15rem;
+  right: 0.15rem;
   display: flex;
   gap: 0.25rem;
   opacity: 0;

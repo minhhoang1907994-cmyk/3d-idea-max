@@ -159,12 +159,21 @@ export function createCompanyNote(id: string): CompanyNote {
 }
 
 export function createCompanyProduct(id: string): CompanyProduct {
-  return { id, name: '', quantity: '', description: '', imageUrl: '' };
+  return { id, name: '', quantity: '', description: '' };
 }
 
 /** Dòng doanh thu trống cho tháng đang chọn. */
 export function createRevenueEntry(month: string, id: string): RevenueEntry {
-  return { id, month, name: '', quantity: '', description: '', price: null, date: '' };
+  return {
+    id,
+    month,
+    name: '',
+    quantity: '',
+    description: '',
+    price: null,
+    date: '',
+    imageUrl: '',
+  };
 }
 
 /**

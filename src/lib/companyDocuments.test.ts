@@ -17,7 +17,7 @@ const FALLBACK: CompanyData = {
   ],
   incomes: [{ id: 'inc-1', month: '2026-09', source: 'vốn', note: '', amount: 3000000 }],
   notes: [{ id: 'note-1', type: 'Trick', link: 'https://a.b', description: 'x' }],
-  products: [{ id: 'prod-1', name: 'Benchy', quantity: '1', description: '', imageUrl: '' }],
+  products: [{ id: 'prod-1', name: 'Benchy', quantity: '1', description: '' }],
   revenues: [
     {
       id: 'fg-1',
@@ -27,6 +27,7 @@ const FALLBACK: CompanyData = {
       description: '',
       price: 40000,
       date: '',
+      imageUrl: '',
     },
   ],
 };

@@ -78,14 +78,6 @@ const PRODUCT_COLUMNS: EditableColumn<CompanyProduct>[] = [
     width: 'minmax(0, 3fr)',
     placeholder: 'https://makerworld.com/...',
   },
-  {
-    key: 'imageUrl',
-    label: 'Hình ảnh',
-    kind: 'image',
-    width: '12.5rem',
-    // Dòng sản phẩm không có cột Tháng nên ảnh dồn vào products/unsorted/
-    imagePrefix: 'products',
-  },
 ];
 
 const REVENUE_COLUMNS: EditableColumn<RevenueEntry>[] = [
@@ -101,6 +93,14 @@ const REVENUE_COLUMNS: EditableColumn<RevenueEntry>[] = [
   { key: 'price', label: 'Giá bán', kind: 'amount', width: '7.5rem' },
   { key: 'date', label: 'Ngày', kind: 'date', width: '8.5rem' },
   { key: 'month', label: 'Tháng', kind: 'month', width: '7.5rem' },
+  {
+    key: 'imageUrl',
+    label: 'Hình ảnh',
+    kind: 'image',
+    width: '12.5rem',
+    // Dòng doanh thu có cột Tháng nên ảnh xếp vào revenues/<tháng bán>/
+    imagePrefix: 'revenues',
+  },
 ];
 
 /** Gõ chữ nào trong ô tìm kiếm cũng so với toàn bộ nội dung dòng, không phân biệt hoa thường. */
