@@ -113,6 +113,8 @@
   flex-wrap: wrap;
   gap: 0.3rem;
   align-items: center;
+  /* Cùng trục với khung ảnh ở .preview — ô chưa có ảnh và ô đã có ảnh nằm thẳng hàng */
+  justify-content: center;
 }
 
 .uploadButton {

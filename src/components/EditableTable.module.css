@@ -41,7 +41,10 @@
   font-weight: 700;
   letter-spacing: 0.02em;
   text-transform: uppercase;
-  color: var(--text-faint);
+  text-align: center;
+  /* Xanh logo chứ không phải cam: trên nền --surface-sunken thì cam đậm chỉ đạt
+     tương phản 3.9:1, chưa đủ 4.5:1 cho cỡ chữ nhỏ này */
+  color: var(--accent-blue);
 }
 
 .row + .row {

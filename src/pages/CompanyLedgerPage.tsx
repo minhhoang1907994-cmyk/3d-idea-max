@@ -92,7 +92,6 @@ const REVENUE_COLUMNS: EditableColumn<RevenueEntry>[] = [
   },
   { key: 'price', label: 'Giá bán', kind: 'amount', width: '7.5rem' },
   { key: 'date', label: 'Ngày', kind: 'date', width: '8.5rem' },
-  { key: 'month', label: 'Tháng', kind: 'month', width: '7.5rem' },
   {
     key: 'imageUrl',
     label: 'Hình ảnh',
