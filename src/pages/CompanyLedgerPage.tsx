@@ -70,7 +70,6 @@ const INCOME_COLUMNS: EditableColumn<IncomeEntry>[] = [
 
 const PRODUCT_COLUMNS: EditableColumn<CompanyProduct>[] = [
   { key: 'name', label: 'Tên', width: 'minmax(0, 2fr)' },
-  { key: 'quantity', label: 'Số lượng', width: '4.5rem', placeholder: '1' },
   {
     key: 'description',
     label: 'Link / mô tả',
@@ -154,7 +153,7 @@ export function CompanyLedgerPage({ ledger }: Props) {
   const visibleProducts = useMemo(
     () =>
       data.products.filter((product) =>
-        matchesQuery([product.name, product.quantity, product.description], productQuery),
+        matchesQuery([product.name, product.description], productQuery),
       ),
     [data.products, productQuery],
   );
