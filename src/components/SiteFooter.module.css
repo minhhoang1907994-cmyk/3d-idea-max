@@ -32,6 +32,8 @@
   flex: none;
   width: 3.25rem;
   height: auto;
+  border-radius: 6px;
+  border: 2px solid var(--accent);
 }
 
 .brandText {
