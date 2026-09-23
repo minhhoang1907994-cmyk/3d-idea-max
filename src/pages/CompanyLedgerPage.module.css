@@ -2,9 +2,17 @@
   display: flex;
   flex-direction: column;
   gap: 1rem;
-  max-width: 1100px;
+  /*
+   * width: 100% là BẮT BUỘC, không thừa. .page là flex item của .shell (flex column) mà
+   * lại có `margin: 0 auto` — lề auto theo trục ngang huỷ align-items: stretch, nên bề
+   * ngang chuyển sang tính theo nội dung rồi kẹp ở max-width. Hậu quả: màn hẹp thì thân
+   * trang vẫn nằm ở 1100px và đẩy cả trang tràn ngang, còn đầu/chân trang (không có lề
+   * auto) thì co đúng viewport — nhìn ra đúng cảnh đầu/chân trang "ngắn" hơn thân trang.
+   */
+  width: 100%;
+  max-width: var(--layout-max);
   margin: 0 auto;
-  padding: 1.75rem 1.25rem 3rem;
+  padding: 1.75rem var(--layout-pad) 3rem;
 }
 
 .header {
@@ -281,7 +289,8 @@
 
 @media (max-width: 760px) {
   .page {
-    padding: 1.25rem 1rem 2.5rem;
+    padding-top: 1.25rem;
+    padding-bottom: 2.5rem;
   }
 
   .title {
@@ -324,7 +333,8 @@
 
 @media (max-width: 480px) {
   .page {
-    padding: 1rem 0.75rem 2.25rem;
+    padding-top: 1rem;
+    padding-bottom: 2.25rem;
   }
 
   .title {

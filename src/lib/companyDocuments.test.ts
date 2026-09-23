@@ -28,6 +28,7 @@ const FALLBACK: CompanyData = {
       price: 40000,
       date: '',
       imageUrl: '',
+      specs: '',
     },
   ],
 };

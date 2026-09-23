@@ -6,9 +6,18 @@
   position: sticky;
   top: 0;
   z-index: 10;
-  padding: 0.7rem 1.25rem;
+  padding: 0.7rem var(--layout-pad);
   background: linear-gradient(160deg, #1e3554, #16273c);
   border-bottom: 3px solid var(--accent);
+}
+
+/*
+ * .header có z-index nên nó là một stacking context: ngăn kéo nằm bên trong chỉ xếp
+ * lớp trong context này. ScrollToTopButton là fixed với z-index 20 ở context gốc, nên
+ * nếu header vẫn là 10 thì nút tròn cam nổi đè lên cả lớp phủ lẫn ngăn kéo.
+ */
+.headerMenuOpen {
+  z-index: 40;
 }
 
 .inner {
@@ -17,15 +26,32 @@
   align-items: center;
   justify-content: space-between;
   gap: 0.6rem 2rem;
-  max-width: 1100px;
+  max-width: var(--layout-inner);
   margin: 0 auto;
 }
 
+/* Là <button> để bấm về trang chủ, nhưng phải trông y như chữ — bỏ hết nền/viền mặc định */
 .brand {
   display: flex;
   align-items: center;
   gap: 0.75rem;
   min-width: 0;
+  padding: 0.2rem 0.3rem;
+  font: inherit;
+  text-align: left;
+  background: transparent;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.brand:hover .brandName {
+  color: var(--accent-bright);
+}
+
+.brand:focus-visible {
+  outline: 2px solid var(--accent-blue-bright);
+  outline-offset: 2px;
 }
 
 .logo {
@@ -115,35 +141,78 @@
   background: var(--accent-text);
 }
 
-/* Khổ hẹp: thương hiệu rút còn logo + tên, điều hướng thành hàng cuộn ngang */
-@media (max-width: 860px) {
-  .header {
-    padding: 0.6rem 0.9rem;
-  }
+/* Nút ba gạch: chỉ hiện ở khổ ≤1024px, xem media query cuối file */
+.toggle {
+  display: none;
+  position: relative;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 2.6rem;
+  height: 2.6rem;
+  padding: 0;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.24);
+  border-radius: 10px;
+  cursor: pointer;
+}
 
+.toggle:hover {
+  background: rgba(255, 255, 255, 0.18);
+}
+
+.toggle:focus-visible {
+  outline: 2px solid var(--accent-blue-bright);
+  outline-offset: 2px;
+}
+
+.toggleBars {
+  display: flex;
+  flex-direction: column;
+  gap: 0.28rem;
+  width: 1.15rem;
+}
+
+.bar {
+  height: 2px;
+  background: #ffffff;
+  border-radius: 2px;
+}
+
+/* Có thay đổi chưa lưu ở trang nào đó — chấm này thay cho chấm trên từng mục đã bị giấu
+   trong ngăn kéo, để không phải mở menu mới biết */
+.toggleDot {
+  position: absolute;
+  top: -3px;
+  right: -3px;
+  width: 9px;
+  height: 9px;
+  background: var(--warning);
+  border: 2px solid #1e3554;
+  border-radius: 50%;
+}
+
+/* Từ đây trở xuống hàng nút điều hướng nhường chỗ cho nút ba gạch + ngăn kéo.
+   Mốc phải khớp với DRAWER_QUERY trong SiteHeader.tsx và với mốc ẩn SiteFooter. */
+@media (max-width: 1024px) {
   .inner {
+    flex-wrap: nowrap;
     gap: 0.5rem;
   }
 
+  .nav {
+    display: none;
+  }
+
+  .toggle {
+    display: inline-flex;
+  }
+}
+
+/* Hết chỗ cho dòng giới thiệu khi thương hiệu phải chia hàng với nút ba gạch */
+@media (max-width: 560px) {
   .brandNote {
     display: none;
-  }
-
-  .nav {
-    flex: 1 1 100%;
-    flex-wrap: nowrap;
-    overflow-x: auto;
-    padding-bottom: 0.15rem;
-    scrollbar-width: none;
-  }
-
-  .nav::-webkit-scrollbar {
-    display: none;
-  }
-
-  .item {
-    flex: none;
-    padding: 0.45rem 0.8rem;
   }
 }
 

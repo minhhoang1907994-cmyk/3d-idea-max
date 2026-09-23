@@ -1,6 +1,7 @@
 import { Fragment, useState, type ReactNode } from 'react';
 import { formatAmountForEdit, formatVnd, isHttpLink, parseAmountInput } from '../lib/companyLedger';
 import { ImageCell } from './ImageCell';
+import { LongTextCell } from './LongTextCell';
 import { TagSelect } from './TagSelect';
 import styles from './EditableTable.module.css';
 
@@ -9,8 +10,18 @@ import styles from './EditableTable.module.css';
  *
  * `amount` là số tiền (number | null), các kiểu còn lại đều là chuỗi. `image` không
  * render <input> ở đây mà giao cho <ImageCell> — xem file đó, `tag` giao cho <TagSelect>.
+ * `longtext` dành cho nội dung nhiều dòng (thông số in chẳng hạn) — vẫn là chuỗi, chỉ
+ * khác chỗ nhập: trong bảng là một nút, bấm mới mở hộp thoại, xem <LongTextCell>.
  */
-export type ColumnKind = 'text' | 'amount' | 'date' | 'month' | 'link' | 'image' | 'tag';
+export type ColumnKind =
+  | 'text'
+  | 'amount'
+  | 'date'
+  | 'month'
+  | 'link'
+  | 'image'
+  | 'tag'
+  | 'longtext';
 
 /** Bề rộng cột "Thao tác" — cột duy nhất không do trang gọi khai báo */
 const ACTION_COLUMN_WIDTH = '4.25rem';
@@ -26,9 +37,12 @@ const SIDE_COLUMNS: Partial<Record<ColumnKind, { width: string; label: string }>
 };
 /*
  * Sàn cho cột co giãn. Mọi trang đều bó trong khung 1100px (lề 1.25rem mỗi bên) nên vùng
- * nội dung còn ~66rem — bảng rộng nhất hiện có (Chi: 6 cột + 2 cột phụ + Thao tác) phải
- * nằm gọn trong đó thì mới khỏi cuộn ngang. Với 5.5rem, sàn của bảng đó ra ~63rem: vừa
- * khít, mà ô nhập vẫn đọc được. Hạ thêm nữa thì ô chữ bị nén quá hẹp.
+ * nội dung còn ~66rem. Với 5.5rem, bảng Chi (6 cột + 2 cột phụ + Thao tác) ra sàn ~63rem
+ * — vừa khít, mà ô nhập vẫn đọc được. Hạ thêm nữa thì ô chữ bị nén quá hẹp.
+ *
+ * Bảng Doanh thu từ khi có thêm cột Thông số thì ra ~69rem, tức vượt khung một chút và
+ * phải cuộn ngang ngay cả trên desktop. Chấp nhận được vì .scroller đã lo phần cuộn;
+ * muốn hết cuộn thì phải bỏ bớt cột chứ không phải hạ sàn này xuống.
  */
 const FLEX_COLUMN_MIN_REM = 5.5;
 /** Khớp với `gap` của .headRow/.row và `padding` hai bên trong EditableTable.module.css */
@@ -184,6 +198,21 @@ export function EditableTable<T extends { id: string }>({
           <TagSelect
             value={value}
             options={column.suggestions ?? []}
+            label={column.label}
+            placeholder={column.placeholder}
+            onChange={(next) => onChange(row.id, { [column.key]: next } as Partial<T>)}
+          />
+        ),
+        side: null,
+      };
+    }
+
+    // Nội dung nhiều dòng không nhét vừa một ô trong bảng — giao cho <LongTextCell>
+    if (kind === 'longtext') {
+      return {
+        main: (
+          <LongTextCell
+            value={value}
             label={column.label}
             placeholder={column.placeholder}
             onChange={(next) => onChange(row.id, { [column.key]: next } as Partial<T>)}

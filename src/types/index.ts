@@ -433,4 +433,6 @@ export type RevenueEntry = {
    * ExpenseEntry.imageUrl, xem chú thích ở đó.
    */
   imageUrl: string;
+  /** Thông số in của món này — nhiều dòng, gõ tự do, rỗng khi chưa ghi */
+  specs: string;
 };

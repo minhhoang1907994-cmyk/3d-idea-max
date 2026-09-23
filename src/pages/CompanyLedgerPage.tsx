@@ -90,6 +90,13 @@ const REVENUE_COLUMNS: EditableColumn<RevenueEntry>[] = [
     width: 'minmax(0, 3fr)',
     placeholder: 'https://makerworld.com/...',
   },
+  {
+    key: 'specs',
+    label: 'Thông số',
+    kind: 'longtext',
+    width: '5.5rem',
+    placeholder: 'PLA, layer 0.2, infill 15%...',
+  },
   { key: 'price', label: 'Giá bán', kind: 'amount', width: '7.5rem' },
   { key: 'date', label: 'Ngày', kind: 'date', width: '8.5rem' },
   {
@@ -155,7 +162,7 @@ export function CompanyLedgerPage({ ledger }: Props) {
   const visibleRevenues = useMemo(
     () =>
       filterByMonth(data.revenues, month).filter((row) =>
-        matchesQuery([row.name, row.quantity, row.description], revenueQuery),
+        matchesQuery([row.name, row.quantity, row.description, row.specs], revenueQuery),
       ),
     [data.revenues, month, revenueQuery],
   );

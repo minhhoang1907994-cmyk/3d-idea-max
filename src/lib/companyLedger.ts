@@ -173,6 +173,7 @@ export function createRevenueEntry(month: string, id: string): RevenueEntry {
     price: null,
     date: '',
     imageUrl: '',
+    specs: '',
   };
 }
 

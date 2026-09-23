@@ -5,7 +5,7 @@
  */
 .footer {
   margin-top: auto;
-  padding: 1.75rem 1.25rem 1.5rem;
+  padding: 1.75rem var(--layout-pad) 1.5rem;
   color: rgba(255, 255, 255, 0.72);
   background: linear-gradient(160deg, #1e3554, #16273c);
   border-top: 3px solid var(--accent);
@@ -17,7 +17,7 @@
   align-items: center;
   justify-content: space-between;
   gap: 1.25rem 2rem;
-  max-width: 1100px;
+  max-width: var(--layout-inner);
   margin: 0 auto;
 }
 
@@ -95,7 +95,7 @@
 }
 
 .copyright {
-  max-width: 1100px;
+  max-width: var(--layout-inner);
   margin: 1.5rem auto 0;
   padding-top: 1rem;
   font-size: 0.78rem;
@@ -105,18 +105,13 @@
 }
 
 /* Nút "lên đầu trang" neo góc dưới phải, chừa chỗ cho nó khỏi đè lên nút mạng xã hội */
-@media (max-width: 760px) {
+/*
+ * Khổ nào có nút ba gạch thì bỏ hẳn chân trang: toàn bộ nội dung của nó (mạng xã hội,
+ * dòng giới thiệu, bản quyền) đã nằm trong ngăn kéo menu — xem SiteNavDrawer. Giữ cả
+ * hai thì cùng một nội dung hiện hai chỗ. Mốc khớp với DRAWER_QUERY của SiteHeader.
+ */
+@media (max-width: 1024px) {
   .footer {
-    padding: 1.5rem 1.15rem 1.35rem;
-  }
-
-  .inner {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 1rem;
-  }
-
-  .social {
-    padding-right: 3.5rem;
+    display: none;
   }
 }

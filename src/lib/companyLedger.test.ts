@@ -222,6 +222,7 @@ describe('sumRevenuePrices', () => {
     price,
     date: '',
     imageUrl: '',
+    specs: '',
   });
 
   it('cộng giá bán của mọi dòng', () => {
@@ -257,6 +258,7 @@ describe('createRevenueEntry', () => {
       price: null,
       date: '',
       imageUrl: '',
+      specs: '',
     });
   });
 });

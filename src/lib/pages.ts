@@ -8,6 +8,9 @@ export type PageItem = {
   icon: string;
 };
 
+/** Trang mở đầu, cũng là chỗ bấm logo quay về */
+export const HOME_PAGE_ID: PageId = 'company';
+
 export const PAGE_ITEMS: PageItem[] = [
   {
     id: 'company',

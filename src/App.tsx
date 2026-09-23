@@ -2,11 +2,10 @@ import { useState } from 'react';
 import styles from './App.module.css';
 import { ScrollToTopButton } from './components/ScrollToTopButton';
 import { SiteFooter } from './components/SiteFooter';
-import { SiteCover } from './components/SiteCover';
 import { SiteHeader } from './components/SiteHeader';
 import { useCompanyLedger } from './hooks/useCompanyLedger';
 import { useIdeaData } from './hooks/useIdeaData';
-import { type PageId } from './lib/pages';
+import { HOME_PAGE_ID, type PageId } from './lib/pages';
 import { CompanyLedgerPage } from './pages/CompanyLedgerPage';
 import { DataManagerPage } from './pages/DataManagerPage';
 import { ImageAnalyzePage } from './pages/ImageAnalyzePage';
@@ -14,7 +13,7 @@ import { MixPage } from './pages/MixPage';
 
 export default function App() {
   // Sổ công ty là trang vào đầu tiên — nó là thứ cả nhóm mở hằng ngày
-  const [page, setPage] = useState<PageId>('company');
+  const [page, setPage] = useState<PageId>(HOME_PAGE_ID);
   // Một nguồn dữ liệu dùng chung cho cả 2 trang: sửa bên Quản lý thì Mix thấy ngay
   const dataStore = useIdeaData();
   // Giữ ở App chứ không trong trang: chuyển tab rồi quay lại vẫn còn phần chưa lưu
@@ -27,7 +26,6 @@ export default function App() {
   return (
     <div className={styles.shell}>
       <SiteHeader current={page} onNavigate={setPage} dirtyPages={dirtyPages} />
-      <SiteCover />
       {page === 'mix' ? <MixPage data={dataStore.data} /> : null}
       {page === 'image' ? <ImageAnalyzePage data={dataStore.data} /> : null}
       {page === 'data' ? <DataManagerPage dataStore={dataStore} /> : null}

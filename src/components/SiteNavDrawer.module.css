@@ -1,0 +1,236 @@
+/*
+ * Ngăn kéo chỉ sống ở khổ ≤760px. Component chỉ dựng khi mở, nên ở đây không cần trạng
+ * thái đóng — `display: none` bên dưới chỉ là chốt an toàn phòng khi kéo rộng cửa sổ
+ * trong lúc ngăn kéo đang mở mà state chưa kịp đồng bộ.
+ */
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 30;
+  padding: 0;
+  background: rgba(8, 16, 28, 0.55);
+  border: none;
+  cursor: pointer;
+  animation: fade-in 0.16s ease;
+}
+
+.panel {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 31;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  width: min(19rem, 86vw);
+  padding: 1.1rem 1rem 1.5rem;
+  overflow-y: auto;
+  color: rgba(255, 255, 255, 0.72);
+  background: linear-gradient(160deg, #1e3554, #16273c);
+  border-left: 3px solid var(--accent);
+  box-shadow: -18px 0 40px rgba(8, 16, 28, 0.35);
+  animation: slide-in 0.18s ease;
+}
+
+.head {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.logo {
+  flex: none;
+  width: 2.1rem;
+  height: auto;
+}
+
+.brandName {
+  min-width: 0;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.close {
+  flex: none;
+  margin-left: auto;
+  width: 2.1rem;
+  height: 2.1rem;
+  padding: 0;
+  font: inherit;
+  font-size: 0.9rem;
+  line-height: 1;
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.24);
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.close:hover {
+  background: rgba(255, 255, 255, 0.18);
+}
+
+.close:focus-visible {
+  outline: 2px solid var(--accent-blue-bright);
+  outline-offset: 2px;
+}
+
+.nav {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  width: 100%;
+  padding: 0.65rem 0.75rem;
+  font: inherit;
+  text-align: left;
+  color: rgba(255, 255, 255, 0.8);
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.item:hover {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.itemActive,
+.itemActive:hover {
+  color: var(--accent-text);
+  background: linear-gradient(135deg, var(--accent-bright), var(--accent));
+  box-shadow: 0 6px 14px rgba(200, 84, 12, 0.32);
+}
+
+.item:focus-visible {
+  outline: 2px solid var(--accent-blue-bright);
+  outline-offset: 2px;
+}
+
+.icon {
+  flex: none;
+  font-size: 1.1rem;
+  line-height: 1;
+}
+
+.itemText {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  min-width: 0;
+}
+
+.itemLabel {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.92rem;
+  font-weight: 600;
+}
+
+.itemDescription {
+  font-size: 0.74rem;
+  line-height: 1.35;
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.itemActive .itemDescription {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.dot {
+  flex: none;
+  width: 7px;
+  height: 7px;
+  background: var(--warning);
+  border-radius: 50%;
+}
+
+.itemActive .dot {
+  background: var(--accent-text);
+}
+
+/* Phần chân trang gộp vào đây vì SiteFooter bị ẩn ở khổ này */
+.footer {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  margin-top: auto;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.social {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.socialLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.95rem;
+  font-size: 0.84rem;
+  font-weight: 600;
+  color: #ffffff;
+  text-decoration: none;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.24);
+  border-radius: 999px;
+}
+
+.socialLink:hover {
+  background: var(--accent);
+  border-color: var(--accent-bright);
+}
+
+.socialLink:focus-visible {
+  outline: 2px solid var(--accent-blue-bright);
+  outline-offset: 2px;
+}
+
+.socialIcon {
+  flex: none;
+  width: 1.1rem;
+  height: 1.1rem;
+}
+
+.note {
+  margin: 0;
+  font-size: 0.78rem;
+  color: rgba(255, 255, 255, 0.62);
+}
+
+.copyright {
+  margin: 0;
+  font-size: 0.74rem;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+@keyframes slide-in {
+  from {
+    transform: translateX(100%);
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+}
+
+@media (min-width: 1025px) {
+  .overlay,
+  .panel {
+    display: none;
+  }
+}

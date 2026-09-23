@@ -29,6 +29,26 @@
   /* Bóng đổ dùng chung cho mọi khối thẻ nền trắng */
   --shadow-card: 0 1px 2px rgba(22, 39, 60, 0.04), 0 10px 24px rgba(22, 39, 60, 0.07);
 
+  /*
+   * Khổ nội dung dùng chung: đầu trang, ảnh bìa, thân trang và chân trang phải cùng
+   * một mép trái/phải ở MỌI khổ màn hình. Trước đây mỗi khối tự khai padding riêng
+   * (header 0.9rem, footer 1.15rem, trang 1rem) nên thu hẹp màn là các mép lệch nhau.
+   * Đổi bề rộng hay lề của app = sửa đúng 2 biến này, không sửa từng file.
+   */
+  --layout-max: 1100px;
+  --layout-pad: 1.25rem;
+  /* Bề ngang phần chữ/ảnh sau khi trừ lề — thân trang là hộp 1100px ĐÃ gồm lề,
+     nên đầu/chân trang và ảnh bìa phải trừ đi đúng chừng đó mới thẳng hàng */
+  --layout-inner: calc(var(--layout-max) - var(--layout-pad) * 2);
+
+  /*
+   * Lớp sáng phủ lên ảnh nền: alpha càng thấp thì ảnh bìa càng nổi, nền càng đậm.
+   * Đánh đổi: ở vùng ảnh tối, chữ --text-muted nằm trực tiếp trên nền (không nằm trong
+   * thẻ trắng) tụt xuống khoảng 3.3:1 — dưới ngưỡng 4.5:1 của WCAG AA. Cần ưu tiên đọc
+   * hơn nhìn thì nâng lại về 0.88.
+   */
+  --page-wash: rgba(234, 241, 250, 0.8);
+
   /* Lưới nền mô phỏng mặt bàn in (build plate) */
   --plate-line: rgba(22, 39, 60, 0.055);
   --plate-step: 26px;
@@ -36,8 +56,25 @@
   color-scheme: light;
 }
 
+/* Lề thu dần theo khổ màn — mọi khối dùng --layout-pad nên đổi ở đây là đổi cả app */
+@media (max-width: 760px) {
+  :root {
+    --layout-pad: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  :root {
+    --layout-pad: 0.75rem;
+  }
+}
+
 * {
   box-sizing: border-box;
+}
+
+html {
+  background-color: var(--surface-sunken);
 }
 
 body {
@@ -49,7 +86,9 @@ body {
     Roboto,
     sans-serif;
   color: var(--text);
-  background-color: var(--surface-sunken);
+  /* Trong suốt để hai lớp ::before/::after bên dưới hiện qua — màu nền gốc chuyển lên
+     thẻ html, phòng khi ảnh chưa tải xong */
+  background-color: transparent;
   background-image:
     radial-gradient(1000px 560px at 8% -10%, rgba(244, 120, 59, 0.18), transparent 62%),
     radial-gradient(900px 520px at 95% 0%, rgba(62, 160, 239, 0.2), transparent 64%),
@@ -60,8 +99,33 @@ body {
     auto,
     var(--plate-step) var(--plate-step),
     var(--plate-step) var(--plate-step);
-  background-attachment: fixed;
   -webkit-font-smoothing: antialiased;
+}
+
+/*
+ * Ảnh bìa (trước là banner riêng dưới đầu trang) giờ làm nền cho toàn app: một lớp
+ * fixed nằm sau mọi thứ, không cuộn theo trang. Phải là pseudo-element chứ không phải
+ * background-image của body vì cần blur — filter không áp riêng cho một lớp background
+ * được. scale(1.06) bù phần mép bị blur ăn lẹm vào, tránh hở viền.
+ */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  /* WebP 1600px, ~106 KB: ảnh gốc 1919px/2 MB là quá thừa cho một lớp nền đã blur và
+     phóng to bằng `cover`. Bản gốc còn trong git — `git show eff6c8a:public/cover.png` */
+  background: url('/cover.webp') center / cover no-repeat;
+  transform: scale(1.0);
+}
+
+/* Lớp sáng phủ lên ảnh, giữ tương phản chữ/thẻ như nền cũ */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background: var(--page-wash);
 }
 
 ::selection {
@@ -74,15 +138,7 @@ body {
   outline-offset: 2px;
 }
 
-/*
- * background-attachment: fixed buộc trình duyệt vẽ lại nền mỗi khung hình khi cuộn —
- * trên điện thoại giật thấy rõ. Lưới mặt bàn in cuộn theo trang cũng không khác mấy.
- */
 @media (max-width: 760px) {
-  body {
-    background-attachment: scroll;
-  }
-
   :root {
     --plate-step: 20px;
   }

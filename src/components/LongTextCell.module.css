@@ -1,0 +1,136 @@
+.cell {
+  min-width: 0;
+}
+
+/* Cao bằng ô nhập của các cột khác để cả dòng vẫn thẳng hàng, chỉ khác là bấm được */
+.trigger {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 0.4rem 0.5rem;
+  font: inherit;
+  font-size: 0.84rem;
+  font-weight: 600;
+  white-space: nowrap;
+  color: var(--text-faint);
+  background: var(--surface);
+  border: 1px dashed var(--border-strong);
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+/* Đã có nội dung: viền liền + chữ xanh, để lướt mắt biết dòng nào đã ghi thông số */
+.triggerFilled {
+  color: var(--accent-blue);
+  border-style: solid;
+  border-color: var(--border);
+}
+
+.trigger:hover {
+  border-color: var(--accent-bright);
+}
+
+.trigger:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+
+.dialog {
+  width: min(34rem, 92vw);
+  padding: 0;
+  color: var(--text);
+  background: var(--surface);
+  border: none;
+  border-radius: 12px;
+  box-shadow: var(--shadow-card);
+}
+
+.dialog::backdrop {
+  background: rgba(8, 16, 28, 0.55);
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 1rem;
+}
+
+.head {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.title {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.close {
+  margin-left: auto;
+  width: 2rem;
+  height: 2rem;
+  padding: 0;
+  font: inherit;
+  font-size: 0.9rem;
+  line-height: 1;
+  color: var(--text-muted);
+  background: var(--surface-sunken);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.close:hover {
+  color: var(--text);
+  border-color: var(--border-strong);
+}
+
+.textarea {
+  width: 100%;
+  padding: 0.6rem 0.7rem;
+  font: inherit;
+  font-size: 0.88rem;
+  line-height: 1.5;
+  color: var(--text);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  resize: vertical;
+}
+
+.textarea:focus {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+
+.foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.hint {
+  font-size: 0.74rem;
+  color: var(--text-faint);
+}
+
+.done {
+  padding: 0.45rem 1.1rem;
+  font: inherit;
+  font-size: 0.86rem;
+  font-weight: 600;
+  color: var(--accent-text);
+  background: var(--accent);
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.done:hover {
+  background: var(--accent-bright);
+}
