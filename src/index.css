@@ -35,7 +35,7 @@
    * (header 0.9rem, footer 1.15rem, trang 1rem) nên thu hẹp màn là các mép lệch nhau.
    * Đổi bề rộng hay lề của app = sửa đúng 2 biến này, không sửa từng file.
    */
-  --layout-max: 1100px;
+  --layout-max: 1200px;
   --layout-pad: 1.25rem;
   /* Bề ngang phần chữ/ảnh sau khi trừ lề — thân trang là hộp 1100px ĐÃ gồm lề,
      nên đầu/chân trang và ảnh bìa phải trừ đi đúng chừng đó mới thẳng hàng */
