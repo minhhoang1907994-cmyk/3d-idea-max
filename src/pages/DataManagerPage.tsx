@@ -88,9 +88,9 @@ export function DataManagerPage({ dataStore }: Props) {
         </p>
       ) : (
         <p className={styles.banner}>
-          Dữ liệu trên Neon <strong>ai mở được web cũng sửa được</strong> (không có đăng nhập). Neon
-          giữ 20 bản ghi đè gần nhất để lùi lại, nhưng nên thỉnh thoảng bấm{' '}
-          <strong>Tải JSON về</strong> rồi commit vào repo làm bản gốc.
+          Dữ liệu trên Neon <strong>ai mở được web cũng sửa được</strong> (không có đăng nhập). Bấm
+          lưu là dữ liệu nằm vĩnh viễn trên Neon, và Neon giữ lại mọi bản bị ghi đè để lùi lại khi
+          cần.
         </p>
       )}
 

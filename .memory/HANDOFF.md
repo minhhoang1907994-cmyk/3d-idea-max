@@ -2,7 +2,42 @@
 
 ## Session gần nhất
 
-- Ngày: 2026-09-18
+- Ngày: 2026-09-29
+- Tóm tắt: Bỏ giới hạn 20 bản của `idea_document_history` — Neon giữ mọi bản bị ghi đè cho cả
+  7 document ý tưởng và 5 document Sổ công ty. User không muốn định kỳ kéo Neon về git.
+
+## Đã thực hiện
+
+- `db/migrations/006_unlimited_history.sql` (mới): `create or replace` hàm trigger
+  `idea_documents_on_update()`, bỏ đoạn `delete ... offset 20`. Vẫn insert bản cũ vào history,
+  vẫn tăng `version`. Không sửa file 001.
+- Banner `src/pages/CompanyLedgerPage.tsx` + `src/pages/DataManagerPage.tsx`: bỏ câu "giữ 20 bản…
+  nên thỉnh thoảng Tải JSON về rồi commit", thay bằng "lưu là vĩnh viễn trên Neon, giữ mọi bản
+  bị ghi đè". Nút "Tải JSON về" giữ nguyên.
+- `docs/neon-setup.md`: thêm bước 2c (chạy 006), sửa mục 4 lớp giảm thiệt hại và mục Dùng hằng ngày.
+
+## Trạng thái hiện tại
+
+- `tsc --noEmit` no errors · `vitest run` PASS 274/274.
+- **Migration 006 CHƯA chạy trên Neon** — user phải tự chạy bằng `neondb_owner` trong SQL Editor.
+  Trước khi chạy, Neon vẫn xoá bản thứ 21 trở đi.
+- Chưa commit, đang ở branch `main`.
+
+## Việc tiếp theo
+
+- User chạy `006_unlimited_history.sql` trên Neon, rồi lưu thử 1 lần và kiểm tra
+  `select count(*) from idea_document_history` tăng mà không bị cắt.
+- Tạo branch rồi commit.
+- (Tuỳ chọn) Nút khôi phục bản cũ trên web — hiện chỉ lùi được qua SQL Editor.
+- Chưa kiểm tra giới hạn storage của gói Neon đang dùng.
+
+## Ghi chú quan trọng
+
+- Quyết định 2026-09-29: lịch sử Neon không giới hạn; git KHÔNG còn là bản sao lưu bắt buộc định
+  kỳ. Đã loại phương án tự commit git khi lưu (phải nhét GitHub token vào bundle).
+
+## Session trước — 2026-09-18 (gỡ trang Đổi slicer)
+
 - Tóm tắt: Đối chiếu 2 file `.3mf` thật (MakerWorld hệ Bambu vs MakerOnline hệ Anycubic) để
   kiểm chứng trang "Đổi slicer" → tìm ra 4 lỗi + 2 hạn chế phạm vi. User quyết định **gỡ
   hẳn trang này** vì phạm vi quá lớn so với giá trị.

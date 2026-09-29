@@ -29,7 +29,8 @@ Bốn lớp giảm thiệt hại:
    Không xoá được dòng, không đụng được bảng khác, không đọc được schema `auth`/`neon_auth`,
    không tạo được bảng mới
 2. **RLS policy khoá `name`** trong đúng 7 giá trị hợp lệ — không đổ dòng rác vào bảng được
-3. **Bảng `idea_document_history`** giữ 20 bản ghi đè gần nhất mỗi document; `app_editor`
+3. **Bảng `idea_document_history`** giữ mọi bản bị ghi đè, không giới hạn số bản (từ
+   migration 006); `app_editor`
    không có quyền gì trên bảng này, chỉ trigger (chạy bằng quyền owner) ghi vào được
 4. **Bản JSON gốc vẫn nằm trong repo** — `npm run neon:seed` là nút reset về bản trong git
 
@@ -133,6 +134,13 @@ trang Sổ công ty (`companyExpenses`, `companyIncomes`, `companyNotes`, `compa
 Chưa chạy thì Neon từ chối ghi với lỗi
 `new row violates row-level security policy for table idea_documents`.
 
+### 2c. Giữ lịch sử không giới hạn
+
+Dán [`db/migrations/006_unlimited_history.sql`](../db/migrations/006_unlimited_history.sql)
+vào SQL Editor → **Run**. File này bỏ giới hạn 20 bản của trigger ở 001, từ đó mọi bản bị
+ghi đè đều nằm lại trong `idea_document_history`. Chưa chạy thì Neon vẫn chỉ giữ 20 bản
+gần nhất mỗi document.
+
 ### 5. Đẩy dữ liệu gốc lên
 
 ```bash
@@ -164,7 +172,8 @@ phải còn.
 | Khôi phục sau khi ai đó phá dữ liệu | `npm run neon:seed` / `npm run neon:seed:company` (về bản trong git)        |
 | Xem bản bị ghi đè                   | SQL Editor: `select * from idea_document_history order by replaced_at desc` |
 
-Nên `npm run neon:pull` + commit định kỳ: repo là bản gốc cuối cùng, Neon chỉ giữ 20 bản gần nhất.
+Sau migration 006, Neon giữ mọi bản bị ghi đè nên không bắt buộc kéo về git định kỳ nữa.
+`npm run neon:pull` + commit vẫn dùng được khi muốn chốt một bản vào repo.
 
 ## Cấu trúc dữ liệu
 
